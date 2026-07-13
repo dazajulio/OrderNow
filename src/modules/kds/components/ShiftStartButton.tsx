@@ -60,7 +60,7 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
     };
 
     // ------------------------------------------------------------------
-    // Unlock audio autoplay with a silent buffer
+    // Unlock audio autoplay
     // ------------------------------------------------------------------
     const unlockAudio = useCallback(async () => {
       if (isUnlocked) {
@@ -96,30 +96,6 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
           await ctx.resume();
         }
 
-        // Pre-load the notification sound
-        const audio = new Audio(`/sounds/${selectedTone}.mp3`);
-        audio.preload = 'auto';
-        audio.volume = 1;
-        audioElementRef.current = audio;
-
-        // Wait for audio to be loadable
-        await new Promise<void>((resolve, reject) => {
-          const onCanPlay = () => {
-            audio.removeEventListener('canplaythrough', onCanPlay);
-            audio.removeEventListener('error', onError);
-            resolve();
-          };
-          const onError = () => {
-            audio.removeEventListener('canplaythrough', onCanPlay);
-            audio.removeEventListener('error', onError);
-            // Resolve anyway — the sound file might not exist yet in dev
-            resolve();
-          };
-          audio.addEventListener('canplaythrough', onCanPlay);
-          audio.addEventListener('error', onError);
-          audio.load();
-        });
-
         setIsUnlocked(true);
       } catch (err) {
         console.error('[KDS] Error unlocking audio:', err);
@@ -129,18 +105,39 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
     }, [isUnlocked]);
 
     // ------------------------------------------------------------------
-    // Play the notification sound
+    // Play the notification sound via Web Audio API Oscillator
     // ------------------------------------------------------------------
     const playNewOrderSound = useCallback(() => {
-      const audio = audioElementRef.current;
-      if (!audio) return;
+      const ctx = audioContextRef.current;
+      if (!ctx || ctx.state !== 'running') return;
 
-      // Reset to beginning and play
-      audio.currentTime = 0;
-      audio.play().catch((err) => {
+      try {
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        // Type of beep
+        oscillator.type = selectedTone === 'digital-chime' ? 'square' : selectedTone === 'soft-alert' ? 'sine' : 'triangle';
+        oscillator.frequency.setValueAtTime(selectedTone === 'digital-chime' ? 880 : 523.25, ctx.currentTime); // A5 or C5
+
+        if (selectedTone === 'new-order') {
+          // Classic two-tone bell
+          oscillator.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+          oscillator.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15); // E5
+        }
+
+        gainNode.gain.setValueAtTime(0, ctx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + 0.6);
+      } catch (err) {
         console.warn('[KDS] Could not play notification sound:', err);
-      });
-    }, []);
+      }
+    }, [selectedTone]);
 
     // Expose to parent via ref
     useImperativeHandle(ref, () => ({ playNewOrderSound }), [playNewOrderSound]);

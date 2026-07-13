@@ -56,13 +56,8 @@ export async function middleware(request: NextRequest) {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        // In development, allow access without auth for testing
-        if (process.env.NODE_ENV === 'development') {
-          return response;
-        }
-
-        const loginUrl = new URL('/', request.url);
-        return NextResponse.redirect(loginUrl);
+        // En el modo MVP permitimos el acceso temporal para ver el dashboard ya que no hay página de login
+        console.log('No auth user, but allowing access to admin for MVP demo.');
       }
     }
   } catch (error) {
