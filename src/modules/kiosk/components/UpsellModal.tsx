@@ -118,7 +118,7 @@ export function UpsellModal({ products, onAdd, onSkip, isOpen, currency }: Upsel
                   : 'bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700'
               }`}
             >
-              {hasAdded ? 'Continuar' : t('upsellSkip')}
+              {hasAdded ? '✓ Confirmar y Continuar al Pago' : t('upsellSkip')}
             </button>
           </div>
         </div>

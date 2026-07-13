@@ -156,7 +156,7 @@ export function ProductCustomizationModal({
                   </div>
                   
                   <div className="space-y-2">
-                    {group.modifiers.filter(m => m.is_available).map(modifier => {
+                    {group.modifiers.filter(m => m.is_available !== false).map(modifier => {
                       const isSelected = (selections[group.id] || []).some(m => m.id === modifier.id);
                       // Disable if max reached and this one is not selected
                       const isDisabled = !isSelected && selectedCount >= group.max_selections && group.max_selections > 1;
