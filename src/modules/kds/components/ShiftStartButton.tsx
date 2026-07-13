@@ -45,7 +45,27 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
       if (savedTone) {
         setTone(savedTone);
       }
-    }, [setTone]);
+      
+      // Auto-restore shift if previously active
+      const isShiftActive = localStorage.getItem('kds_shift_active');
+      if (isShiftActive === 'true' && !isUnlocked && !audioContext) {
+         // Attempt silent unlock
+         try {
+           const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+           const ctx = new AudioCtx();
+           setAudioContext(ctx);
+           
+           // We add a one-time global click listener to resume if it was suspended
+           const resumeAudio = () => {
+             if (ctx.state === 'suspended') ctx.resume();
+             document.removeEventListener('click', resumeAudio);
+           };
+           document.addEventListener('click', resumeAudio);
+         } catch (e) {
+           console.warn('Could not auto-restore audio context', e);
+         }
+      }
+    }, [setTone, isUnlocked, audioContext, setAudioContext]);
 
     const handleToneChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setTone(e.target.value);
@@ -98,38 +118,43 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
     // Play the notification sound via Web Audio API Oscillator
     // ------------------------------------------------------------------
     const playNewOrderSound = useCallback(() => {
-      if (!audioContext || audioContext.state !== 'running') return;
+      if (!audioContext) return;
+      
+      // Attempt to resume if suspended
+      if (audioContext.state === 'suspended') {
+         audioContext.resume().catch(() => console.log('Audio suspended'));
+      }
 
       try {
-        // Ring 3 times
-        const numRings = 3;
-        for (let i = 0; i < numRings; i++) {
-          const delay = i * 0.8; // 0.8 seconds between rings
-          const startTime = audioContext.currentTime + delay;
-          
+        const playRing = (startTimeOffset: number) => {
+          const startTime = audioContext.currentTime + startTimeOffset;
           const oscillator = audioContext.createOscillator();
           const gainNode = audioContext.createGain();
 
-          // Type of beep
           oscillator.type = selectedTone === 'digital-chime' ? 'square' : selectedTone === 'soft-alert' ? 'sine' : 'triangle';
-          oscillator.frequency.setValueAtTime(selectedTone === 'digital-chime' ? 880 : 523.25, startTime); // A5 or C5
+          oscillator.frequency.setValueAtTime(selectedTone === 'digital-chime' ? 880 : 523.25, startTime);
 
           if (selectedTone === 'new-order') {
-            // Classic two-tone bell
             oscillator.frequency.setValueAtTime(523.25, startTime); // C5
             oscillator.frequency.setValueAtTime(659.25, startTime + 0.15); // E5
           }
 
           gainNode.gain.setValueAtTime(0, startTime);
           gainNode.gain.linearRampToValueAtTime(0.5, startTime + 0.05);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.5);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.4);
 
           oscillator.connect(gainNode);
           gainNode.connect(audioContext.destination);
 
           oscillator.start(startTime);
-          oscillator.stop(startTime + 0.6);
-        }
+          oscillator.stop(startTime + 0.5);
+        };
+
+        // Ring 3 times explicitly with setTimeout to ensure they trigger audibly and distinctively
+        playRing(0);
+        setTimeout(() => playRing(0), 800);
+        setTimeout(() => playRing(0), 1600);
+        
       } catch (err) {
         console.warn('[KDS] Could not play notification sound:', err);
       }
