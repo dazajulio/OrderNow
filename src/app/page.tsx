@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { ArrowRight, Bot, Cpu, LineChart, QrCode, ShieldCheck, Smartphone, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export default function LandingPage() {
   return (
@@ -19,9 +18,9 @@ export default function LandingPage() {
             <Link href="/admin" className="text-zinc-500 hover:text-white transition-colors">Login Admin</Link>
           </div>
           <Link href="#registro">
-            <Button className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold rounded-full px-6">
+            <button className="bg-cyan-500 hover:bg-cyan-400 text-black font-semibold rounded-full px-6 py-2 transition-colors">
               Empezar Ahora
-            </Button>
+            </button>
           </Link>
         </div>
       </nav>
@@ -47,13 +46,13 @@ export default function LandingPage() {
             Mtriq.app centraliza tu Menú Digital, Pedidos QR/NFC, Kitchen Display System (KDS) y CRM en un ecosistema impulsado por datos. Todo bajo control, en tiempo real.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-            <Button size="lg" className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-full px-8 w-full sm:w-auto h-14 text-lg">
+            <button className="flex items-center justify-center bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-full px-8 w-full sm:w-auto h-14 text-lg transition-colors">
               Prueba Gratis
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-white/10 text-white hover:bg-white/5 rounded-full px-8 w-full sm:w-auto h-14 text-lg">
+            </button>
+            <button className="border border-white/10 text-white hover:bg-white/5 rounded-full px-8 w-full sm:w-auto h-14 text-lg transition-colors">
               Ver Demo
-            </Button>
+            </button>
           </div>
         </div>
       </section>
@@ -198,9 +197,9 @@ export default function LandingPage() {
                 ))}
               </ul>
 
-              <Button className="w-full bg-white hover:bg-zinc-200 text-black font-bold h-14 rounded-xl text-lg">
+              <button className="w-full bg-white hover:bg-zinc-200 text-black font-bold h-14 rounded-xl text-lg transition-colors">
                 Comenzar Prueba Gratuita
-              </Button>
+              </button>
               <p className="text-sm text-zinc-600 mt-4">Cancela en cualquier momento. Sin tarjeta de crédito inicial.</p>
             </div>
           </div>
