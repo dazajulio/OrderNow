@@ -41,6 +41,7 @@ export function ProductFormModal({
   const [price, setPrice] = useState(0);
   const [categoryId, setCategoryId] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [uploadMode, setUploadMode] = useState<'url' | 'file'>('url');
   const [groups, setGroups] = useState<GroupInput[]>([]);
 
   // Use useEffect to reset state when modal opens or productToEdit changes
@@ -233,9 +234,63 @@ export function ProductFormModal({
                 <label className="block text-sm text-zinc-400 mb-1">Precio Base ($) *</label>
                 <input required type="number" step="0.01" min="0" value={price} onChange={e => setPrice(parseFloat(e.target.value))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
               </div>
-              <div>
-                <label className="block text-sm text-zinc-400 mb-1">URL de Imagen (Opcional)</label>
-                <input type="url" placeholder="https://..." value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
+              <div className="flex flex-col">
+                <label className="block text-sm text-zinc-400 mb-1">Imagen del Plato (Opcional)</label>
+                <div className="flex gap-2 mb-2">
+                  <button 
+                    type="button" 
+                    onClick={() => setUploadMode('url')} 
+                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'url' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800'}`}
+                  >
+                    Enlace (URL)
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => setUploadMode('file')} 
+                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'file' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800'}`}
+                  >
+                    Subir Archivo
+                  </button>
+                </div>
+                
+                {uploadMode === 'url' ? (
+                  <input type="url" placeholder="https://..." value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all" />
+                ) : (
+                  <input 
+                    type="file" 
+                    accept="image/png, image/jpeg, image/webp" 
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      
+                      // Limit size to 2MB to keep DB small
+                      if (file.size > 2 * 1024 * 1024) {
+                        alert("La imagen es demasiado grande. El límite es 2MB.");
+                        return;
+                      }
+
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setImageUrl(reader.result as string);
+                      };
+                      reader.readAsDataURL(file);
+                    }} 
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2 text-white focus:ring-2 focus:ring-orange-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-300 hover:file:bg-zinc-700 cursor-pointer transition-all" 
+                  />
+                )}
+
+                {imageUrl && (
+                  <div className="mt-3 relative w-full h-32 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
+                    <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                    <button 
+                      type="button" 
+                      onClick={() => setImageUrl('')} 
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-red-500/80 p-1.5 rounded-full text-white backdrop-blur-sm transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
