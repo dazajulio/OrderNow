@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { Product, Category } from '@/types/database';
 import { formatPrice } from '@/lib/utils';
-import { Search, UtensilsCrossed, Plus } from 'lucide-react';
+import { Search, UtensilsCrossed, Plus, FolderPlus, Edit2, Trash2 } from 'lucide-react';
 import { ProductFormModal } from './ProductFormModal';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { ProductRow } from './ProductRow';
@@ -109,6 +109,47 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
     }
   };
 
+  const createCategory = async () => {
+    const name = window.prompt('Nombre de la nueva categoría:');
+    if (!name?.trim()) return;
+
+    const { error } = await supabase
+      .from('categories')
+      .insert({ restaurant_id: restaurantId, name: name.trim() });
+    
+    if (error) alert('Error al crear la categoría');
+    else loadMenu();
+  };
+
+  const editCategory = async (category: Category) => {
+    const newName = window.prompt('Nuevo nombre para la categoría:', category.name);
+    if (!newName?.trim() || newName === category.name) return;
+
+    const { error } = await supabase
+      .from('categories')
+      .update({ name: newName.trim() } as any)
+      .eq('id', category.id);
+
+    if (error) alert('Error al actualizar la categoría');
+    else loadMenu();
+  };
+
+  const deleteCategory = async (category: Category, productCount: number) => {
+    if (productCount > 0) {
+      alert(`No puedes eliminar esta categoría porque tiene ${productCount} productos. Mueve o elimina los productos primero.`);
+      return;
+    }
+    if (!window.confirm(`¿Estás seguro de eliminar la categoría "${category.name}"?`)) return;
+
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', category.id);
+
+    if (error) alert('Error al eliminar la categoría');
+    else loadMenu();
+  };
+
   const onDragEnd = async (result: DropResult) => {
     const { source, destination } = result;
 
@@ -163,16 +204,25 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
             className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl py-4 pl-14 pr-6 text-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
-        <button 
-          onClick={() => {
-            setProductToEdit(null);
-            setIsModalOpen(true);
-          }}
-          className="brand-bg hover:brightness-110 text-white rounded-2xl px-6 py-4 font-bold flex items-center justify-center transition-all w-full sm:w-auto flex-shrink-0 whitespace-nowrap shadow-lg shadow-orange-500/20"
-        >
-          <Plus className="w-5 h-5 mr-2" />
-          Añadir Plato
-        </button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <button 
+            onClick={createCategory}
+            className="bg-zinc-800 hover:bg-zinc-700 text-white rounded-2xl px-5 py-4 font-bold flex items-center justify-center transition-all flex-1 sm:flex-none whitespace-nowrap"
+          >
+            <FolderPlus className="w-5 h-5 mr-2" />
+            Categoría
+          </button>
+          <button 
+            onClick={() => {
+              setProductToEdit(null);
+              setIsModalOpen(true);
+            }}
+            className="brand-bg hover:brightness-110 text-white rounded-2xl px-5 py-4 font-bold flex items-center justify-center transition-all flex-1 sm:flex-none whitespace-nowrap shadow-lg shadow-orange-500/20"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Plato
+          </button>
+        </div>
       </div>
 
       {/* Categories */}
@@ -187,9 +237,27 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
 
             return (
               <div key={category.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
-                <div className="bg-zinc-800/50 px-6 py-5 flex items-center gap-3 border-b border-zinc-800">
-                  <UtensilsCrossed className="w-5 h-5 text-orange-500" />
-                  <h2 className="text-xl font-bold text-white">{category.name}</h2>
+                <div className="bg-zinc-800/50 px-6 py-5 flex items-center gap-3 border-b border-zinc-800 group">
+                  <UtensilsCrossed className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                  <h2 className="text-xl font-bold text-white truncate max-w-[200px] sm:max-w-none">{category.name}</h2>
+                  
+                  <div className="flex gap-1 ml-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                    <button 
+                      onClick={() => editCategory(category)}
+                      className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-700 rounded-lg transition-colors"
+                      title="Editar nombre de categoría"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={() => deleteCategory(category, categoryProducts.length)}
+                      className="p-1.5 text-red-500 hover:bg-red-500/20 rounded-lg transition-colors"
+                      title="Eliminar categoría"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+
                   <span className="ml-auto text-sm text-zinc-500 font-medium">{categoryProducts.length} productos</span>
                 </div>
                 
