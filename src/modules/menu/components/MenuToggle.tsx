@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { Product, Category } from '@/types/database';
 import { formatPrice } from '@/lib/utils';
-import { Search, UtensilsCrossed, Plus, FolderPlus, Edit2, Trash2 } from 'lucide-react';
+import { Search, UtensilsCrossed, Plus, FolderPlus, Edit2, Trash2, GripVertical } from 'lucide-react';
 import { ProductFormModal } from './ProductFormModal';
-import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { ProductRow } from './ProductRow';
 
 interface MenuToggleProps {
@@ -151,10 +151,30 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
   };
 
   const onDragEnd = async (result: DropResult) => {
-    const { source, destination } = result;
+    const { source, destination, type } = result;
 
     if (!destination) return;
     if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+    
+    // Category Reordering
+    if (type === 'category') {
+      const newCategories = Array.from(categories);
+      const [movedCat] = newCategories.splice(source.index, 1);
+      newCategories.splice(destination.index, 0, movedCat);
+      
+      const updatedCats = newCategories.map((c, idx) => ({ ...c, order_index: idx }));
+      setCategories(updatedCats);
+      
+      for (let i = 0; i < updatedCats.length; i++) {
+        const cat = updatedCats[i];
+        supabase.from('categories').update({ order_index: i } as any).eq('id', cat.id).then(({ error }) => {
+          if (error) console.error('Failed to save order for category', cat.id, error);
+        });
+      }
+      return;
+    }
+
+    // Product Reordering
     if (source.droppableId !== destination.droppableId) return; // Only allow reorder inside same category
 
     const categoryId = source.droppableId;
@@ -227,69 +247,91 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
 
       {/* Categories */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="space-y-8">
-          {categories.map(category => {
-            const categoryProducts = filteredProducts
-              .filter(p => p.category_id === category.id)
-              .sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-              
-            if (categoryProducts.length === 0) return null;
+        <Droppable droppableId="board" type="category">
+          {(boardProvided) => (
+            <div 
+              className="space-y-8"
+              {...boardProvided.droppableProps} 
+              ref={boardProvided.innerRef}
+            >
+              {categories.map((category, catIndex) => {
+                const categoryProducts = filteredProducts
+                  .filter(p => p.category_id === category.id)
+                  .sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
 
-            return (
-              <div key={category.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
-                <div className="bg-zinc-800/50 px-6 py-5 flex items-center gap-3 border-b border-zinc-800 group">
-                  <UtensilsCrossed className="w-5 h-5 text-orange-500 flex-shrink-0" />
-                  <h2 className="text-xl font-bold text-white truncate max-w-[200px] sm:max-w-none">{category.name}</h2>
-                  
-                  <div className="flex gap-1 ml-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                    <button 
-                      onClick={() => editCategory(category)}
-                      className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-700 rounded-lg transition-colors"
-                      title="Editar nombre de categoría"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => deleteCategory(category, categoryProducts.length)}
-                      className="p-1.5 text-red-500 hover:bg-red-500/20 rounded-lg transition-colors"
-                      title="Eliminar categoría"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+                return (
+                  <Draggable key={category.id} draggableId={`cat-${category.id}`} index={catIndex}>
+                    {(catProvided, catSnapshot) => (
+                      <div 
+                        ref={catProvided.innerRef}
+                        {...catProvided.draggableProps}
+                        className={`bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl ${catSnapshot.isDragging ? 'ring-2 ring-orange-500 shadow-2xl z-50' : ''}`}
+                      >
+                        <div className="bg-zinc-800/50 px-6 py-5 flex items-center gap-3 border-b border-zinc-800 group">
+                          <div {...catProvided.dragHandleProps} className="text-zinc-500 hover:text-white cursor-grab active:cursor-grabbing p-1 -ml-2">
+                            <GripVertical className="w-5 h-5" />
+                          </div>
+                          <UtensilsCrossed className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                          <h2 className="text-xl font-bold text-white truncate max-w-[200px] sm:max-w-none">{category.name}</h2>
+                          
+                          <div className="flex gap-1 ml-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                            <button 
+                              onClick={() => editCategory(category)}
+                              className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-700 rounded-lg transition-colors"
+                              title="Editar nombre de categoría"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button 
+                              onClick={() => deleteCategory(category, categoryProducts.length)}
+                              className="p-1.5 text-red-500 hover:bg-red-500/20 rounded-lg transition-colors"
+                              title="Eliminar categoría"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
 
-                  <span className="ml-auto text-sm text-zinc-500 font-medium">{categoryProducts.length} productos</span>
-                </div>
-                
-                <Droppable droppableId={category.id}>
-                  {(provided) => (
-                    <div 
-                      {...provided.droppableProps} 
-                      ref={provided.innerRef}
-                      className="divide-y divide-zinc-800/50 min-h-[50px]"
-                    >
-                      {categoryProducts.map((product, index) => (
-                        <ProductRow 
-                          key={product.id}
-                          product={product}
-                          index={index}
-                          onEdit={(prod) => {
-                            setProductToEdit(prod);
-                            setIsModalOpen(true);
-                          }}
-                          onDelete={deleteProduct}
-                          onToggleProduct={toggleProduct}
-                          onToggleModifier={toggleModifier}
-                        />
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
-            );
-          })}
-        </div>
+                          <span className="ml-auto text-sm text-zinc-500 font-medium">{categoryProducts.length} productos</span>
+                        </div>
+                        
+                        <Droppable droppableId={category.id} type="product">
+                          {(provided) => (
+                            <div 
+                              {...provided.droppableProps} 
+                              ref={provided.innerRef}
+                              className="divide-y divide-zinc-800/50 min-h-[50px]"
+                            >
+                              {categoryProducts.length === 0 ? (
+                                <div className="p-6 text-center text-zinc-500 italic">No hay productos en esta categoría.</div>
+                              ) : (
+                                categoryProducts.map((product, index) => (
+                                  <ProductRow 
+                                    key={product.id}
+                                    product={product}
+                                    index={index}
+                                    onEdit={(prod) => {
+                                      setProductToEdit(prod);
+                                      setIsModalOpen(true);
+                                    }}
+                                    onDelete={deleteProduct}
+                                    onToggleProduct={toggleProduct}
+                                    onToggleModifier={toggleModifier}
+                                  />
+                                ))
+                              )}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {boardProvided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </DragDropContext>
 
       <ProductFormModal 
