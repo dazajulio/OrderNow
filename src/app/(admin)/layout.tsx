@@ -2,11 +2,34 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3 } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [restaurantName, setRestaurantName] = useState('Cargando...');
+  const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchRestaurant() {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from('restaurants')
+        .select('name, logo_url')
+        .eq('is_active', true)
+        .single();
+      
+      if (data) {
+        setRestaurantName(data.name);
+        setRestaurantLogo(data.logo_url);
+      } else {
+        setRestaurantName('Dashboard');
+      }
+    }
+    fetchRestaurant();
+  }, []);
 
   const links = [
     { href: '/admin/kitchen', label: 'Cocina', icon: ChefHat },
@@ -21,12 +44,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar (Desktop) */}
       <aside className="hidden md:flex flex-col w-64 border-r border-zinc-800 bg-zinc-950 p-6">
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
-            <ChefHat className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20 overflow-hidden shrink-0">
+            {restaurantLogo ? (
+              <img src={restaurantLogo} alt="Logo" className="w-full h-full object-cover" />
+            ) : (
+              <ChefHat className="w-6 h-6 text-white" />
+            )}
           </div>
-          <div>
-            <h1 className="font-bold text-white text-lg leading-tight">Burger Palace</h1>
-            <span className="text-xs text-zinc-500">Dashboard</span>
+          <div className="min-w-0">
+            <h1 className="font-bold text-white text-lg leading-tight truncate">{restaurantName}</h1>
+            <span className="text-xs text-zinc-500 truncate block">Dashboard</span>
           </div>
         </div>
         

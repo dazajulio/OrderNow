@@ -212,7 +212,7 @@ export interface Database {
 // ============================================================================
 
 export type OrderStatus = 'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
-export type PaymentMethod = 'stripe' | 'cash';
+export type PaymentMethod = 'stripe' | 'cash' | 'terminal';
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
 export type MemberRole = 'owner' | 'manager' | 'kitchen' | 'cashier' | 'staff';
 

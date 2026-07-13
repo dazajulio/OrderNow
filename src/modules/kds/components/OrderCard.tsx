@@ -227,7 +227,7 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
       )}
 
       {/* ── Action button ───────────────────────────────────────── */}
-      {order.status === 'pending' && order.payment_status === 'pending' ? (
+      {order.status === 'pending' && order.payment_status === 'pending' && order.payment_method !== 'stripe' ? (
         <div className="p-3 pt-0">
           <button
             type="button"
@@ -240,28 +240,42 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
             className={cn(
               'flex w-full items-center justify-center gap-2 rounded-lg px-4 py-4 text-base font-semibold transition-colors duration-150',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30',
-              'active:scale-[0.98] transform bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white'
+              'active:scale-[0.98] transform shadow-lg',
+              order.payment_method === 'terminal' ? 'bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-yellow-950 shadow-yellow-500/20' :
+              order.payment_method === 'cash' ? 'bg-blue-500 hover:bg-blue-400 active:bg-blue-600 text-white shadow-blue-500/20' :
+              'bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white shadow-orange-500/20'
             )}
           >
             <StickyNote className="h-5 w-5" />
-            Validar Pago
+            {order.payment_method === 'terminal' ? 'ENVIAR TERMINAL DE PAGO' :
+             order.payment_method === 'cash' ? 'CLIENTE PAGA EN CAJA' :
+             'VALIDAR PAGO'}
           </button>
         </div>
-      ) : action && (
-        <div className="p-3 pt-0">
-          <button
-            type="button"
-            onClick={() => onStatusChange(order.id, action.status)}
-            className={cn(
-              'flex w-full items-center justify-center gap-2 rounded-lg px-4 py-4 text-base font-semibold transition-colors duration-150',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30',
-              'active:scale-[0.98] transform',
-              getActionButtonStyles(order.status)
-            )}
-          >
-            {getActionIcon(order.status)}
-            {action.label}
-          </button>
+      ) : (
+        <div className="flex flex-col gap-2 p-3 pt-0">
+          {/* Legend for Paid / Stripe Orders */}
+          {(order.payment_status === 'paid' || order.payment_method === 'stripe') && order.status === 'pending' && (
+             <div className="w-full bg-green-500/20 text-green-400 font-bold text-center py-2.5 rounded-lg text-sm border border-green-500/30 flex items-center justify-center gap-2">
+               <CircleCheckBig className="w-4 h-4" />
+               PEDIDO PAGADO
+             </div>
+          )}
+          {action && (
+            <button
+              type="button"
+              onClick={() => onStatusChange(order.id, action.status)}
+              className={cn(
+                'flex w-full items-center justify-center gap-2 rounded-lg px-4 py-4 text-base font-semibold transition-colors duration-150',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30',
+                'active:scale-[0.98] transform',
+                getActionButtonStyles(order.status)
+              )}
+            >
+              {getActionIcon(order.status)}
+              {action.label}
+            </button>
+          )}
         </div>
       )}
 

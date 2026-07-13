@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { createClient } from '@/lib/supabase/client';
 import { Bell } from 'lucide-react';
 
@@ -14,9 +15,23 @@ interface WaiterCall {
 export function WaiterNotificationBell() {
   const [calls, setCalls] = useState<WaiterCall[]>([]);
   const lastKnownCountRef = useRef(0);
+  const isInitialLoadRef = useRef(true);
   const hasPlayedRef = useRef<Set<string>>(new Set());
 
-  const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID || '';
+  const [restaurantId, setRestaurantId] = useState<string>('');
+
+  useEffect(() => {
+    async function initRest() {
+      const supabase = createClient();
+      const { data } = await supabase.from('restaurants').select('id').eq('is_active', true).single();
+      if (data) {
+        setRestaurantId(data.id);
+      } else {
+        setRestaurantId(process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
+      }
+    }
+    initRest();
+  }, []);
 
   const playSound = useCallback(() => {
     try {
@@ -74,13 +89,14 @@ export function WaiterNotificationBell() {
       pendingCalls.forEach(call => {
         if (!hasPlayedRef.current.has(call.id)) {
           hasPlayedRef.current.add(call.id);
-          // Only play sound if this is genuinely new (not from initial load on page load)
-          if (lastKnownCountRef.current > 0 || calls.length > 0) {
+          // Play sound if it's not the initial load
+          if (!isInitialLoadRef.current) {
             playSound();
           }
         }
       });
       
+      isInitialLoadRef.current = false;
       lastKnownCountRef.current = pendingCalls.length;
       setCalls(pendingCalls);
     }
@@ -154,10 +170,10 @@ export function WaiterNotificationBell() {
     }
   };
 
-  if (calls.length === 0) return null;
+  if (calls.length === 0 || typeof document === 'undefined') return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
       <div className="bg-zinc-900 border-2 border-orange-500 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl shadow-orange-500/20 transform animate-bounce-in">
         <div className="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
           <Bell className="w-10 h-10 text-orange-500 animate-pulse" />
@@ -180,6 +196,7 @@ export function WaiterNotificationBell() {
           </p>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
