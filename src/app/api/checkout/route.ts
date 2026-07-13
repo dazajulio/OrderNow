@@ -20,9 +20,9 @@ export async function POST(request: Request) {
           name: customer.name,
           phone: customer.phone,
           last_visit_at: new Date().toISOString()
-        }, { onConflict: 'restaurant_id, email' })
+        } as any, { onConflict: 'restaurant_id, email' })
         .select('id')
-        .single();
+        .single() as any;
         
       if (custData) {
         customerId = custData.id;
@@ -39,15 +39,14 @@ export async function POST(request: Request) {
         restaurant_id: restaurantId,
         table_id: tableId,
         customer_id: customerId,
-        order_number: orderNumber,
+        order_number: parseInt(orderNumber),
         status: 'pending',
         total_amount: total,
         payment_status: paymentMethod === 'cash' ? 'pending' : 'paid',
-        payment_method: paymentMethod,
-        is_paid: paymentMethod === 'stripe'
-      })
+        payment_method: paymentMethod
+      } as any)
       .select('id, order_number')
-      .single();
+      .single() as any;
 
     if (orderError) throw orderError;
 
@@ -63,7 +62,7 @@ export async function POST(request: Request) {
 
     const { error: itemsError } = await supabaseAdmin
       .from('order_items')
-      .insert(orderItems);
+      .insert(orderItems as any);
 
     if (itemsError) throw itemsError;
 

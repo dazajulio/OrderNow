@@ -143,9 +143,9 @@ export function ProductFormModal({
             image_url: imageUrl || null,
             is_available: true,
             is_featured: false
-          })
+          } as any)
           .select()
-          .single();
+          .single() as any;
 
         if (productError) throw productError;
         productId = productData.id;
@@ -162,9 +162,9 @@ export function ProductFormModal({
             is_required: group.is_required,
             min_selections: group.min_selections,
             max_selections: group.max_selections
-          })
+          } as any)
           .select()
-          .single();
+          .single() as any;
 
         if (groupError) throw groupError;
 
@@ -177,7 +177,7 @@ export function ProductFormModal({
 
           const { error: modError } = await supabase
             .from('modifiers')
-            .insert(modifiersToInsert);
+            .insert(modifiersToInsert as any);
 
           if (modError) throw modError;
         }

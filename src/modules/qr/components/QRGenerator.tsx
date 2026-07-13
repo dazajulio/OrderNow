@@ -46,7 +46,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
         table_number: maxNumber + 1,
         label: label,
         is_active: true
-      });
+      } as any);
       
     if (error) {
       alert("Error al crear mesa.");
