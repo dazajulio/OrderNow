@@ -33,7 +33,7 @@ export default function KioskPage({ params }: KioskPageProps) {
   const [step, setStep] = useState<FlowStep>('browse');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'cash' | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'cash' | 'terminal' | null>(null);
   const [customerId, setCustomerId] = useState<string | null>(null);
   const [customizingProduct, setCustomizingProduct] = useState<ProductWithModifiers | null>(null);
   const [lastTotal, setLastTotal] = useState(0);
