@@ -38,6 +38,8 @@ export default function KioskPage({ params }: KioskPageProps) {
   const [customizingProduct, setCustomizingProduct] = useState<ProductWithModifiers | null>(null);
   const [lastTotal, setLastTotal] = useState(0);
   const [lastOrderId, setLastOrderId] = useState<string | null>(null);
+  const [upsellProducts, setUpsellProducts] = useState<ProductWithModifiers[]>([]);
+  const [isCallingWaiter, setIsCallingWaiter] = useState(false);
   
   const { addItem, getItemCount, getTotal, setContext, items, clearCart, restaurantId } = useCartStore();
   
@@ -85,6 +87,17 @@ export default function KioskPage({ params }: KioskPageProps) {
         
       if (prods) {
         setProducts(prods as ProductWithModifiers[]);
+        
+        // Find upsell products based on restaurant settings, fallback to featured
+        const upsells = prods.filter(p => 
+          p.id === restaurant.upsell_item_1_id || p.id === restaurant.upsell_item_2_id
+        );
+        
+        if (upsells.length > 0) {
+           setUpsellProducts(upsells as ProductWithModifiers[]);
+        } else {
+           setUpsellProducts(prods.filter(p => p.is_featured) as ProductWithModifiers[]);
+        }
       }
       
       setIsLoading(false);
@@ -165,8 +178,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     setIsProcessing(false);
     
     // Check if we should show upsell
-    const featuredProducts = products.filter(p => p.is_featured);
-    if (featuredProducts.length > 0) {
+    if (upsellProducts.length > 0) {
       setStep('upsell');
     } else {
       setStep('checkout');
@@ -336,15 +348,42 @@ export default function KioskPage({ params }: KioskPageProps) {
     );
   }
 
+  const handleCallWaiter = async () => {
+    setIsCallingWaiter(true);
+    const supabase = createClient();
+    
+    // Check if valid tableId
+    const isValidUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    
+    if (tableId && tableId !== 'takeaway' && isValidUUID(tableId) && restaurantId) {
+      const { error } = await supabase.from('waiter_calls').insert({
+        restaurant_id: restaurantId,
+        table_id: tableId,
+        status: 'pending'
+      } as any);
+      
+      if (!error) {
+         alert('El mesero ha sido notificado y va en camino a su mesa.');
+      } else {
+         alert('Hubo un error al notificar al mesero. Por favor intente de nuevo.');
+      }
+    } else {
+      alert('No se pudo identificar la mesa para llamar al mesero.');
+    }
+    
+    setIsCallingWaiter(false);
+  };
+
   return (
     <>
       {/* Call Waiter Button */}
       <div className="fixed top-4 right-4 z-[60]">
         <button 
-          onClick={() => alert('El mesero ha sido notificado y va en camino a su mesa.')}
-          className="text-sm font-bold text-white brand-bg rounded-full px-4 py-3 flex items-center shadow-lg shadow-orange-500/30 hover:brightness-110 active:scale-95 transition-all"
+          onClick={handleCallWaiter}
+          disabled={isCallingWaiter}
+          className="text-sm font-bold text-white brand-bg rounded-full px-4 py-3 flex items-center shadow-lg shadow-orange-500/30 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50"
         >
-          <span className="mr-2 text-lg">🔔</span> Mesero
+          <span className="mr-2 text-lg">🔔</span> {isCallingWaiter ? 'Llamando...' : 'Mesero'}
         </button>
       </div>
 
@@ -407,7 +446,7 @@ export default function KioskPage({ params }: KioskPageProps) {
 
       <UpsellModal 
         isOpen={step === 'upsell'}
-        products={products.filter(p => p.is_featured)}
+        products={upsellProducts}
         onAdd={handleUpsellAdd}
         onSkip={handleUpsellProceed}
         currency={currency}

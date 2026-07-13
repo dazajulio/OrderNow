@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3 } from 'lucide-react';
+import { WaiterNotificationBell } from './components/WaiterNotificationBell';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -11,7 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: '/admin/kitchen', label: 'Cocina', icon: ChefHat },
     { href: '/admin/menu', label: 'Menú', icon: UtensilsCrossed },
     { href: '/admin/history', label: 'Registro', icon: ClipboardList },
-    { href: '/admin/reports', label: 'Reportes', icon: BarChart3 },
+    { href: '/admin/settings', label: 'Administrador', icon: BarChart3 },
     { href: '/admin/qr', label: 'Códigos QR', icon: QrCode },
   ];
 
@@ -52,7 +53,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 bg-zinc-900 min-h-screen overflow-y-auto pb-20 md:pb-0">
+      <main className="flex-1 bg-zinc-900 min-h-screen overflow-y-auto pb-20 md:pb-0 relative">
+        <WaiterNotificationBell />
         {children}
       </main>
 

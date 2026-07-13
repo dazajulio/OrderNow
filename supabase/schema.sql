@@ -26,20 +26,27 @@ DROP TABLE IF EXISTS public.restaurants CASCADE;
 -- TABLA: restaurants (Tenant Principal)
 -- ============================================================================
 CREATE TABLE public.restaurants (
-  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  slug                TEXT NOT NULL UNIQUE,
-  name                TEXT NOT NULL,
-  logo_url            TEXT,
-  brand_color_primary TEXT NOT NULL DEFAULT '#FF6B00',
-  brand_color_secondary TEXT DEFAULT '#1A1A2E',
-  currency            TEXT NOT NULL DEFAULT 'USD',
-  timezone            TEXT NOT NULL DEFAULT 'America/New_York',
-  is_active           BOOLEAN NOT NULL DEFAULT true,
-  created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-
-  CONSTRAINT restaurants_slug_format CHECK (slug ~ '^[a-z0-9][a-z0-9-]*[a-z0-9]$')
-);
+    id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    slug                TEXT NOT NULL UNIQUE,
+    name                TEXT NOT NULL,
+    logo_url            TEXT,
+    brand_color_primary TEXT NOT NULL DEFAULT '#FF6B00',
+    brand_color_secondary TEXT DEFAULT '#1A1A2E',
+    currency            TEXT NOT NULL DEFAULT 'USD',
+    timezone            TEXT NOT NULL DEFAULT 'America/New_York',
+    is_active           BOOLEAN NOT NULL DEFAULT true,
+    tax_id              TEXT,
+    phone               TEXT,
+    address             TEXT,
+    license_code        TEXT,
+    license_valid_until TIMESTAMPTZ,
+    upsell_item_1_id    UUID,
+    upsell_item_2_id    UUID,
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
+  
+    CONSTRAINT restaurants_slug_format CHECK (slug ~ '^[a-z0-9][a-z0-9-]*[a-z0-9]$')
+  );
 
 CREATE UNIQUE INDEX idx_restaurants_slug ON public.restaurants (slug);
 
@@ -405,6 +412,27 @@ INSERT INTO public.modifiers (group_id, name, extra_price) VALUES
   ('d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a02', 'Extra Queso Cheddar', 1.50),
   ('d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a02', 'Tocino Adicional', 2.00),
   ('d3eebc99-9c0b-4ef8-bb6d-6bb9bd380a02', 'Huevo Frito', 1.00);
+
+-- ============================================================================
+-- TABLA: waiter_calls (Llamados de mesero)
+-- ============================================================================
+CREATE TABLE public.waiter_calls (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    restaurant_id   UUID NOT NULL REFERENCES public.restaurants(id) ON DELETE CASCADE,
+    table_id        UUID NOT NULL REFERENCES public.tables(id) ON DELETE CASCADE,
+    status          TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'resolved')),
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    resolved_at     TIMESTAMPTZ
+);
+
+CREATE INDEX idx_waiter_calls_restaurant ON public.waiter_calls (restaurant_id);
+CREATE INDEX idx_waiter_calls_status ON public.waiter_calls (status);
+
+ALTER TABLE public.waiter_calls ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable insert for everyone" ON public.waiter_calls FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable select for everyone" ON public.waiter_calls FOR SELECT USING (true);
+CREATE POLICY "Enable update for everyone" ON public.waiter_calls FOR UPDATE USING (true);
 
 -- ============================================================================
 -- FIN DEL ESQUEMA
