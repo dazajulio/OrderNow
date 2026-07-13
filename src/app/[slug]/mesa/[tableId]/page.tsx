@@ -203,9 +203,9 @@ export default function KioskPage({ params }: KioskPageProps) {
         total_amount: getTotal(),
         payment_method: method,
         payment_status: 'pending'
-      })
+      } as any)
       .select()
-      .single();
+      .single() as any;
       
     if (orderError) {
       console.error('Error creating order:', orderError);
@@ -221,7 +221,7 @@ export default function KioskPage({ params }: KioskPageProps) {
         modifiers_snapshot: item.selectedModifiers
       }));
       
-      await supabase.from('order_items').insert(itemsToInsert);
+      await supabase.from('order_items').insert(itemsToInsert as any);
       setLastOrderId(order.id);
     }
     
