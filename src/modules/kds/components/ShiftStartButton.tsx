@@ -24,6 +24,8 @@ import { cn } from '@/lib/utils';
 // Types
 // ----------------------------------------------------------------------------
 
+import { useKdsStore } from '@/modules/kds/stores/kds-store';
+
 export interface ShiftStartButtonHandle {
   playNewOrderSound: () => void;
 }
@@ -34,29 +36,19 @@ export interface ShiftStartButtonHandle {
 
 export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
   function ShiftStartButton(_props, ref) {
-    const [isUnlocked, setIsUnlocked] = useState(false);
+    const { audioContext, isUnlocked, selectedTone, setAudioContext, setTone } = useKdsStore();
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedTone, setSelectedTone] = useState('new-order');
-    const audioContextRef = useRef<AudioContext | null>(null);
-    const audioElementRef = useRef<HTMLAudioElement | null>(null);
 
-    // Initialize from localStorage
+    // Initialize tone from localStorage on mount
     useEffect(() => {
       const savedTone = localStorage.getItem('kds_alarm_tone');
       if (savedTone) {
-        setSelectedTone(savedTone);
+        setTone(savedTone);
       }
-    }, []);
+    }, [setTone]);
 
     const handleToneChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const tone = e.target.value;
-      setSelectedTone(tone);
-      localStorage.setItem('kds_alarm_tone', tone);
-      // Update audio src if already loaded
-      if (audioElementRef.current) {
-        audioElementRef.current.src = `/sounds/${tone}.mp3`;
-        audioElementRef.current.load();
-      }
+      setTone(e.target.value);
     };
 
     // ------------------------------------------------------------------
@@ -65,11 +57,10 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
     const unlockAudio = useCallback(async () => {
       if (isUnlocked) {
         if (window.confirm('¿Seguro que deseas desactivar el turno y dejar de recibir alertas sonoras?')) {
-          if (audioContextRef.current) {
-            audioContextRef.current.close();
-            audioContextRef.current = null;
+          if (audioContext) {
+            audioContext.close();
+            setAudioContext(null);
           }
-          setIsUnlocked(false);
         }
         return;
       }
@@ -82,8 +73,7 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
           (window as unknown as { webkitAudioContext: typeof AudioContext })
             .webkitAudioContext;
         const ctx = new AudioCtx();
-        audioContextRef.current = ctx;
-
+        
         // Play a short silent buffer to satisfy the autoplay policy
         const buffer = ctx.createBuffer(1, 1, 22050);
         const source = ctx.createBufferSource();
@@ -96,48 +86,54 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
           await ctx.resume();
         }
 
-        setIsUnlocked(true);
+        setAudioContext(ctx);
       } catch (err) {
         console.error('[KDS] Error unlocking audio:', err);
       } finally {
         setIsLoading(false);
       }
-    }, [isUnlocked]);
+    }, [isUnlocked, audioContext, setAudioContext]);
 
     // ------------------------------------------------------------------
     // Play the notification sound via Web Audio API Oscillator
     // ------------------------------------------------------------------
     const playNewOrderSound = useCallback(() => {
-      const ctx = audioContextRef.current;
-      if (!ctx || ctx.state !== 'running') return;
+      if (!audioContext || audioContext.state !== 'running') return;
 
       try {
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
+        // Ring 3 times
+        const numRings = 3;
+        for (let i = 0; i < numRings; i++) {
+          const delay = i * 0.8; // 0.8 seconds between rings
+          const startTime = audioContext.currentTime + delay;
+          
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
 
-        // Type of beep
-        oscillator.type = selectedTone === 'digital-chime' ? 'square' : selectedTone === 'soft-alert' ? 'sine' : 'triangle';
-        oscillator.frequency.setValueAtTime(selectedTone === 'digital-chime' ? 880 : 523.25, ctx.currentTime); // A5 or C5
+          // Type of beep
+          oscillator.type = selectedTone === 'digital-chime' ? 'square' : selectedTone === 'soft-alert' ? 'sine' : 'triangle';
+          oscillator.frequency.setValueAtTime(selectedTone === 'digital-chime' ? 880 : 523.25, startTime); // A5 or C5
 
-        if (selectedTone === 'new-order') {
-          // Classic two-tone bell
-          oscillator.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-          oscillator.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15); // E5
+          if (selectedTone === 'new-order') {
+            // Classic two-tone bell
+            oscillator.frequency.setValueAtTime(523.25, startTime); // C5
+            oscillator.frequency.setValueAtTime(659.25, startTime + 0.15); // E5
+          }
+
+          gainNode.gain.setValueAtTime(0, startTime);
+          gainNode.gain.linearRampToValueAtTime(0.5, startTime + 0.05);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.5);
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+
+          oscillator.start(startTime);
+          oscillator.stop(startTime + 0.6);
         }
-
-        gainNode.gain.setValueAtTime(0, ctx.currentTime);
-        gainNode.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.05);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.6);
       } catch (err) {
         console.warn('[KDS] Could not play notification sound:', err);
       }
-    }, [selectedTone]);
+    }, [selectedTone, audioContext]);
 
     // Expose to parent via ref
     useImperativeHandle(ref, () => ({ playNewOrderSound }), [playNewOrderSound]);

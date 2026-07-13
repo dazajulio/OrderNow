@@ -14,6 +14,8 @@ interface CheckoutFormProps {
   paymentMethod: 'stripe' | 'cash' | 'terminal' | null;
 }
 
+import { useEffect } from 'react';
+
 export function CheckoutForm({
   total,
   currency,
@@ -24,6 +26,12 @@ export function CheckoutForm({
   paymentMethod
 }: CheckoutFormProps) {
   
+  useEffect(() => {
+    if (paymentMethod === 'cash' || paymentMethod === 'terminal') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [paymentMethod]);
+
   if (paymentMethod === 'stripe') {
     return (
       <div className="w-full max-w-md mx-auto space-y-6 animate-fade-in p-6 bg-zinc-900 rounded-3xl border border-zinc-800">
