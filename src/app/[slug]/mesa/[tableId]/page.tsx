@@ -157,7 +157,7 @@ export default function KioskPage({ params }: KioskPageProps) {
           phone: data.phone || null
         } as any)
         .select('id')
-        .single();
+        .single() as any;
       if (!error && newCust) newCustomerId = newCust.id;
     }
     
