@@ -30,6 +30,8 @@ interface UseRealtimeOrdersReturn {
   preparingOrders: OrderWithItems[];
   readyOrders: OrderWithItems[];
   updateOrderStatus: (orderId: string, newStatus: OrderStatus) => Promise<void>;
+  updateOrderPaymentStatus: (orderId: string, reference: string) => Promise<void>;
+  cancelOrder: (orderId: string, reason: string) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -268,6 +270,55 @@ export function useRealtimeOrders({
   );
 
   // ------------------------------------------------------------------
+  // Update order payment status
+  // ------------------------------------------------------------------
+  const updateOrderPaymentStatus = useCallback(
+    async (orderId: string, reference: string) => {
+      // Optimistic update
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === orderId
+            ? { ...o, payment_status: 'paid', stripe_payment_intent_id: reference, updated_at: new Date().toISOString() }
+            : o
+        )
+      );
+
+      const { error } = await supabase
+        .from('orders')
+        .update({ payment_status: 'paid', stripe_payment_intent_id: reference })
+        .eq('id', orderId);
+
+      if (error) {
+        console.error('[KDS] Error updating payment status:', error.message);
+        await fetchInitialOrders();
+      }
+    },
+    [supabase, fetchInitialOrders]
+  );
+
+  // ------------------------------------------------------------------
+  // Cancel Order (Security feature)
+  // ------------------------------------------------------------------
+  const cancelOrder = useCallback(
+    async (orderId: string, reason: string) => {
+      // Optimistic update: Remove from KDS
+      knownOrderIds.current.delete(orderId);
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+
+      const { error } = await supabase
+        .from('orders')
+        .update({ status: 'cancelled', notes: `Cancelado: ${reason}` })
+        .eq('id', orderId);
+
+      if (error) {
+        console.error('[KDS] Error cancelling order:', error.message);
+        await fetchInitialOrders();
+      }
+    },
+    [supabase, fetchInitialOrders]
+  );
+
+  // ------------------------------------------------------------------
   // Derived state: group by status
   // ------------------------------------------------------------------
   const pendingOrders = useMemo(
@@ -309,6 +360,8 @@ export function useRealtimeOrders({
     preparingOrders,
     readyOrders,
     updateOrderStatus,
+    updateOrderPaymentStatus,
+    cancelOrder,
     isLoading,
   };
 }
