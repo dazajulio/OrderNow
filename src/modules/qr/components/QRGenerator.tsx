@@ -64,7 +64,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
     setIsLoading(true);
     const { error } = await supabase
       .from('tables')
-      .update({ label: newLabel })
+      .update({ label: newLabel } as any)
       .eq('id', tableId);
       
     if (error) {

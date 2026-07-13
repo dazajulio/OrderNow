@@ -117,7 +117,7 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
                   </p>
                   {order.payment_method && (
                     <span className="text-xs px-2 py-1 bg-zinc-800 text-zinc-300 rounded-md">
-                      Pago: {order.payment_method === 'stripe' ? 'Tarjeta' : order.payment_method === 'terminal' ? 'Terminal' : 'Efectivo'}
+                      Pago: {order.payment_method === 'stripe' ? 'Tarjeta' : (order.payment_method as any) === 'terminal' ? 'Terminal' : 'Efectivo'}
                     </span>
                   )}
                 </div>

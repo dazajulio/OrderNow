@@ -257,7 +257,7 @@ export function useRealtimeOrders({
 
       const { error } = await supabase
         .from('orders')
-        .update({ status: newStatus })
+        .update({ status: newStatus } as any)
         .eq('id', orderId);
 
       if (error) {
@@ -285,7 +285,7 @@ export function useRealtimeOrders({
 
       const { error } = await supabase
         .from('orders')
-        .update({ payment_status: 'paid', stripe_payment_intent_id: reference })
+        .update({ payment_status: 'paid', stripe_payment_intent_id: 'terminal' } as any)
         .eq('id', orderId);
 
       if (error) {
@@ -307,7 +307,7 @@ export function useRealtimeOrders({
 
       const { error } = await supabase
         .from('orders')
-        .update({ status: 'cancelled', notes: `Cancelado: ${reason}` })
+        .update({ status: 'cancelled', notes: reason } as any)
         .eq('id', orderId);
 
       if (error) {

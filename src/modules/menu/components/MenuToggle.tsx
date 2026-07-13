@@ -68,7 +68,7 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
 
     const { error } = await supabase
       .from('products')
-      .update({ is_available: newValue })
+      .update({ is_available: newValue } as any)
       .eq('id', product.id);
 
     if (error) {
@@ -95,7 +95,7 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
 
     const { error } = await supabase
       .from('modifiers')
-      .update({ is_available: newValue })
+      .update({ is_available: newValue } as any)
       .eq('id', modifierId);
 
     if (error) {

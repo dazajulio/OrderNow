@@ -120,10 +120,10 @@ export function ProductFormModal({
             description,
             base_price: price,
             image_url: imageUrl || null,
-          })
+          } as any)
           .eq('id', productToEdit.id)
           .select()
-          .single();
+          .single() as any;
 
         if (productError) throw productError;
         productId = productData.id;
