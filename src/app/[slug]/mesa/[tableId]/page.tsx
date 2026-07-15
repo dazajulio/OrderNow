@@ -50,11 +50,12 @@ export default function KioskPage({ params }: KioskPageProps) {
     async function loadData() {
       const supabase = createClient();
       
-      // Get restaurant ID from slug
+      // Get restaurant ID using MTRIQ_ID
+      const targetId = process.env.NEXT_PUBLIC_RESTAURANT_ID || MTRIQ_ID;
       const { data } = await supabase
         .from('restaurants')
         .select('*')
-        .eq('slug', slug)
+        .eq('id', targetId)
         .eq('is_active', true)
         .single();
         
