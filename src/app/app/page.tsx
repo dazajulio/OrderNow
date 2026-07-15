@@ -10,8 +10,8 @@ export default function PlatformSelector() {
 
       <div className="relative z-10 w-full max-w-md bg-zinc-900/60 border border-white/5 p-8 rounded-3xl backdrop-blur-md text-center space-y-8">
         <div className="flex items-center justify-center gap-2">
-          <Cpu className="w-8 h-8 text-cyan-400" />
-          <span className="text-2xl font-bold tracking-tight text-white">mtriq<span className="text-cyan-400">.app</span></span>
+          <img src="/logo-mtriq.png" alt="Mtriq Logo" className="w-8 h-8 object-contain" />
+          <span className="text-2xl font-bold tracking-tight text-white">mtriq<span className="text-[#FF6B00]">.app</span></span>
         </div>
 
         <div className="space-y-2">

@@ -31,10 +31,10 @@ export function Hero() {
             className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-7 leading-[1.05] animate-fade-in-up"
             style={{ animationDelay: '80ms' }}
           >
-            Sirve más rápido.
+            La infraestructura digital
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF8A3D] via-[#FF6B00] to-[#FF3D71]">
-              Vende más fuerte.
+              para escalar tu restaurante
             </span>
           </h1>
 

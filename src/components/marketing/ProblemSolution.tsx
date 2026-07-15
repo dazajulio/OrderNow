@@ -2,8 +2,8 @@ import { ShieldCheck } from 'lucide-react';
 
 const PROBLEMS = [
   {
-    title: 'Sistemas desconectados',
-    body: 'Un software para caja, otro para pedidos, otro para inventario. El caos operativo destruye tus márgenes.',
+    title: 'Procesos lentos y sin digitalizar',
+    body: 'La falta de respuestas rápidas y la ausencia de procesos ágiles te hacen perder ventas y clientes cada día.',
   },
   {
     title: 'Cero conocimiento del cliente',

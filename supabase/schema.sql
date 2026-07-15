@@ -42,6 +42,7 @@ CREATE TABLE public.restaurants (
     license_valid_until TIMESTAMPTZ,
     upsell_item_1_id    UUID,
     upsell_item_2_id    UUID,
+    super_admin_password TEXT DEFAULT 'admin1234',
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   

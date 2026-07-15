@@ -23,6 +23,11 @@ export default function SettingsAdminPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [upsell1, setUpsell1] = useState('');
   const [upsell2, setUpsell2] = useState('');
+
+  // --- Admin Password State ---
+  const [newAdminPassword, setNewAdminPassword] = useState('');
+  const [confirmAdminPassword, setConfirmAdminPassword] = useState('');
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
   
   // --- Reports State ---
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
@@ -103,6 +108,34 @@ export default function SettingsAdminPage() {
       
     setIsSaving(false);
     alert('Configuración guardada correctamente.');
+  };
+
+  const changeAdminPassword = async () => {
+    if (newAdminPassword.length < 4) {
+      alert('La contraseña debe tener al menos 4 caracteres.');
+      return;
+    }
+    if (newAdminPassword !== confirmAdminPassword) {
+      alert('Las contraseñas no coinciden.');
+      return;
+    }
+    
+    setIsSavingPassword(true);
+    const { error } = await supabase
+      .from('restaurants')
+      .update({
+        super_admin_password: newAdminPassword
+      } as any)
+      .eq('id', restaurantId);
+      
+    setIsSavingPassword(false);
+    if (error) {
+      alert('Error al actualizar la contraseña: ' + error.message);
+    } else {
+      alert('Contraseña de Super-Admin actualizada correctamente.');
+      setNewAdminPassword('');
+      setConfirmAdminPassword('');
+    }
   };
 
   // --- PIN Auth Screen ---
@@ -331,6 +364,49 @@ export default function SettingsAdminPage() {
               >
                 <Save className="w-5 h-5" />
                 {isSaving ? 'Guardando...' : 'Guardar Configuración'}
+              </button>
+            </div>
+          </div>
+
+          {/* Seguridad del Sistema (Super-Admin Password) */}
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl h-fit">
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-orange-500" /> Seguridad de la Plataforma
+            </h2>
+            <p className="text-zinc-400 text-sm mb-6">
+              Modifica la contraseña del Super-Admin para el acceso a la ruta de administración global (/admin).
+            </p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Nueva Contraseña</label>
+                <input 
+                  type="password"
+                  value={newAdminPassword} 
+                  onChange={(e) => setNewAdminPassword(e.target.value)}
+                  placeholder="Mínimo 4 caracteres"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Confirmar Contraseña</label>
+                <input 
+                  type="password"
+                  value={confirmAdminPassword} 
+                  onChange={(e) => setConfirmAdminPassword(e.target.value)}
+                  placeholder="Confirmar nueva contraseña"
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                />
+              </div>
+              
+              <button 
+                onClick={changeAdminPassword}
+                disabled={isSavingPassword || !newAdminPassword || newAdminPassword !== confirmAdminPassword}
+                className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <Lock className="w-5 h-5" />
+                {isSavingPassword ? 'Actualizando...' : 'Actualizar Contraseña'}
               </button>
             </div>
           </div>

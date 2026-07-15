@@ -26,9 +26,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF8A3D] to-[#FF3D71] flex items-center justify-center shadow-lg shadow-orange-500/20">
-            <Flame className="w-4 h-4 text-white" strokeWidth={2.5} />
-          </div>
+          <img src="/logo-mtriq.png" alt="Mtriq Logo" className="w-8 h-8 object-contain" />
           <span className="text-xl font-bold tracking-tight text-white">
             mtriq<span className="text-[#FF6B00]">.app</span>
           </span>
@@ -39,7 +37,6 @@ export function Navbar() {
           <a href="#casos" className="hover:text-white transition-colors">Casos de Uso</a>
           <a href="#precios" className="hover:text-white transition-colors">Precios</a>
           <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-          <Link href="/admin" className="hover:text-white transition-colors">Login Admin</Link>
         </div>
 
         <a href="#registro">

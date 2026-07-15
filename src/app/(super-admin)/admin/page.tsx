@@ -1,22 +1,192 @@
-import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { Building2, CreditCard, Activity, ArrowUpRight } from 'lucide-react';
+'use client';
 
-export default async function SuperAdminDashboard() {
-  const supabase = await createServerSupabaseClient();
-  
-  // Fetch real data for the global dashboard
-  const { data: restaurants, error } = await supabase
-    .from('restaurants')
-    .select('*')
-    .order('created_at', { ascending: false });
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase/client';
+import { Building2, CreditCard, Activity, ArrowUpRight, Lock, Key, Mail, ShieldAlert } from 'lucide-react';
 
-  const activeRestaurants = restaurants?.filter(r => r.is_active) || [];
+export default function SuperAdminDashboard() {
+  const supabase = createClient();
   
+  // --- Authentication State ---
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // --- Dashboard Data State ---
+  const [restaurants, setRestaurants] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID || 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+
+  // --- Session persistence ---
+  useEffect(() => {
+    const isLogged = sessionStorage.getItem('mtriq_super_admin_logged');
+    if (isLogged === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  // --- Load dashboard data ---
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    async function loadData() {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('restaurants')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        setRestaurants(data);
+      }
+      setIsLoading(false);
+    }
+
+    loadData();
+  }, [isAuthenticated]);
+
+  // --- Handle Login ---
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setIsLoggingIn(true);
+
+    if (email.trim().toLowerCase() !== 'dazajulio@gmail.com') {
+      setErrorMsg('Usuario o contraseña incorrectos.');
+      setIsLoggingIn(false);
+      return;
+    }
+
+    try {
+      // Fetch password from database
+      const { data, error } = await supabase
+        .from('restaurants')
+        .select('super_admin_password')
+        .eq('id', restaurantId)
+        .single() as any;
+
+      // Fallback default password is 'admin1234'
+      const correctPassword = (!error && data && data.super_admin_password) 
+        ? data.super_admin_password 
+        : 'admin1234';
+
+      if (password === correctPassword) {
+        sessionStorage.setItem('mtriq_super_admin_logged', 'true');
+        setIsAuthenticated(true);
+      } else {
+        setErrorMsg('Usuario o contraseña incorrectos.');
+      }
+    } catch (err) {
+      // In case the column is completely missing and supabase client throws, fallback check
+      if (password === 'admin1234') {
+        sessionStorage.setItem('mtriq_super_admin_logged', 'true');
+        setIsAuthenticated(true);
+      } else {
+        setErrorMsg('Usuario o contraseña incorrectos.');
+      }
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  // --- Render Login Gate ---
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#0B0C10] flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
+        {/* Background glow */}
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+
+        <div className="relative z-10 w-full max-w-md bg-zinc-900/60 border border-white/5 p-8 rounded-3xl backdrop-blur-md space-y-8 shadow-2xl">
+          <div className="text-center space-y-2">
+            <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/20">
+              <Lock className="w-6 h-6 text-orange-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Acceso Restringido</h2>
+            <p className="text-zinc-500 text-sm">Ingresa las credenciales autorizadas del Super-Admin</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Correo Electrónico</label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-3.5 w-5 h-5 text-zinc-600" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="ejemplo@correo.com"
+                  className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Contraseña</label>
+              <div className="relative">
+                <Key className="absolute left-4 top-3.5 w-5 h-5 text-zinc-600" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            {errorMsg && (
+              <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-xs font-semibold text-red-400">
+                <ShieldAlert className="w-4 h-4 shrink-0" />
+                <span>{errorMsg}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoggingIn}
+              className="w-full py-4 mt-6 bg-gradient-to-r from-[#FF8A3D] to-[#FF6B00] hover:brightness-110 text-white font-bold rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-orange-500/10 text-sm disabled:opacity-50"
+            >
+              {isLoggingIn ? 'Verificando...' : 'Iniciar Sesión'}
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Render Dashboard ---
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#0B0C10] flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const activeRestaurants = restaurants.filter(r => r.is_active);
+
   return (
-    <div className="space-y-8 animate-fade-in-up">
-      <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Visión Global</h2>
-        <p className="text-zinc-400">Métricas principales de mtriq.app</p>
+    <div className="min-h-screen bg-[#0B0C10] text-zinc-300 p-8 font-sans space-y-8 animate-fade-in-up">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-2">Visión Global</h2>
+          <p className="text-zinc-400">Métricas principales de mtriq.app</p>
+        </div>
+        <button
+          onClick={() => {
+            sessionStorage.removeItem('mtriq_super_admin_logged');
+            setIsAuthenticated(false);
+          }}
+          className="px-4 py-2 border border-white/10 hover:bg-white/5 text-zinc-400 hover:text-white rounded-xl text-sm font-semibold transition-all"
+        >
+          Cerrar Sesión
+        </button>
       </div>
 
       {/* ── METRICS CARDS ── */}
@@ -83,7 +253,7 @@ export default async function SuperAdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-zinc-300">
-              {restaurants?.slice(0, 5).map((tenant) => (
+              {restaurants.slice(0, 5).map((tenant) => (
                 <tr key={tenant.id} className="hover:bg-white/[0.02] transition-colors">
                   <td className="px-6 py-4 font-medium text-white flex items-center gap-3">
                     {tenant.logo_url ? (
@@ -114,7 +284,7 @@ export default async function SuperAdminDashboard() {
                   </td>
                 </tr>
               ))}
-              {restaurants?.length === 0 && (
+              {restaurants.length === 0 && (
                 <tr>
                   <td colSpan={4} className="px-6 py-8 text-center text-zinc-500">
                     No hay restaurantes registrados aún.
