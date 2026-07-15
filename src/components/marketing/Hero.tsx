@@ -4,7 +4,7 @@ import { ParallaxOrbs } from './ParallaxOrbs';
 
 export function Hero() {
   return (
-    <section className="relative pt-40 pb-24 md:pt-52 md:pb-36 overflow-hidden bg-white">
+    <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden bg-white">
       <ParallaxOrbs />
 
       {/* Grid sutil de fondo (patrón de puntos de cuadrícula clara) */}
@@ -28,13 +28,15 @@ export function Hero() {
           </div>
 
           <h1
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight mb-7 leading-[1.05] animate-fade-in-up"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight mb-7 leading-[1.1] animate-fade-in-up"
             style={{ animationDelay: '80ms' }}
           >
-            Opera tu restaurante como una cadena.
+            La infraestructura digital
+            <br />
+            para escalar
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">
-              Escala con inteligencia.
+              tu restaurante
             </span>
           </h1>
 
