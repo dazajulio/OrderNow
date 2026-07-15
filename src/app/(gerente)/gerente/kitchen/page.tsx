@@ -1,7 +1,7 @@
 'use client';
 
 // ============================================================================
-// PÁGINA: /admin/kitchen — Kitchen Display System
+// PÁGINA: /gerente/kitchen — Kitchen Display System
 // ============================================================================
 
 import { KDSBoard } from '@/modules/kds/components/KDSBoard';

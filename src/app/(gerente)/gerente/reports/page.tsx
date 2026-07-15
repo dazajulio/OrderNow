@@ -53,7 +53,7 @@ export default function ReportsPage() {
   };
 
   const handleAuthClose = () => {
-    router.push('/admin/kitchen');
+    router.push('/gerente/kitchen');
   };
 
   if (!isAuthenticated) {

@@ -1,8 +1,8 @@
-import { createClient } from '@/lib/supabase/server';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { Building2, CreditCard, Activity, ArrowUpRight } from 'lucide-react';
 
 export default async function SuperAdminDashboard() {
-  const supabase = createClient();
+  const supabase = await createServerSupabaseClient();
   
   // Fetch real data for the global dashboard
   const { data: restaurants, error } = await supabase

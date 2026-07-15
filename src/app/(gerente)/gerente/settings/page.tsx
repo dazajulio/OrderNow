@@ -37,7 +37,7 @@ export default function SettingsAdminPage() {
   };
 
   const handleAuthClose = () => {
-    router.push('/admin/kitchen');
+    router.push('/gerente/kitchen');
   };
 
   // --- Load Data ---

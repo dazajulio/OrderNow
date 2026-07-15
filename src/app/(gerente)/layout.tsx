@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3 } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function GerenteLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [restaurantName, setRestaurantName] = useState('Cargando...');
   const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
@@ -32,11 +32,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, []);
 
   const links = [
-    { href: '/admin/kitchen', label: 'Cocina', icon: ChefHat },
-    { href: '/admin/menu', label: 'Menú', icon: UtensilsCrossed },
-    { href: '/admin/history', label: 'Registro', icon: ClipboardList },
-    { href: '/admin/settings', label: 'Administrador', icon: BarChart3 },
-    { href: '/admin/qr', label: 'Códigos QR', icon: QrCode },
+    { href: '/gerente/kitchen', label: 'Cocina', icon: ChefHat },
+    { href: '/gerente/menu', label: 'Menú', icon: UtensilsCrossed },
+    { href: '/gerente/history', label: 'Registro', icon: ClipboardList },
+    { href: '/gerente/settings', label: 'Administrador', icon: BarChart3 },
+    { href: '/gerente/qr', label: 'Códigos QR', icon: QrCode },
   ];
 
   return (

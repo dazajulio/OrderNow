@@ -435,5 +435,28 @@ CREATE POLICY "Enable select for everyone" ON public.waiter_calls FOR SELECT USI
 CREATE POLICY "Enable update for everyone" ON public.waiter_calls FOR UPDATE USING (true);
 
 -- ============================================================================
+-- TABLA: leads (Solicitudes de prueba gratuita desde la Landing Page)
+-- ============================================================================
+CREATE TABLE public.leads (
+    id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    restaurant_name   TEXT NOT NULL,
+    contact_name      TEXT NOT NULL,
+    email             TEXT NOT NULL,
+    phone             TEXT,
+    business_type     TEXT CHECK (business_type IN ('fast_food', 'casual_dining', 'other')),
+    status            TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'onboarded', 'discarded')),
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_leads_status ON public.leads (status);
+
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable insert for everyone" ON public.leads FOR INSERT WITH CHECK (true);
+CREATE POLICY "Demo allow ALL on leads" ON public.leads FOR ALL USING (true);
+
+COMMENT ON TABLE public.leads IS 'Solicitudes de prueba gratuita (Marketing). El Super-Admin las convierte en tenants reales desde /admin.';
+
+-- ============================================================================
 -- FIN DEL ESQUEMA
 -- ============================================================================

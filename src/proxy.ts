@@ -1,12 +1,12 @@
 // ============================================================================
-// MIDDLEWARE — Protección de rutas admin + headers multi-tenant
+// PROXY — Protección de rutas admin + headers multi-tenant
 // ============================================================================
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   let response = NextResponse.next({
     request: {
@@ -49,8 +49,8 @@ export async function middleware(request: NextRequest) {
     // Refresh the auth session
     await supabase.auth.getUser();
 
-    // Protect admin routes
-    if (pathname.startsWith('/admin')) {
+    // Protect admin (super-admin) and gerente (manager) routes
+    if (pathname.startsWith('/admin') || pathname.startsWith('/gerente')) {
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
     }
   } catch (error) {
     // Never block a request due to auth errors
-    console.error('Middleware auth error:', error);
+    console.error('Proxy auth error:', error);
   }
 
   return response;

@@ -203,6 +203,24 @@ export interface Database {
         };
         Update: Partial<Database['public']['Tables']['order_items']['Insert']>;
       };
+      leads: {
+        Row: {
+          id: string;
+          restaurant_name: string;
+          contact_name: string;
+          email: string;
+          phone: string | null;
+          business_type: 'fast_food' | 'casual_dining' | 'other' | null;
+          status: 'new' | 'contacted' | 'onboarded' | 'discarded';
+          created_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['leads']['Row'], 'id' | 'status' | 'created_at'> & {
+          id?: string;
+          status?: 'new' | 'contacted' | 'onboarded' | 'discarded';
+          created_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['leads']['Insert']>;
+      };
     };
   };
 }
