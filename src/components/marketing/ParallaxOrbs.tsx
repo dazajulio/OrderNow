@@ -35,15 +35,15 @@ export function ParallaxOrbs() {
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       <div
         ref={flame}
-        className="absolute -top-32 left-1/3 w-[700px] h-[700px] rounded-full bg-[#FF6B00]/25 blur-[130px]"
+        className="absolute -top-32 left-1/3 w-[700px] h-[700px] rounded-full bg-orange-500/[0.04] blur-[130px]"
       />
       <div
         ref={ice}
-        className="absolute top-64 -right-32 w-[550px] h-[550px] rounded-full bg-[#2FA8FF]/15 blur-[120px]"
+        className="absolute top-64 -right-32 w-[550px] h-[550px] rounded-full bg-amber-500/[0.03] blur-[120px]"
       />
       <div
         ref={embers}
-        className="absolute top-[420px] left-0 w-[400px] h-[400px] rounded-full bg-[#FF3D71]/10 blur-[100px]"
+        className="absolute top-[420px] left-0 w-[400px] h-[400px] rounded-full bg-purple-500/[0.03] blur-[100px]"
       />
     </div>
   );

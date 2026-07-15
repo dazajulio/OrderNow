@@ -11,7 +11,7 @@ import { UseCases } from '@/components/marketing/UseCases';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0B0C10] text-zinc-300 font-sans selection:bg-orange-500/30">
+    <div className="min-h-screen bg-white text-slate-800 font-sans selection:bg-orange-500/10">
       <Navbar />
       <Hero />
       <ProblemSolution />
