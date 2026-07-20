@@ -116,7 +116,13 @@ export async function POST(request: Request) {
       }),
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+    let data: any = {};
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      data = { message: responseText };
+    }
 
     if (!response.ok) {
       console.error('Error de Resend al despachar correo:', data);

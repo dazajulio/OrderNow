@@ -1,11 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Cpu, Users, CreditCard, Settings, LayoutDashboard, Building2, Mail } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Cpu, Users, CreditCard, Settings, LayoutDashboard, Building2, Mail, LogOut } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 export default function SuperAdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push('/');
+  };
 
   const navItems = [
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -47,7 +55,7 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
           })}
         </nav>
         
-        <div className="pt-6 border-t border-white/5">
+        <div className="pt-6 border-t border-white/5 space-y-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-cyan-500 flex items-center justify-center text-white font-bold">
               JD
@@ -57,6 +65,12 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
               <p className="text-xs text-zinc-500">Super Admin</p>
             </div>
           </div>
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-red-400 hover:text-white hover:bg-red-500/10 border border-red-500/20 hover:border-red-500/30 transition-all active:scale-[0.98]"
+          >
+            <LogOut className="w-4 h-4" /> Cerrar sesión
+          </button>
         </div>
       </aside>
 

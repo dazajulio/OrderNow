@@ -11,6 +11,16 @@ export const metadata: Metadata = {
   title: 'FoodTech SaaS — Pedidos Móviles para Restaurantes',
   description:
     'Plataforma multi-tenant de pedidos QR para restaurantes Fast Food y Fast Casual. Kiosko móvil, Kitchen Display System, y gestión de menú en tiempo real.',
+  icons: {
+    icon: [
+      {
+        url: '/icon.png?v=2',
+        type: 'image/png',
+      },
+    ],
+    shortcut: '/icon.png?v=2',
+    apple: '/icon.png?v=2',
+  },
 };
 
 export default function RootLayout({

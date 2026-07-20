@@ -208,51 +208,51 @@ export default function RegisterPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#080d1a] text-zinc-300 font-sans flex flex-col justify-between relative overflow-hidden selection:bg-orange-500/20">
+    <div className="min-h-screen bg-slate-50 text-slate-600 font-sans flex flex-col justify-between relative overflow-hidden selection:bg-orange-500/10">
       
       {/* Background Liquid Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-orange-600/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[150px] pointer-events-none" />
-
+      <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none" />
+      
       {/* Header / Logo */}
-      <header className="relative z-20 max-w-7xl mx-auto px-6 w-full py-6 flex items-center justify-between border-b border-white/5">
-        <Link href="/" className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full pl-3 pr-4 py-1.5 shadow-sm hover:shadow-md hover:bg-white/10 transition-all select-none">
+      <header className="relative z-20 max-w-7xl mx-auto px-6 w-full py-6 flex items-center justify-between border-b border-slate-200/60">
+        <Link href="/" className="flex items-center gap-2 bg-white border border-slate-200 rounded-full pl-3 pr-4 py-1.5 shadow-sm hover:shadow-md hover:bg-slate-50 transition-all select-none">
           <img src="/logo-mtriq.png" alt="Mtriq Logo" className="w-5 h-5 object-contain" />
-          <span className="text-sm font-black tracking-tight text-white">
+          <span className="text-sm font-black tracking-tight text-slate-900">
             mtriq<span className="text-orange-500">.app</span>
           </span>
         </Link>
-        <span className="text-xs text-zinc-500 font-medium">SaaS Multi-tenant v1.1</span>
+        <span className="text-xs text-slate-400 font-medium">SaaS Multi-tenant v1.1</span>
       </header>
 
       {/* Main Grid */}
       <main className="relative z-10 max-w-7xl mx-auto px-6 w-full py-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-stretch flex-1">
         
         {/* LEFT COLUMN: Registration & Multi-step Form */}
-        <div className="bg-zinc-900/40 border border-white/5 p-6 md:p-10 rounded-3xl backdrop-blur-xl flex flex-col justify-between shadow-2xl relative overflow-hidden">
+        <div className="bg-white border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-between shadow-xl shadow-slate-200/40 relative overflow-hidden">
           
           {/* Progress Indicators */}
           <div className="flex items-center gap-2 mb-8 select-none">
             <span className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
               step === 'details' 
-                ? 'bg-orange-500/10 text-orange-500 border-orange-500/30' 
-                : 'bg-zinc-800 text-zinc-500 border-zinc-700'
+                ? 'bg-orange-500/10 text-orange-600 border-orange-500/20' 
+                : 'bg-slate-100 text-slate-400 border-slate-200'
             }`}>
               1. Datos del local
             </span>
-            <ChevronRight className="w-4 h-4 text-zinc-600" />
+            <ChevronRight className="w-4 h-4 text-slate-300" />
             <span className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
               step === 'payment' 
-                ? 'bg-orange-500/10 text-orange-500 border-orange-500/30' 
-                : 'bg-zinc-800 text-zinc-500 border-zinc-700'
+                ? 'bg-orange-500/10 text-orange-600 border-orange-500/20' 
+                : 'bg-slate-100 text-slate-400 border-slate-200'
             }`}>
               2. Pasarela de pago
             </span>
-            <ChevronRight className="w-4 h-4 text-zinc-600" />
+            <ChevronRight className="w-4 h-4 text-slate-300" />
             <span className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
               step === 'success' 
-                ? 'bg-orange-500/10 text-orange-500 border-orange-500/30' 
-                : 'bg-zinc-800 text-zinc-500 border-zinc-700'
+                ? 'bg-orange-500/10 text-orange-600 border-orange-500/20' 
+                : 'bg-slate-100 text-slate-400 border-slate-200'
             }`}>
               3. Activación
             </span>
@@ -260,31 +260,31 @@ export default function RegisterPage() {
 
           {/* Visual Process Flow (Steps Graphics) */}
           {step !== 'success' && (
-            <div className="grid grid-cols-3 gap-3 mb-6 bg-zinc-950/40 p-4 rounded-2xl border border-white/5 text-center select-none animate-fade-in">
+            <div className="grid grid-cols-3 gap-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-center select-none animate-fade-in">
               <div className="space-y-1">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-bold transition-all ${
-                  step === 'details' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-zinc-800 text-zinc-500'
+                  step === 'details' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-200 text-slate-500'
                 }`}>
                   🏢
                 </div>
-                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'details' ? 'text-white' : 'text-zinc-500'}`}>1. Configura</span>
-                <span className="block text-[8.5px] text-zinc-500 leading-tight">Nombre y contacto</span>
+                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'details' ? 'text-slate-800' : 'text-slate-400'}`}>1. Configura</span>
+                <span className="block text-[8.5px] text-slate-400 leading-tight">Nombre y contacto</span>
               </div>
-              <div className="space-y-1 border-x border-white/5">
+              <div className="space-y-1 border-x border-slate-200/80">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-bold transition-all ${
-                  step === 'payment' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-zinc-800 text-zinc-500'
+                  step === 'payment' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-200 text-slate-500'
                 }`}>
                   💳
                 </div>
-                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'payment' ? 'text-white' : 'text-zinc-500'}`}>2. Activa</span>
-                <span className="block text-[8.5px] text-zinc-500 leading-tight">$29/mes cancelable</span>
+                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'payment' ? 'text-slate-800' : 'text-slate-400'}`}>2. Activa</span>
+                <span className="block text-[8.5px] text-slate-400 leading-tight">$29/mes cancelable</span>
               </div>
               <div className="space-y-1">
-                <div className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-500 flex items-center justify-center mx-auto text-xs font-bold">
+                <div className="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center mx-auto text-xs font-bold">
                   🚀
                 </div>
-                <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider">3. Despega</span>
-                <span className="block text-[8.5px] text-zinc-500 leading-tight">Accede al Dashboard</span>
+                <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">3. Despega</span>
+                <span className="block text-[8.5px] text-slate-400 leading-tight">Accede al Dashboard</span>
               </div>
             </div>
           )}
@@ -296,19 +296,19 @@ export default function RegisterPage() {
             {step === 'details' && (
               <form onSubmit={handleNextStep} className="space-y-5">
                 <div className="space-y-2">
-                  <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">Crea tu cuenta de Restaurante</h1>
-                  <p className="text-zinc-500 text-sm">Completa el formulario para inicializar tu ecosistema de autoservicio.</p>
+                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Crea tu cuenta de Restaurante</h1>
+                  <p className="text-slate-400 text-sm">Completa el formulario para inicializar tu ecosistema de autoservicio.</p>
                 </div>
 
                 {errorMsg && (
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-red-500 text-xs font-semibold">
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-red-600 text-xs font-semibold">
                     {errorMsg}
                   </div>
                 )}
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                       <Building2 className="w-3.5 h-3.5 text-orange-500" /> Nombre del local *
                     </label>
                     <input 
@@ -317,12 +317,12 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: Tu Restaurante" 
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                       <User className="w-3.5 h-3.5 text-orange-500" /> Nombre de contacto *
                     </label>
                     <input 
@@ -331,14 +331,14 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: Tu Nombre Completo" 
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                       <Phone className="w-3.5 h-3.5 text-orange-500" /> Teléfono *
                     </label>
                     <input 
@@ -347,12 +347,12 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: +1 555-0199" 
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-orange-500" /> Dirección del local *
                     </label>
                     <input 
@@ -361,15 +361,15 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: Av. Principal N° 124" 
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
                 </div>
 
                 {/* Auth Details */}
-                <div className="pt-2 border-t border-white/5 grid sm:grid-cols-2 gap-4">
+                <div className="pt-2 border-t border-slate-100 grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                       <Mail className="w-3.5 h-3.5 text-orange-500" /> Email de acceso *
                     </label>
                     <input 
@@ -379,12 +379,12 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="ejemplo@correo.com" 
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                       <Lock className="w-3.5 h-3.5 text-orange-500" /> Contraseña *
                     </label>
                     <input 
@@ -394,43 +394,43 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Mínimo 6 caracteres" 
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
                 </div>
 
                 {/* Social Media */}
-                <div className="pt-2 border-t border-white/5 space-y-3">
-                  <label className="text-xs font-bold text-zinc-400 block">Redes Sociales (Opcional)</label>
+                <div className="pt-2 border-t border-slate-100 space-y-3">
+                  <label className="text-xs font-bold text-slate-700 block">Redes Sociales (Opcional)</label>
                   <div className="grid sm:grid-cols-3 gap-3">
                     <div className="relative">
-                      <InstagramIcon className="w-4 h-4 text-zinc-600 absolute left-3.5 top-3.5" />
+                      <InstagramIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                       <input 
                         name="instagram" 
                         value={formData.instagram}
                         onChange={handleFormChange}
                         placeholder="Instagram" 
-                        className="w-full bg-zinc-950/60 border border-white/5 rounded-xl pl-10 pr-3 py-2.5 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 transition-colors text-xs"
+                        className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 transition-colors text-xs"
                       />
                     </div>
                     <div className="relative">
-                      <FacebookIcon className="w-4 h-4 text-zinc-600 absolute left-3.5 top-3.5" />
+                      <FacebookIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                       <input 
                         name="facebook" 
                         value={formData.facebook}
                         onChange={handleFormChange}
                         placeholder="Facebook" 
-                        className="w-full bg-zinc-950/60 border border-white/5 rounded-xl pl-10 pr-3 py-2.5 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 transition-colors text-xs"
+                        className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 transition-colors text-xs"
                       />
                     </div>
                     <div className="relative">
-                      <span className="text-[10px] font-black text-zinc-600 absolute left-3.5 top-3.5">🎵</span>
+                      <span className="text-[10px] font-black text-slate-400 absolute left-3.5 top-3.5">🎵</span>
                       <input 
                         name="tiktok" 
                         value={formData.tiktok}
                         onChange={handleFormChange}
                         placeholder="TikTok" 
-                        className="w-full bg-zinc-950/60 border border-white/5 rounded-xl pl-10 pr-3 py-2.5 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 transition-colors text-xs"
+                        className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 transition-colors text-xs"
                       />
                     </div>
                   </div>
@@ -438,7 +438,7 @@ export default function RegisterPage() {
 
                 <button 
                   type="submit"
-                  className="w-full mt-4 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_0_20px_rgba(249,115,22,0.2)] active:scale-[0.99]"
+                  className="w-full mt-4 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99]"
                 >
                   Continuar al Pago <ChevronRight className="w-5 h-5" />
                 </button>
@@ -452,22 +452,22 @@ export default function RegisterPage() {
                   <button 
                     type="button" 
                     onClick={() => setStep('details')}
-                    className="text-xs text-zinc-500 hover:text-white transition-colors"
+                    className="text-xs text-slate-400 hover:text-slate-700 transition-colors"
                   >
                     &larr; Volver a los datos
                   </button>
-                  <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">Pasarela de Pago Segura</h1>
-                  <p className="text-zinc-500 text-sm">Suscripción única sin contratos forzosos. Cancela cuando desees.</p>
+                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Pasarela de Pago Segura</h1>
+                  <p className="text-slate-500 text-sm">Suscripción única sin contratos forzosos. Cancela cuando desees.</p>
                 </div>
 
                 {errorMsg && (
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-red-500 text-xs font-semibold">
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-red-600 text-xs font-semibold">
                     {errorMsg}
                   </div>
                 )}
 
                 {/* Premium Credit Card Visualizer */}
-                <div className="relative w-full h-44 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 p-6 flex flex-col justify-between text-white shadow-xl shadow-orange-500/10 overflow-hidden select-none border border-white/10 animate-fade-in">
+                <div className="relative w-full h-44 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 p-6 flex flex-col justify-between text-white shadow-xl shadow-orange-500/20 overflow-hidden select-none border border-white/10 animate-fade-in">
                   <div className="absolute top-0 right-0 p-8 opacity-10 text-white"><Sparkles className="w-32 h-32" /></div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-black tracking-wider">PREMIUM CARD</span>
@@ -493,7 +493,7 @@ export default function RegisterPage() {
                 {/* Card Inputs */}
                 <div className="space-y-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400 flex items-center gap-1.5">
+                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
                       <CreditCard className="w-3.5 h-3.5 text-orange-500" /> Número de tarjeta
                     </label>
                     <input 
@@ -503,36 +503,36 @@ export default function RegisterPage() {
                       maxLength={19}
                       placeholder="4000 1234 5678 9010" 
                       required
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-zinc-400">Titular de la tarjeta</label>
+                    <label className="text-xs font-bold text-slate-700">Titular de la tarjeta</label>
                     <input 
                       name="name" 
                       value={cardData.name}
                       onChange={e => setCardData({...cardData, name: e.target.value.toUpperCase()})}
                       placeholder="TU NOMBRE COMPLETO" 
                       required
-                      className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm uppercase"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm uppercase"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-zinc-400">Fecha de vencimiento</label>
+                      <label className="text-xs font-bold text-slate-700">Fecha de vencimiento</label>
                       <input 
                         name="expiry" 
                         value={cardData.expiry}
                         onChange={handleCardChange}
                         placeholder="MM/YY" 
                         required
-                        className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
+                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-zinc-400">Código de seguridad (CVC)</label>
+                      <label className="text-xs font-bold text-slate-700">Código de seguridad (CVC)</label>
                       <input 
                         name="cvc" 
                         type="password"
@@ -540,27 +540,27 @@ export default function RegisterPage() {
                         onChange={handleCardChange}
                         placeholder="123" 
                         required
-                        className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
+                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Price Box */}
-                <div className="bg-zinc-950/80 border border-white/5 rounded-2xl p-4 flex justify-between items-center text-sm">
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex justify-between items-center text-sm">
                   <div>
-                    <span className="block font-bold text-white">Suscripción Mensual</span>
-                    <span className="text-xs text-zinc-500">Cancela cuando desees.</span>
+                    <span className="block font-bold text-slate-900">Suscripción Mensual</span>
+                    <span className="text-xs text-slate-500">Cancela cuando desees.</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-black text-orange-500">$29<span className="text-xs font-normal text-zinc-400">/mes</span></span>
+                    <span className="text-2xl font-black text-orange-500">$29<span className="text-xs font-normal text-slate-500">/mes</span></span>
                   </div>
                 </div>
 
                 <button 
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-600 hover:brightness-110 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_0_30px_-5px_rgba(249,115,22,0.4)] active:scale-[0.99] disabled:opacity-60"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-600 hover:brightness-110 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_30px_-5px_rgba(249,115,22,0.4)] active:scale-[0.99] disabled:opacity-60"
                 >
                   {isLoading ? (
                     <>
@@ -583,27 +583,27 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">¡Activación Exitosa!</h1>
-                  <p className="text-zinc-400 text-sm max-w-sm mx-auto">
+                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">¡Activación Exitosa!</h1>
+                  <p className="text-slate-600 text-sm max-w-sm mx-auto">
                     Tu restaurante **{formData.restaurantName}** se ha registrado y activado en el ecosistema Mtriq.
                   </p>
                 </div>
 
-                <div className="bg-zinc-950/80 border border-white/5 rounded-2xl p-6 space-y-3 text-left max-w-md mx-auto text-xs">
-                  <div className="flex justify-between border-b border-white/5 pb-2">
-                    <span className="text-zinc-500">Dirección Web Kiosko:</span>
-                    <a href={`/${registeredSlug}`} target="_blank" className="font-bold text-orange-400 hover:underline">
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-3 text-left max-w-md mx-auto text-xs">
+                  <div className="flex justify-between border-b border-slate-200/50 pb-2">
+                    <span className="text-slate-500">Dirección Web Kiosko:</span>
+                    <a href={`/${registeredSlug}`} target="_blank" className="font-bold text-orange-600 hover:underline">
                       mtriq.app/{registeredSlug}
                     </a>
                   </div>
-                  <div className="flex justify-between border-b border-white/5 pb-2">
-                    <span className="text-zinc-500">Usuario de Acceso:</span>
-                    <span className="font-bold text-white">{formData.email}</span>
+                  <div className="flex justify-between border-b border-slate-200/50 pb-2">
+                    <span className="text-slate-500">Usuario de Acceso:</span>
+                    <span className="font-bold text-slate-900">{formData.email}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-zinc-500">Licencia Mensual:</span>
-                    <span className="font-bold text-emerald-400 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Activa ($29/mes)
+                    <span className="text-slate-500">Licencia Mensual:</span>
+                    <span className="font-bold text-emerald-600 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Activa ($29/mes)
                     </span>
                   </div>
                 </div>
@@ -613,7 +613,7 @@ export default function RegisterPage() {
                     onClick={() => {
                       router.push('/gerente/kitchen');
                     }}
-                    className="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_0_20px_rgba(249,115,22,0.2)] active:scale-[0.99] flex items-center justify-center gap-2 mx-auto"
+                    className="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99] flex items-center justify-center gap-2 mx-auto"
                   >
                     Entrar al Dashboard de Configuración <ChevronRight className="w-5 h-5" />
                   </button>
@@ -623,7 +623,7 @@ export default function RegisterPage() {
 
           </div>
 
-          <div className="mt-8 pt-4 border-t border-white/5 flex justify-between items-center text-xs text-zinc-600 select-none">
+          <div className="mt-8 pt-4 border-t border-slate-200/60 flex justify-between items-center text-xs text-slate-400 select-none">
             <span>Mtriq Secure Checkout</span>
             <span>Garantía de Cancelación 24/7</span>
           </div>
@@ -631,17 +631,17 @@ export default function RegisterPage() {
         </div>
 
         {/* RIGHT COLUMN: Ecosystem Checklist & Benefits */}
-        <div className="bg-zinc-900/10 border border-white/5 p-6 md:p-10 rounded-3xl backdrop-blur-md flex flex-col justify-between shadow-lg relative overflow-hidden">
+        <div className="bg-white border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-between shadow-lg relative overflow-hidden">
           
           <div className="space-y-6">
             <div>
-              <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-400 border border-orange-500/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+              <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-600 border border-orange-500/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
                 <Sparkles className="w-3.5 h-3.5" /> Todo incluido
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-tight">
+              <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight">
                 Accede al Ecosistema Completo de Crecimiento
               </h2>
-              <p className="text-sm text-zinc-500 mt-2">
+              <p className="text-sm text-slate-500 mt-2">
                 Con tu suscripción mensual, tu negocio se impulsa con herramientas avanzadas sin comisiones ocultas.
               </p>
             </div>
@@ -650,13 +650,13 @@ export default function RegisterPage() {
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
                 return (
-                  <div key={index} className="flex gap-4 p-3 bg-zinc-900/30 border border-white/5 rounded-2xl hover:bg-zinc-900/50 transition-colors duration-150 group">
+                  <div key={index} className="flex gap-4 p-3 bg-slate-50 border border-slate-200/60 rounded-2xl hover:bg-slate-100/50 transition-colors duration-150 group">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${benefit.color} group-hover:scale-105 transition-transform`}>
                       <Icon className="w-5 h-5" />
                     </div>
                     <div className="space-y-0.5">
-                      <h3 className="text-sm font-bold text-white">{benefit.title}</h3>
-                      <p className="text-xs text-zinc-500 leading-relaxed">{benefit.description}</p>
+                      <h3 className="text-sm font-bold text-slate-900">{benefit.title}</h3>
+                      <p className="text-xs text-slate-500 leading-relaxed">{benefit.description}</p>
                     </div>
                   </div>
                 );
@@ -664,9 +664,9 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/5 bg-gradient-to-r from-orange-500/5 to-transparent p-4 rounded-2xl border border-orange-500/10 select-none">
-            <span className="text-lg font-black text-white block mb-1">Monto único de $29/mes</span>
-            <p className="text-xs text-zinc-500 leading-relaxed">
+          <div className="mt-8 pt-6 border-t border-slate-200/60 bg-gradient-to-r from-orange-500/5 to-transparent p-4 rounded-2xl border border-orange-500/15 select-none">
+            <span className="text-lg font-black text-slate-800 block mb-1">Monto único de $29/mes</span>
+            <p className="text-xs text-slate-500 leading-relaxed">
               No es contrato obligatorio. Puedes no renovar el mes si así lo decides. Tienes total flexibilidad y control sobre tu suscripción.
             </p>
           </div>
@@ -676,7 +676,7 @@ export default function RegisterPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-20 py-6 border-t border-white/5 text-center text-xs text-zinc-600 w-full select-none">
+      <footer className="relative z-20 py-6 border-t border-slate-200/60 text-center text-xs text-slate-400 w-full select-none">
         &copy; {new Date().getFullYear()} Mtriq.app. Todos los derechos reservados.
       </footer>
     </div>
