@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export function Footer() {
   return (
     <footer className="bg-slate-50 py-12 border-t border-slate-100">
@@ -12,8 +14,8 @@ export function Footer() {
           © {new Date().getFullYear()} Metriq App. Todos los derechos reservados.
         </p>
         <div className="flex flex-wrap gap-6 text-sm text-slate-400 items-center justify-center md:justify-end">
-          <a href="#" className="hover:text-slate-700 transition-colors">Términos</a>
-          <a href="#" className="hover:text-slate-700 transition-colors">Privacidad</a>
+          <Link href="/terminos" className="hover:text-slate-700 transition-colors">Términos</Link>
+          <Link href="/privacidad" className="hover:text-slate-700 transition-colors">Privacidad</Link>
           <a href="#registro" className="hover:text-slate-700 transition-colors">Contacto</a>
           <span className="text-slate-200">|</span>
           <a 
