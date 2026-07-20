@@ -12,6 +12,11 @@ interface CheckoutFormProps {
   onPayWithTerminal: () => void;
   isProcessing: boolean;
   paymentMethod: 'stripe' | 'cash' | 'terminal' | null;
+  hideCashOptions?: boolean;
+  isWaiter?: boolean;
+  tables?: any[];
+  selectedTableId?: string;
+  onTableChange?: (tableId: string) => void;
 }
 
 import { useEffect } from 'react';
@@ -23,7 +28,12 @@ export function CheckoutForm({
   onPayAtCounter,
   onPayWithTerminal,
   isProcessing,
-  paymentMethod
+  paymentMethod,
+  hideCashOptions = false,
+  isWaiter = false,
+  tables = [],
+  selectedTableId = '',
+  onTableChange
 }: CheckoutFormProps) {
   
   useEffect(() => {
@@ -81,6 +91,30 @@ export function CheckoutForm({
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6 animate-fade-in">
+      
+      {/* Table Selector for Waiter */}
+      {isWaiter && tables.length > 0 && (
+        <div className="p-6 bg-zinc-900 rounded-3xl border border-zinc-800 space-y-3">
+          <label className="block text-sm font-bold text-zinc-400 uppercase tracking-wider">
+            Mesa Destino del Pedido
+          </label>
+          <select 
+            value={selectedTableId}
+            onChange={(e) => onTableChange?.(e.target.value)}
+            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-4 text-white font-bold text-base focus:ring-2 focus:ring-orange-500/50 outline-none"
+          >
+            {tables.map((t: any) => {
+              const cleanLabel = t.label?.startsWith('Mesero:') || t.label?.startsWith('Delivery:') ? null : t.label;
+              return (
+                <option key={t.id} value={t.id}>
+                  {cleanLabel || `Mesa ${t.table_number}`}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      )}
+
       <div className="p-6 bg-zinc-900/50 rounded-2xl border border-zinc-800/50 flex justify-between items-center">
         <span className="text-zinc-400 text-lg">Total del Pedido</span>
         <span className="text-2xl font-bold text-white">{formatPrice(total, currency)}</span>
@@ -101,27 +135,31 @@ export function CheckoutForm({
           </div>
         </button>
 
-        <button
-          onClick={onPayWithTerminal}
-          disabled={isProcessing}
-          className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-lg py-5 px-6 rounded-2xl border border-zinc-800 active:scale-[0.98] transition-all flex items-center justify-between"
-        >
-          <div className="flex items-center gap-3">
-            <CreditCard className="w-6 h-6 text-orange-400" />
-            <span>Terminal en mesa</span>
-          </div>
-        </button>
+        {!hideCashOptions && (
+          <>
+            <button
+              onClick={onPayWithTerminal}
+              disabled={isProcessing}
+              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-lg py-5 px-6 rounded-2xl border border-zinc-800 active:scale-[0.98] transition-all flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <CreditCard className="w-6 h-6 text-orange-400" />
+                <span>Terminal en mesa</span>
+              </div>
+            </button>
 
-        <button
-          onClick={onPayAtCounter}
-          disabled={isProcessing}
-          className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-lg py-5 px-6 rounded-2xl border border-zinc-800 active:scale-[0.98] transition-all flex items-center justify-between"
-        >
-          <div className="flex items-center gap-3">
-            <Banknote className="w-6 h-6 text-zinc-400" />
-            <span>{t('payAtCounter')}</span>
-          </div>
-        </button>
+            <button
+              onClick={onPayAtCounter}
+              disabled={isProcessing}
+              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-lg py-5 px-6 rounded-2xl border border-zinc-800 active:scale-[0.98] transition-all flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <Banknote className="w-6 h-6 text-zinc-400" />
+                <span>{t('payAtCounter')}</span>
+              </div>
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

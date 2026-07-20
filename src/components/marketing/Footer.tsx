@@ -11,10 +11,19 @@ export function Footer() {
         <p className="text-slate-500 text-sm">
           © {new Date().getFullYear()} Metriq App. Todos los derechos reservados.
         </p>
-        <div className="flex gap-6 text-sm text-slate-400">
+        <div className="flex flex-wrap gap-6 text-sm text-slate-400 items-center justify-center md:justify-end">
           <a href="#" className="hover:text-slate-700 transition-colors">Términos</a>
           <a href="#" className="hover:text-slate-700 transition-colors">Privacidad</a>
-          <a href="#" className="hover:text-slate-700 transition-colors">Contacto</a>
+          <a href="#registro" className="hover:text-slate-700 transition-colors">Contacto</a>
+          <span className="text-slate-200">|</span>
+          <a 
+            href="https://mtriq.app" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:bg-slate-800 transition-colors font-bold text-white text-xs tracking-wider uppercase bg-[#0f1627] px-4.5 py-1.5 rounded-full border border-slate-800 shadow-sm"
+          >
+            POWERED BY MTRIQ.APP
+          </a>
         </div>
       </div>
     </footer>

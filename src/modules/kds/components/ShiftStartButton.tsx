@@ -189,11 +189,11 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
           onClick={unlockAudio}
           disabled={isLoading}
           className={cn(
-            'group relative flex items-center gap-3 rounded-xl px-6 py-3.5 text-sm font-semibold transition-all duration-300',
+            'group relative flex items-center gap-3 rounded-xl px-6 py-3.5 text-sm font-extrabold transition-all duration-300',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20',
             isUnlocked
-              ? 'cursor-default bg-emerald-950/50 text-emerald-400 border border-emerald-500/30'
-              : 'cursor-pointer bg-zinc-800 text-zinc-200 border border-zinc-700 hover:bg-zinc-700 hover:border-zinc-600 active:scale-[0.98]',
+              ? 'cursor-default bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/20 border border-emerald-400/20'
+              : 'cursor-pointer bg-gradient-to-r from-orange-500 to-amber-600 text-white shadow-lg shadow-orange-500/20 hover:from-orange-600 hover:to-amber-700 active:scale-[0.98] border border-orange-400/20',
             isLoading && 'opacity-70 cursor-wait'
           )}
         >

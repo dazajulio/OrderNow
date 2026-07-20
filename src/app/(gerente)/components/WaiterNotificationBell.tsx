@@ -9,7 +9,7 @@ interface WaiterCall {
   id: string;
   table_id: string;
   status: string;
-  tables?: { name: string; number: string } | null;
+  tables?: { label: string; table_number: number } | null;
 }
 
 export function WaiterNotificationBell() {
@@ -21,16 +21,8 @@ export function WaiterNotificationBell() {
   const [restaurantId, setRestaurantId] = useState<string>('');
 
   useEffect(() => {
-    async function initRest() {
-      const supabase = createClient();
-      const { data } = await supabase.from('restaurants').select('id').eq('is_active', true).single();
-      if (data) {
-        setRestaurantId(data.id);
-      } else {
-        setRestaurantId(process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
-      }
-    }
-    initRest();
+    const targetId = process.env.NEXT_PUBLIC_RESTAURANT_ID || 'a12bc706-ffc2-4959-ba03-58ebecada86a';
+    setRestaurantId(targetId);
   }, []);
 
   const playSound = useCallback(() => {
@@ -72,7 +64,7 @@ export function WaiterNotificationBell() {
     
     const { data, error } = await supabase
       .from('waiter_calls')
-      .select('*, tables(name, number)')
+      .select('*, tables(label, table_number)')
       .eq('restaurant_id', restaurantId)
       .eq('status', 'pending')
       .order('created_at', { ascending: true });
@@ -180,7 +172,7 @@ export function WaiterNotificationBell() {
         </div>
         <h2 className="text-2xl font-bold text-white mb-2">¡Llamado de Mesero!</h2>
         <p className="text-xl text-zinc-300 mb-8">
-          La {calls[0].tables?.name || `Mesa ${calls[0].tables?.number || 'Desconocida'}`} requiere atención.
+          La {calls[0].tables?.label || `Mesa ${calls[0].tables?.table_number || 'Desconocida'}`} requiere atención.
         </p>
         
         <button 

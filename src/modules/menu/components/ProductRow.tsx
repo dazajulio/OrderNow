@@ -34,7 +34,9 @@ export function ProductRow({
         >
           {/* Main Row */}
           <div className={`p-4 sm:p-6 flex items-center gap-3 transition-colors ${
-            !product.is_available ? 'bg-red-500/5' : ''
+            !product.is_available 
+              ? 'bg-red-500/[0.04] dark:bg-red-500/[0.04]' 
+              : 'bg-orange-500/[0.03] dark:bg-orange-500/[0.02] hover:bg-orange-500/[0.06] dark:hover:bg-orange-500/[0.05]'
           }`}>
             {/* Drag Handle */}
             <div 

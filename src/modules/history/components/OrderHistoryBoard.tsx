@@ -106,6 +106,14 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
                         </span>
                       )}
                     </div>
+
+                    {order.notes && order.notes.includes('[Origen: Delivery]') && (
+                      <div className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-lg p-2.5 mt-2 space-y-0.5 max-w-md">
+                        <div><strong className="text-blue-300">Dirección:</strong> {order.notes.match(/Dirección:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div><strong className="text-blue-300">Teléfono:</strong> {order.notes.match(/Teléfono:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div><strong className="text-blue-300">Referencia:</strong> {order.notes.match(/Referencia:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                      </div>
+                    )}
                   </div>
                 </div>
 

@@ -1,15 +1,50 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { QRGenerator } from '@/modules/qr/components/QRGenerator';
 import { QrCode } from 'lucide-react';
-
-export const metadata = {
-  title: 'Códigos QR - Admin',
-};
+import { createClient } from '@/lib/supabase/client';
 
 export default function QRAdminPage() {
-  // En producción, estos datos vendrían del tenant autenticado
-  const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID || '';
-  const restaurantSlug = 'burger-palace';
-  const brandColor = '#FF6B00';
+  const [restaurantId, setRestaurantId] = useState<string | null>(null);
+  const [slug, setSlug] = useState('burger-palace');
+  const [brandColor, setBrandColor] = useState('#FF6B00');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      const id = localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || 'a12bc706-ffc2-4959-ba03-58ebecada86a';
+      setRestaurantId(id);
+      
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from('restaurants')
+          .select('slug, brand_color_primary')
+          .eq('id', id)
+          .single();
+          
+        if (data) {
+          setSlug(data.slug);
+          setBrandColor(data.brand_color_primary || '#FF6B00');
+        }
+      } catch (err) {
+        console.error('Error fetching restaurant details for QR:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    loadData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-12 flex justify-center">
+        <div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-12">
@@ -21,11 +56,15 @@ export default function QRAdminPage() {
         <p className="text-zinc-400 text-lg">Genera e imprime los códigos QR para pedidos desde mesa.</p>
       </div>
 
-      <QRGenerator 
-        restaurantId={restaurantId} 
-        restaurantSlug={restaurantSlug} 
-        brandColor={brandColor} 
-      />
+      {restaurantId ? (
+        <QRGenerator 
+          restaurantId={restaurantId} 
+          restaurantSlug={slug} 
+          brandColor={brandColor} 
+        />
+      ) : (
+        <p className="text-zinc-500 text-sm">Registra un restaurante para generar códigos QR.</p>
+      )}
     </div>
   );
 }

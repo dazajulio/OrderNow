@@ -29,6 +29,22 @@ export default function KioskPage({ params }: KioskPageProps) {
   const [activeCategoryId, setActiveCategoryId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   
+  // Restaurant Info States
+  const [restaurantName, setRestaurantName] = useState('Burger Palace');
+  const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
+
+  // Waiter & Delivery States
+  const [isWaiter, setIsWaiter] = useState(false);
+  const [waiterName, setWaiterName] = useState('');
+  const [isDelivery, setIsDelivery] = useState(false);
+  const [allTables, setAllTables] = useState<any[]>([]);
+  const [selectedTableId, setSelectedTableId] = useState<string>('');
+
+  // Delivery Address Info
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryPhone, setDeliveryPhone] = useState('');
+  const [deliveryReference, setDeliveryReference] = useState('');
+  
   // Flow state
   const [step, setStep] = useState<FlowStep>('browse');
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -45,6 +61,50 @@ export default function KioskPage({ params }: KioskPageProps) {
   
   // Currency from restaurant (hardcoded USD for now, could be fetched)
   const currency = 'USD';
+
+  // Helper to change step and push browser history state
+  const changeStep = (newStep: FlowStep, replace = false) => {
+    setStep(newStep);
+    if (typeof window !== 'undefined') {
+      if (replace) {
+        window.history.replaceState({ step: newStep }, '');
+      } else {
+        window.history.pushState({ step: newStep }, '');
+      }
+    }
+  };
+
+  // Sync browser back/forward with React flow steps
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({ step: 'browse' }, '');
+
+      const handlePopState = (event: PopStateEvent) => {
+        if (event.state && event.state.step) {
+          setStep(event.state.step);
+        } else {
+          setStep('browse');
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+      return () => window.removeEventListener('popstate', handlePopState);
+    }
+  }, []);
+
+  // Parse parameters on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get('role') === 'waiter') {
+        setIsWaiter(true);
+        setWaiterName(searchParams.get('waiterName') || 'Mesero');
+      }
+      if (searchParams.get('type') === 'delivery') {
+        setIsDelivery(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     async function loadData() {
@@ -63,6 +123,8 @@ export default function KioskPage({ params }: KioskPageProps) {
       if (!restaurant) return;
       
       setContext(restaurant.id, tableId);
+      setRestaurantName(restaurant.name || 'Burger Palace');
+      setRestaurantLogo(restaurant.logo_url);
       
       // Load categories
       const { data: catsData } = await supabase
@@ -97,7 +159,26 @@ export default function KioskPage({ params }: KioskPageProps) {
         if (upsells.length > 0) {
            setUpsellProducts(upsells as ProductWithModifiers[]);
         } else {
-           setUpsellProducts(prods.filter(p => p.is_featured) as ProductWithModifiers[]);
+            setUpsellProducts(prods.filter(p => p.is_featured) as ProductWithModifiers[]);
+        }
+      }
+
+      // Load all active tables for waiter selection
+      const { data: tablesData } = await supabase
+        .from('tables')
+        .select('*')
+        .eq('restaurant_id', restaurant.id)
+        .eq('is_active', true)
+        .order('table_number');
+      if (tablesData) {
+        const sorted = [...tablesData].sort((a, b) => a.table_number - b.table_number);
+        setAllTables(sorted);
+        // Default select the tableId if it is a valid UUID, otherwise first table
+        const isValidUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+        if (isValidUUID(tableId)) {
+          setSelectedTableId(tableId);
+        } else if (sorted.length > 0) {
+          setSelectedTableId(sorted[0].id);
         }
       }
       
@@ -142,14 +223,23 @@ export default function KioskPage({ params }: KioskPageProps) {
 
   const handleCheckoutClick = () => {
     setIsCartOpen(false);
-    setStep('customer');
+    if (isWaiter) {
+      changeStep('checkout');
+    } else {
+      changeStep('customer');
+    }
     window.scrollTo(0, 0);
   };
 
-  const handleCustomerSubmit = async (data: { name: string; email: string; phone?: string }) => {
+  const handleCustomerSubmit = async (data: { name: string; email: string; phone?: string; address?: string; reference?: string }) => {
     setIsProcessing(true);
     const supabase = createClient();
     
+    // Save delivery details to states
+    if (data.address) setDeliveryAddress(data.address);
+    if (data.phone) setDeliveryPhone(data.phone);
+    if (data.reference) setDeliveryReference(data.reference);
+
     // Check if customer exists or create new
     let newCustomerId = '';
     const { data: existing } = await supabase
@@ -180,9 +270,9 @@ export default function KioskPage({ params }: KioskPageProps) {
     
     // Check if we should show upsell
     if (upsellProducts.length > 0) {
-      setStep('upsell');
+      changeStep('upsell');
     } else {
-      setStep('checkout');
+      changeStep('checkout');
     }
   };
 
@@ -191,7 +281,7 @@ export default function KioskPage({ params }: KioskPageProps) {
   };
   
   const handleUpsellProceed = () => {
-    setStep('checkout');
+    changeStep('checkout');
   };
 
   const handleProcessPayment = async (method: 'stripe' | 'cash' | 'terminal') => {
@@ -206,16 +296,28 @@ export default function KioskPage({ params }: KioskPageProps) {
     // Insert into orders
     const isValidUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     
+    // Determine target table ID (waiter selects dynamically)
+    const targetTableId = isWaiter ? selectedTableId : tableId;
+
+    // Append origin tags to notes
+    let notesPrefix = '';
+    if (isDelivery) {
+      notesPrefix = `[Origen: Delivery] | Dirección: ${deliveryAddress} | Teléfono: ${deliveryPhone} | Referencia: ${deliveryReference}`;
+    } else if (isWaiter) {
+      notesPrefix = `[Origen: Mesero: ${waiterName}]`;
+    }
+
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({
         restaurant_id: MTRIQ_ID,
-        table_id: (tableId && tableId !== 'takeaway' && isValidUUID(tableId)) ? tableId : null,
+        table_id: (targetTableId && targetTableId !== 'takeaway' && isValidUUID(targetTableId)) ? targetTableId : null,
         customer_id: customerId || null,
         status: 'pending',
         total_amount: getTotal(),
         payment_method: method,
-        payment_status: 'pending'
+        payment_status: 'pending',
+        notes: notesPrefix || null
       } as any)
       .select()
       .single() as any;
@@ -245,7 +347,7 @@ export default function KioskPage({ params }: KioskPageProps) {
       clearCart();
     }
     setIsProcessing(false);
-    setStep('success');
+    changeStep('success');
   };
 
   if (isLoading) {
@@ -259,7 +361,20 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'customer') {
     return (
       <div className="p-6 pb-32 animate-fade-in">
-        <button onClick={() => setStep('browse')} className="flex items-center text-zinc-400 mb-8">
+        {/* Elegant Header */}
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+          {restaurantLogo ? (
+            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+          ) : (
+            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+            </div>
+          )}
+          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        </div>
+
+        <button onClick={() => changeStep('browse')} className="flex items-center text-zinc-400 mb-8">
           <ChevronLeft className="w-5 h-5 mr-1" />
           Volver al menú
         </button>
@@ -267,7 +382,7 @@ export default function KioskPage({ params }: KioskPageProps) {
           <h2 className="text-2xl font-bold text-white mb-2">Tus Datos</h2>
           <p className="text-zinc-400">Ingresa tus datos para vincular el pedido a tu mesa.</p>
         </div>
-        <CustomerForm onSubmit={handleCustomerSubmit} isLoading={isProcessing} />
+        <CustomerForm onSubmit={handleCustomerSubmit} isLoading={isProcessing} isDelivery={isDelivery} />
       </div>
     );
   }
@@ -275,6 +390,19 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'success') {
     return (
       <div className="p-6 pb-32 animate-fade-in flex flex-col items-center justify-center min-h-[60vh] text-center">
+        {/* Elegant Header */}
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+          {restaurantLogo ? (
+            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+          ) : (
+            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+            </div>
+          )}
+          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        </div>
+
         <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
           <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
             ✓
@@ -296,7 +424,7 @@ export default function KioskPage({ params }: KioskPageProps) {
         
         <div className="w-full max-w-sm space-y-4">
           <button 
-            onClick={() => setStep('order_status')}
+            onClick={() => changeStep('order_status')}
             className="w-full brand-bg text-white font-bold py-4 rounded-xl hover:brightness-110 shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center"
           >
             VER MI ORDEN
@@ -305,7 +433,7 @@ export default function KioskPage({ params }: KioskPageProps) {
           <button 
             onClick={() => {
               setPaymentMethod(null);
-              setStep('browse');
+              changeStep('browse');
               window.scrollTo(0, 0);
             }}
             className="w-full bg-zinc-800 text-white font-bold py-4 rounded-xl hover:bg-zinc-700 transition-all"
@@ -320,7 +448,20 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'order_status' && lastOrderId) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
-        <button onClick={() => setStep('success')} className="flex items-center text-zinc-400 mb-8 hover:text-white transition-colors">
+        {/* Elegant Header */}
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+          {restaurantLogo ? (
+            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+          ) : (
+            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+            </div>
+          )}
+          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        </div>
+
+        <button onClick={() => changeStep('success')} className="flex items-center text-zinc-400 mb-8 hover:text-white transition-colors">
           <ChevronLeft className="w-5 h-5 mr-1" />
           Volver
         </button>
@@ -332,7 +473,27 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'checkout') {
     return (
       <div className="p-6 pb-32 animate-fade-in">
-        <button onClick={() => setStep('customer')} className="flex items-center text-zinc-400 mb-8" disabled={isProcessing}>
+        {/* Elegant Header */}
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+          {restaurantLogo ? (
+            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+          ) : (
+            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+            </div>
+          )}
+          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        </div>
+
+        <button 
+          onClick={() => {
+            if (isWaiter) changeStep('browse');
+            else changeStep('customer');
+          }} 
+          className="flex items-center text-zinc-400 mb-8" 
+          disabled={isProcessing}
+        >
           <ChevronLeft className="w-5 h-5 mr-1" />
           Volver
         </button>
@@ -344,6 +505,11 @@ export default function KioskPage({ params }: KioskPageProps) {
           onPayWithTerminal={() => handleProcessPayment('terminal')}
           isProcessing={isProcessing}
           paymentMethod={paymentMethod}
+          hideCashOptions={isDelivery}
+          isWaiter={isWaiter}
+          tables={allTables}
+          selectedTableId={selectedTableId}
+          onTableChange={setSelectedTableId}
         />
       </div>
     );
@@ -378,22 +544,48 @@ export default function KioskPage({ params }: KioskPageProps) {
   return (
     <>
       {/* Call Waiter Button */}
-      <div className="fixed top-4 right-4 z-[60]">
-        <button 
-          onClick={handleCallWaiter}
-          disabled={isCallingWaiter}
-          className="text-sm font-bold text-white brand-bg rounded-full px-4 py-3 flex items-center shadow-lg shadow-orange-500/30 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50"
-        >
-          <span className="mr-2 text-lg">🔔</span> {isCallingWaiter ? 'Llamando...' : 'Mesero'}
-        </button>
-      </div>
+      {!isDelivery && !isWaiter && (
+        <div className="fixed top-4 right-4 z-[60]">
+          <button 
+            onClick={handleCallWaiter}
+            disabled={isCallingWaiter}
+            className="text-sm font-bold text-white brand-bg rounded-full px-4 py-3 flex items-center shadow-lg shadow-orange-500/30 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50"
+          >
+            <span className="mr-2 text-lg">🔔</span> {isCallingWaiter ? 'Llamando...' : 'Mesero'}
+          </button>
+        </div>
+      )}
 
       <div className="pb-8">
-        <CategoryNav 
-          categories={categories} 
-          activeId={activeCategoryId} 
-          onSelect={scrollToCategory} 
-        />
+        <div className="sticky top-0 bg-zinc-950/95 backdrop-blur-md z-50 border-b border-zinc-900/60 shadow-md">
+          {/* Elegant Header */}
+          <div className="w-full flex flex-col items-center justify-center py-4 bg-zinc-950">
+            {restaurantLogo ? (
+              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+            ) : (
+              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+                <span className="text-lg font-bold text-white">
+                  {restaurantName.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+            <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+            <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-0.5">POWERED BY MTRIQ.APP</p>
+          </div>
+
+          {isWaiter && (
+            <div className="bg-indigo-600 text-white text-xs font-bold text-center py-2.5 px-4 flex items-center justify-center gap-2">
+              <span>🧑‍💼 MODO MESERO ACTIVO — Tomando pedido para: {allTables.find(t => t.id === selectedTableId)?.label || `Mesa ${selectedTableId}`}</span>
+            </div>
+          )}
+          <div className="py-2">
+            <CategoryNav 
+              categories={categories} 
+              activeId={activeCategoryId} 
+              onSelect={scrollToCategory} 
+            />
+          </div>
+        </div>
       
       <div className="p-4 space-y-12 animate-fade-in">
         {categories.map(category => {

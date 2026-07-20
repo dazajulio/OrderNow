@@ -33,7 +33,11 @@ export default function SettingsAdminPage() {
   const [orders, setOrders] = useState<OrderWithItems[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
 
-  const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID || '';
+  const [restaurantId, setRestaurantId] = useState('');
+
+  useEffect(() => {
+    setRestaurantId(localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
+  }, []);
 
   // --- Auth Handlers ---
   const handleAuthSuccess = () => {
@@ -47,7 +51,7 @@ export default function SettingsAdminPage() {
 
   // --- Load Data ---
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !restaurantId) return;
 
     async function loadAll() {
       setIsLoading(true);
@@ -232,20 +236,20 @@ export default function SettingsAdminPage() {
 
         {/* Top KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-6 opacity-10"><DollarSign className="w-24 h-24" /></div>
-            <p className="text-zinc-400 font-medium flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Hoy</p>
-            <h2 className="text-4xl font-bold text-white">{formatPrice(todaySales, 'USD')}</h2>
+          <div className="bg-amber-500/[0.08] border border-amber-500/20 rounded-3xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-6 opacity-10 text-orange-500"><DollarSign className="w-24 h-24" /></div>
+            <p className="text-amber-800 dark:text-amber-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Hoy</p>
+            <h2 className="text-4xl font-extrabold text-amber-950 dark:text-amber-200">{formatPrice(todaySales, 'USD')}</h2>
           </div>
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-6 opacity-10"><TrendingUp className="w-24 h-24" /></div>
-            <p className="text-zinc-400 font-medium flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Semana</p>
-            <h2 className="text-4xl font-bold text-white">{formatPrice(weekSales, 'USD')}</h2>
+          <div className="bg-blue-500/[0.08] border border-blue-500/20 rounded-3xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-6 opacity-10 text-blue-500"><TrendingUp className="w-24 h-24" /></div>
+            <p className="text-blue-800 dark:text-blue-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Semana</p>
+            <h2 className="text-4xl font-extrabold text-blue-950 dark:text-blue-200">{formatPrice(weekSales, 'USD')}</h2>
           </div>
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-6 opacity-10"><TrendingUp className="w-24 h-24" /></div>
-            <p className="text-zinc-400 font-medium flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Mes</p>
-            <h2 className="text-4xl font-bold text-white">{formatPrice(monthSales, 'USD')}</h2>
+          <div className="bg-emerald-500/[0.08] border border-emerald-500/20 rounded-3xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-6 opacity-10 text-emerald-500"><TrendingUp className="w-24 h-24" /></div>
+            <p className="text-emerald-800 dark:text-emerald-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Mes</p>
+            <h2 className="text-4xl font-extrabold text-emerald-950 dark:text-emerald-200">{formatPrice(monthSales, 'USD')}</h2>
           </div>
         </div>
 

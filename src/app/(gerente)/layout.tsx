@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3 } from 'lucide-react';
+import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
 
 export default function GerenteLayout({ children }: { children: React.ReactNode }) {
@@ -15,10 +15,11 @@ export default function GerenteLayout({ children }: { children: React.ReactNode 
   useEffect(() => {
     async function fetchRestaurant() {
       const supabase = createClient();
+      const targetId = localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || 'a12bc706-ffc2-4959-ba03-58ebecada86a';
       const { data } = await supabase
         .from('restaurants')
         .select('name, logo_url')
-        .eq('is_active', true)
+        .eq('id', targetId)
         .single();
       
       if (data) {
@@ -37,10 +38,11 @@ export default function GerenteLayout({ children }: { children: React.ReactNode 
     { href: '/gerente/history', label: 'Registro', icon: ClipboardList },
     { href: '/gerente/settings', label: 'Administrador', icon: BarChart3 },
     { href: '/gerente/qr', label: 'Códigos QR', icon: QrCode },
+    { href: '/gerente/ai', label: 'Agente IA', icon: Brain },
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-zinc-950 flex flex-col md:flex-row gerente-light-theme">
       {/* Sidebar (Desktop) */}
       <aside className="hidden md:flex flex-col w-64 border-r border-zinc-800 bg-zinc-950 p-6">
         <div className="flex items-center gap-3 mb-10">

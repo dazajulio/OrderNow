@@ -113,6 +113,27 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
     onNewOrder: handleNewOrder,
   });
 
+  // Loop sound alarm every 5s while there are new (pending) orders
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    if (pendingOrders.length > 0) {
+      // Play immediately when pending orders appear or list changes
+      shiftButtonRef.current?.playNewOrderSound();
+
+      // Repeat sound every 5 seconds
+      intervalId = setInterval(() => {
+        shiftButtonRef.current?.playNewOrderSound();
+      }, 5000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [pendingOrders.length]);
+
   // Map column keys to their order arrays
   const ordersByColumn: Record<string, OrderWithItems[]> = {
     pending: pendingOrders,
@@ -192,11 +213,16 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
                 className="flex flex-1 flex-col border-r border-zinc-800/40 last:border-r-0 min-h-0"
               >
                 {/* Column header */}
-                <div className="flex items-center gap-2 border-b border-zinc-800/40 bg-zinc-900/50 px-4 py-3">
+                <div className={cn(
+                  "flex items-center gap-2 border-b px-4 py-3 transition-colors",
+                  col.key === 'pending' ? 'bg-amber-500/[0.08] border-amber-500/20 text-amber-500' :
+                  col.key === 'preparing' ? 'bg-blue-500/[0.08] border-blue-500/20 text-blue-500' :
+                  'bg-emerald-500/[0.08] border-emerald-500/20 text-emerald-500'
+                )}>
                   <span className={cn('shrink-0', col.accentColor)}>
                     {col.icon}
                   </span>
-                  <h2 className="text-sm font-semibold text-zinc-200">
+                  <h2 className="text-sm font-bold uppercase tracking-wider">
                     {col.label}
                   </h2>
                   <span

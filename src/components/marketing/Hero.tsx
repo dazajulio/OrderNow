@@ -1,157 +1,429 @@
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Flame, QrCode, Timer, TrendingUp, Wifi } from 'lucide-react';
-import { ParallaxOrbs } from './ParallaxOrbs';
+import { ArrowRight, QrCode, Timer, TrendingUp, ShoppingBag, Plus, Clock, CheckCircle2, Activity, Search, X } from 'lucide-react';
 
 export function Hero() {
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
+
   return (
-    <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden bg-white">
-      <ParallaxOrbs />
+    <section id="home" className="relative pt-12 pb-12 md:pt-16 md:pb-20 overflow-hidden bg-gradient-to-br from-[#080d1a] via-[#0f1627] to-[#030610]">
+      
+      {/* =========================================
+          FASE 1: GLOWS LÍQUIDOS DE FONDO (Armonía Naranja/Ámbar)
+      ========================================= */}
+      {/* Resplandor Naranja Superior Izquierdo */}
+      <div className="absolute top-[-10%] left-[10%] w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-[140px] pointer-events-none mix-blend-screen" />
+      {/* Resplandor Ámbar Inferior Derecho (Detrás de mockups) */}
+      <div className="absolute bottom-[10%] right-[5%] w-[600px] h-[600px] bg-amber-500/8 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
-      {/* Grid sutil de fondo (patrón de puntos de cuadrícula clara) */}
-      <div
-        className="absolute inset-0 opacity-[0.4] pointer-events-none"
-        style={{
-          backgroundImage:
-            'radial-gradient(#E2E8F0 1.5px, transparent 1.5px)',
-          backgroundSize: '32px 32px',
-          maskImage: 'radial-gradient(ellipse 80% 60% at 50% 0%, black 60%, transparent 100%)',
-        }}
-        aria-hidden="true"
-      />
+      {/* Estilos locales para las animaciones flotantes */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes floatPhone {
+          0%, 100% { transform: translateY(0px) rotate(-6deg); }
+          50% { transform: translateY(-12px) rotate(-4deg); }
+        }
+        @keyframes floatLaptop {
+          0%, 100% { transform: translateY(0px) rotate(0.5deg); }
+          50% { transform: translateY(-8px) rotate(-0.5deg); }
+        }
+        .animate-float-phone {
+          animation: floatPhone 6s ease-in-out infinite;
+        }
+        .animate-float-laptop {
+          animation: floatLaptop 8s ease-in-out infinite;
+        }
+      `}} />
 
-      <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
-        {/* ── COLUMNA IZQUIERDA: COPY ── */}
-        <div className="text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200/50 text-sm font-medium text-slate-700 mb-8 animate-fade-in-up">
-            <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500/20" />
-            Hecho para Fast Food &amp; Casual Dining
-          </div>
-
-          <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight mb-7 leading-[1.1] animate-fade-in-up"
-            style={{ animationDelay: '80ms' }}
-          >
-            La infraestructura digital
-            <br />
-            para escalar
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">
-              tu restaurante
+      {/* =========================================
+          FASE 2: CONTENEDOR DE CONTENIDO
+      ========================================= */}
+      <div className="relative z-20 max-w-7xl mx-auto px-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
+        
+        {/* LADO IZQUIERDO: Copywriting adaptado a Dark Mode */}
+        <div className="text-center lg:text-left flex flex-col justify-center">
+          <h1 className="tracking-tight mb-5 animate-fade-in-up">
+            <span className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-black text-white leading-none block">
+              Menú Interactivo
+            </span>
+            <span className="text-3xl sm:text-4xl md:text-5xl lg:text-[60px] font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300 block mt-2">
+              Aumenta Delivery
+            </span>
+            <span className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600 block mt-1">
+              Gestiona tus Clientes
             </span>
           </h1>
-
-          <p
-            className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-slate-600 mb-10 leading-relaxed animate-fade-in-up"
-            style={{ animationDelay: '160ms' }}
-          >
-            Mtriq.app une Menú Digital, Pedidos QR/NFC, Kitchen Display System, CRM
-            y Analítica con IA en un solo ecosistema. De la mesa a la cocina en
-            segundos — para que tu restaurante opere como una cadena, aunque tengas un solo local.
+          <p className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-slate-300 mb-8 leading-relaxed animate-fade-in-up" style={{animationDelay: '100ms'}}>
+            Mtriq.app une Menú Digital, Pedidos QR/NFC, Kitchen Display System, CRM y Analítica con IA en un solo ecosistema. De la mesa a la cocina en segundos.
           </p>
-
-          <div
-            className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-12 animate-fade-in-up"
-            style={{ animationDelay: '240ms' }}
-          >
-            <a href="#registro" className="w-full sm:w-auto">
-              <button className="group flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-full px-8 w-full sm:w-auto h-14 text-lg transition-all shadow-lg shadow-orange-500/20 active:scale-[0.98]">
-                Prueba Gratis 14 Días
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </button>
-            </a>
-            <Link href="/burger-palace" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-              <button className="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-full px-8 h-14 text-lg transition-colors shadow-sm active:scale-[0.98]">
-                Ver Demo en Vivo
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-fade-in-up" style={{animationDelay: '200ms'}}>
+            {/* Botón Principal con resplandor (Glow shadow) */}
+            <Link href="/register" className="w-full sm:w-auto">
+              <button className="group flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-full px-8 w-full sm:w-auto h-14 text-lg transition-all shadow-[0_0_30px_-5px_rgba(249,115,22,0.4)] active:scale-[0.98]">
+                Regístrate
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </button>
             </Link>
-          </div>
-
-          {/* Trust strip */}
-          <div
-            className="animate-fade-in-up"
-            style={{ animationDelay: '320ms' }}
-          >
-            <p className="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-3">
-              Restaurantes que ya operan sin fricción
-            </p>
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-slate-400 font-bold text-sm grayscale opacity-60 hover:opacity-100 transition-all duration-300">
-              <span>BURGER PALACE</span>
-              <span>TACO FIERA</span>
-              <span>POLLO REAL</span>
-              <span>PASTA LAB</span>
-              <span className="hidden sm:inline text-slate-400/80 font-normal">+500 más</span>
-            </div>
+            {/* Botón Secundario estilo Glassmorphism */}
+            <button 
+              onClick={() => setIsDemoOpen(true)}
+              className="w-full sm:w-auto bg-white/5 border border-white/10 text-white hover:bg-white/10 backdrop-blur-md rounded-full px-8 h-14 text-lg transition-all active:scale-[0.98]"
+            >
+              Ver Demo
+            </button>
           </div>
         </div>
 
-        {/* ── COLUMNA DERECHA: MOCKUP DEL PRODUCTO ── */}
-        <div className="relative hidden lg:block h-[520px] animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-          {/* Ticket KDS flotante */}
-          <div className="absolute top-0 right-4 w-72 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-slate-200/80 p-5 rotate-[4deg] hover:rotate-0 transition-all duration-500">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold text-orange-500 uppercase tracking-wider">Mesa 07</span>
-              <span className="flex items-center gap-1 text-xs text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-                <Timer className="w-3.5 h-3.5" /> 02:14
-              </span>
-            </div>
-            <div className="space-y-2">
-              {['2x Burger Master', '1x Papas Trufadas', '1x Limonada Rosa'].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm text-slate-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
-                  {item}
+        {/* LADO DERECHO: Mockups "emitiendo luz" que rompen la ola */}
+        {/* El translate-y-16 empuja los mockups hacia abajo para que crucen la línea del SVG */}
+        <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center lg:translate-y-16 animate-fade-in-up" style={{animationDelay: '150ms'}}>
+          <div className="relative w-full max-w-[590px] z-30">
+            
+            {/* KDS LAPTOP (Pega tu código de estructura KDS actual aquí dentro) */}
+            {/* Nota el shadow personalizado simulando luz que emana de la pantalla */}
+            <div className="relative w-full h-[370px] rounded-2xl border border-slate-700 bg-slate-950 shadow-[0_0_60px_-15px_rgba(249,115,22,0.3)] z-20 animate-float-laptop overflow-hidden">
+              
+              {/* Cabecera del navegador */}
+              <div className="h-8 bg-slate-900/90 border-b border-slate-800 flex items-center px-4 gap-1.5 relative select-none">
+                <div className="flex gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                 </div>
-              ))}
-            </div>
-            <div className="mt-4 w-full bg-orange-50 text-orange-600 text-xs font-bold rounded-lg py-2 border border-orange-200 hover:bg-orange-100 transition-colors text-center">
-              MARCAR LISTO
-            </div>
-          </div>
+                <div className="w-56 h-4.5 rounded bg-slate-950/60 mx-auto text-[9px] text-slate-400 flex items-center justify-center tracking-wide font-mono border border-slate-800/40">
+                  mtriq.app/admin/dashboard
+                </div>
+              </div>
 
-          {/* Mockup teléfono - Menú QR */}
-          <div className="absolute bottom-0 left-2 w-56 rounded-[2rem] bg-slate-900 border-4 border-slate-800 shadow-2xl p-3 -rotate-[6deg] hover:rotate-0 transition-transform duration-500">
-            <div className="rounded-[1.4rem] overflow-hidden bg-slate-50 p-4 h-80 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <QrCode className="w-4 h-4 text-orange-500" />
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Menú Digital</span>
-                </div>
-                <div className="space-y-2">
-                  {[
-                    { name: 'Burger Master', price: '$12.99' },
-                    { name: 'Chicken Crispy', price: '$9.50' },
-                    { name: 'Papas Trufadas', price: '$5.99' },
-                  ].map((p) => (
-                    <div key={p.name} className="flex items-center justify-between rounded-xl bg-white border border-slate-100 px-3 py-2 shadow-sm">
-                      <span className="text-[10px] text-slate-800 font-medium truncate max-w-[90px]">{p.name}</span>
-                      <span className="text-[10px] text-orange-500 font-bold">{p.price}</span>
+              {/* Cuerpo del Dashboard */}
+              <div className="flex h-[calc(100%-32px)]">
+                {/* Sidebar del Dashboard */}
+                <div className="w-24 bg-slate-900/40 border-r border-slate-900 p-2 flex flex-col gap-1.5 shrink-0 select-none">
+                  <div className="text-[10px] font-black text-orange-500 mb-3 flex items-center gap-1">
+                    <span className="w-2 h-2 rounded bg-orange-500" />
+                    Mtriq
+                  </div>
+                  <div className="space-y-1">
+                    <div className="bg-slate-800/80 text-orange-400 text-[8px] font-bold rounded px-2 py-1 flex items-center gap-1">
+                      <Activity className="w-2.5 h-2.5" /> Kiosko
                     </div>
-                  ))}
+                    <div className="text-slate-400 text-[8px] rounded px-2 py-1 hover:bg-slate-800/30 transition-colors">Pedidos</div>
+                    <div className="text-slate-400 text-[8px] rounded px-2 py-1 hover:bg-slate-800/30 transition-colors">Menú</div>
+                    <div className="text-slate-400 text-[8px] rounded px-2 py-1 hover:bg-slate-800/30 transition-colors">Clientes</div>
+                    <div className="text-slate-400 text-[8px] rounded px-2 py-1 hover:bg-slate-800/30 transition-colors">Ajustes</div>
+                  </div>
+                </div>
+
+                {/* Contenido principal del KDS / Dashboard */}
+                <div className="flex-1 bg-slate-950 p-3.5 flex flex-col gap-3 overflow-hidden">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-xs font-bold text-slate-100">Panel Kiosko/Admin</h2>
+                      <span className="flex items-center gap-1 text-[8px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        Tiempo real
+                      </span>
+                    </div>
+                    <div className="text-[9px] text-slate-400 bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800/60 font-semibold flex items-center gap-1">
+                      <TrendingUp className="w-3 h-3 text-orange-500" /> Upsell IA: +23%
+                    </div>
+                  </div>
+
+                  {/* Métricas destacadas */}
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] text-slate-400 uppercase tracking-wider">Ventas de Hoy</span>
+                      <span className="text-[10px] font-extrabold text-slate-100">$1,424.50</span>
+                    </div>
+                    <div className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] text-slate-400 uppercase tracking-wider">Pedidos Totales</span>
+                      <span className="text-[10px] font-extrabold text-slate-100">48</span>
+                    </div>
+                    <div className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-1.5 flex flex-col justify-between">
+                      <span className="text-[7px] text-slate-400 uppercase tracking-wider">Ticket Prom.</span>
+                      <span className="text-[10px] font-extrabold text-emerald-400 font-mono flex items-center gap-0.5">+$14.20</span>
+                    </div>
+                  </div>
+
+                  {/* Tablero Kanban KDS de Pedidos */}
+                  <div className="flex-1 grid grid-cols-3 gap-2 overflow-hidden min-h-0">
+                    {/* Columna Entrantes */}
+                    <div className="bg-slate-900/40 border border-orange-500/20 rounded-lg p-1.5 flex flex-col gap-1.5 min-h-0">
+                      <div className="flex items-center justify-between shrink-0 pb-1 border-b border-slate-800/40">
+                        <span className="text-[8px] font-bold text-orange-400 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
+                          Entrantes
+                        </span>
+                        <span className="text-[7px] text-slate-500 font-bold bg-slate-900 px-1 rounded">2</span>
+                      </div>
+                      <div className="space-y-1.5 overflow-y-auto pr-0.5 flex-1 select-none">
+                        <div className="bg-slate-950 border border-orange-500/10 rounded-md p-1.5 flex flex-col gap-1 shadow-sm">
+                          <div className="flex justify-between items-center text-[7px]">
+                            <span className="font-bold text-orange-400">#2045 - Mesa 4</span>
+                            <span className="text-slate-500 flex items-center gap-0.5"><Clock className="w-2 h-2" /> 1m</span>
+                          </div>
+                          <p className="text-[7.5px] text-slate-300 font-semibold truncate leading-tight">2x Burger Master, 1x Papas Trufadas</p>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-[7px] font-black text-slate-400">$31.97</span>
+                            <span className="bg-orange-500 text-white text-[6.5px] font-extrabold px-1.5 py-0.5 rounded">Aceptar</span>
+                          </div>
+                        </div>
+                        <div className="bg-slate-950 border border-slate-800 rounded-md p-1.5 flex flex-col gap-1 opacity-70">
+                          <div className="flex justify-between items-center text-[7px]">
+                            <span className="font-bold text-slate-400">#2044 - Delivery</span>
+                            <span className="text-slate-500"><Clock className="w-2 h-2" /> 3m</span>
+                          </div>
+                          <p className="text-[7.5px] text-slate-300 truncate leading-tight">1x Chicken Crispy, 1x Limonada</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Columna En Cocina */}
+                    <div className="bg-slate-900/40 border border-blue-500/20 rounded-lg p-1.5 flex flex-col gap-1.5 min-h-0">
+                      <div className="flex items-center justify-between shrink-0 pb-1 border-b border-slate-800/40">
+                        <span className="text-[8px] font-bold text-blue-400 flex items-center gap-1">
+                          <Clock className="w-2 h-2 text-blue-400" />
+                          En Cocina
+                        </span>
+                        <span className="text-[7px] text-slate-500 font-bold bg-slate-900 px-1 rounded">1</span>
+                      </div>
+                      <div className="space-y-1.5 overflow-y-auto pr-0.5 flex-1 select-none">
+                        <div className="bg-slate-950 border border-blue-500/20 rounded-md p-1.5 flex flex-col gap-1">
+                          <div className="flex justify-between items-center text-[7px]">
+                            <span className="font-bold text-blue-400">#2042 - Mesa 1</span>
+                            <span className="text-emerald-400 flex items-center gap-0.5 bg-emerald-500/10 px-1 py-0.2 rounded"><Timer className="w-2 h-2" /> 4:12</span>
+                          </div>
+                          <p className="text-[7.5px] text-slate-300 font-semibold truncate leading-tight">1x Pizza Lab, 2x Soda</p>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-[7px] font-black text-slate-400">$22.00</span>
+                            <span className="bg-blue-600 text-white text-[6.5px] font-extrabold px-1.5 py-0.5 rounded">Terminar</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Columna Entregados */}
+                    <div className="bg-slate-900/40 border border-emerald-500/20 rounded-lg p-1.5 flex flex-col gap-1.5 min-h-0">
+                      <div className="flex items-center justify-between shrink-0 pb-1 border-b border-slate-800/40">
+                        <span className="text-[8px] font-bold text-emerald-400 flex items-center gap-1">
+                          <CheckCircle2 className="w-2.5 h-2.5 text-emerald-400" />
+                          Entregados
+                        </span>
+                        <span className="text-[7px] text-slate-500 font-bold bg-slate-900 px-1 rounded">5</span>
+                      </div>
+                      <div className="space-y-1.5 overflow-y-auto pr-0.5 flex-1 select-none">
+                        <div className="bg-slate-950 border border-emerald-500/10 rounded-md p-1.5 flex flex-col gap-1 opacity-80">
+                          <div className="flex justify-between items-center text-[7px]">
+                            <span className="font-bold text-emerald-400">#2040 - Mesa 2</span>
+                            <span className="text-slate-500">12m</span>
+                          </div>
+                          <p className="text-[7.5px] text-slate-400 truncate leading-tight">1x Burger Master, 1x Papa Frita</p>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-[7px] font-black text-slate-500">$18.98</span>
+                            <span className="text-emerald-400 text-[6.5px] font-bold bg-emerald-500/10 px-1 py-0.2 rounded">Entregado</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="w-full bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-xl py-2.5 shadow-md shadow-orange-500/10 text-center cursor-pointer">
-                Agregar al pedido
+            </div>
+
+            {/* MÓVIL MENU (Pega tu código de estructura Móvil actual aquí dentro) */}
+            {/* Nota el shadow personalizado simulando luz naranja emitiendo del dispositivo */}
+            <div className="absolute -bottom-20 -left-12 w-[245px] h-[450px] rounded-[2.2rem] border-[6px] border-slate-800 bg-slate-950 shadow-[0_0_60px_-15px_rgba(249,115,22,0.4)] z-30 animate-float-phone overflow-hidden">
+              
+              {/* Dynamic Island / Notch */}
+              <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4.5 bg-slate-950 rounded-full z-30 flex items-center justify-center pointer-events-none">
+                <span className="absolute right-3.5 w-1 h-1 rounded-full bg-slate-900 border border-slate-800" />
+                <span className="absolute right-8 w-1.5 h-1.5 rounded-full bg-blue-950/40" />
+              </div>
+
+              {/* Pantalla del teléfono */}
+              <div className="h-full flex flex-col justify-between bg-slate-50 relative">
+                {/* Barra de estado mock */}
+                <div className="h-6 bg-orange-500 text-white flex items-center justify-between px-5 text-[8.5px] pt-1.5 font-bold select-none shrink-0">
+                  <span>9:41</span>
+                  <div className="flex items-center gap-1">
+                    <span>📶</span>
+                    <span>🔋</span>
+                  </div>
+                </div>
+
+                {/* Cabecera del restaurante */}
+                <div className="bg-orange-500 p-3 pt-2.5 text-white flex flex-col gap-1 shrink-0 select-none">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black tracking-wide">BURGER GRILL</span>
+                    <QrCode className="w-3.5 h-3.5 text-orange-200" />
+                  </div>
+                  <div className="flex items-center justify-between text-[7.5px] text-orange-100">
+                    <span>⚡ Pedidos desde Mesa 05</span>
+                    <span className="font-semibold text-white">Menú Digital</span>
+                  </div>
+                </div>
+
+                {/* Barra de búsqueda y categorías */}
+                <div className="shrink-0 bg-white shadow-sm select-none">
+                  {/* Caja de búsqueda mockup */}
+                  <div className="mx-2.5 mt-2 mb-1 bg-slate-100 border border-slate-200 rounded-lg py-1 px-2 flex items-center gap-1.5">
+                    <Search className="w-3 h-3 text-slate-400" />
+                    <span className="text-[7.5px] text-slate-400">¿Qué te provoca comer hoy?</span>
+                  </div>
+                  {/* Categorías */}
+                  <div className="flex gap-1.5 px-2.5 py-1.5 overflow-x-auto scrollbar-none">
+                    <span className="bg-orange-500 text-white text-[7.5px] font-bold px-2 py-0.5 rounded-full shrink-0">🍔 Burgers</span>
+                    <span className="bg-slate-100 text-slate-600 text-[7.5px] font-medium px-2 py-0.5 rounded-full shrink-0">🍟 Acompañantes</span>
+                    <span className="bg-slate-100 text-slate-600 text-[7.5px] font-medium px-2 py-0.5 rounded-full shrink-0">🥤 Bebidas</span>
+                  </div>
+                </div>
+
+                {/* Lista de productos */}
+                <div className="flex-1 p-2 overflow-y-auto space-y-2 select-none">
+                  {/* Producto 1 */}
+                  <div className="bg-white border border-slate-100 rounded-xl p-1.5 flex gap-2 shadow-sm relative hover:border-orange-500/30 transition-colors">
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="bg-orange-500 text-white text-[5.5px] font-extrabold px-1 py-0.2 rounded uppercase w-fit block mb-0.5">MÁS VENDIDO</span>
+                        <h4 className="text-[9px] font-bold text-slate-800 leading-tight">Burger Master</h4>
+                        <p className="text-[6.5px] text-slate-400 leading-tight mt-0.5">Doble carne, cheddar, tocino ahumado y salsa secreta.</p>
+                      </div>
+                      <span className="text-[9px] font-extrabold text-orange-500 mt-1">$12.99</span>
+                    </div>
+                    <div className="relative shrink-0">
+                      <img
+                        src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=150&auto=format&fit=crop&q=80"
+                        alt="Burger Master"
+                        className="w-12 h-12 rounded-lg object-cover shrink-0"
+                      />
+                      <button className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shadow-md hover:bg-orange-600 transition-colors active:scale-90">
+                        <Plus className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Producto 2 */}
+                  <div className="bg-white border border-slate-100 rounded-xl p-1.5 flex gap-2 shadow-sm relative">
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <h4 className="text-[9px] font-bold text-slate-800 leading-tight">Papas Trufadas</h4>
+                        <p className="text-[6.5px] text-slate-400 leading-tight mt-0.5">Papas fritas con queso parmesano rallado y aceite de trufa blanca.</p>
+                      </div>
+                      <span className="text-[9px] font-extrabold text-orange-500 mt-1">$5.99</span>
+                    </div>
+                    <div className="relative shrink-0">
+                      <img
+                        src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=150&auto=format&fit=crop&q=80"
+                        alt="Papas Trufadas"
+                        className="w-12 h-12 rounded-lg object-cover shrink-0"
+                      />
+                      <button className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shadow-md">
+                        <Plus className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Producto 3 */}
+                  <div className="bg-white border border-slate-100 rounded-xl p-1.5 flex gap-2 shadow-sm relative">
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <h4 className="text-[9px] font-bold text-slate-800 leading-tight">Limonada Rosa</h4>
+                        <p className="text-[6.5px] text-slate-400 leading-tight mt-0.5">Limonada fresca natural endulzada e infundida con frutos rojos.</p>
+                      </div>
+                      <span className="text-[9px] font-extrabold text-orange-500 mt-1">$3.50</span>
+                    </div>
+                    <div className="relative shrink-0">
+                      <img
+                        src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=150&auto=format&fit=crop&q=80"
+                        alt="Limonada Rosa"
+                        className="w-12 h-12 rounded-lg object-cover shrink-0"
+                      />
+                      <button className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shadow-md">
+                        <Plus className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Botón ver carrito de compra */}
+                <div className="p-2 bg-white border-t border-slate-100 flex items-center justify-between shrink-0 shadow-md select-none">
+                  <div className="flex items-center gap-1 text-slate-500">
+                    <ShoppingBag className="w-3.5 h-3.5 text-orange-500" />
+                    <span className="text-[7px] font-semibold">1 artículo</span>
+                  </div>
+                  <div className="bg-orange-500 text-white font-extrabold rounded-lg text-[8px] px-3 py-1.5 flex items-center gap-1 cursor-pointer hover:bg-orange-600 transition-colors shadow">
+                    Ver Pedido • $12.99
+                    <ArrowRight className="w-2 h-2" />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Badge IA flotante */}
-          <div className="absolute top-40 left-0 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-slate-200 p-4 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-              <TrendingUp className="w-4 h-4 text-orange-500" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-slate-800 leading-tight">+23% ticket prom.</p>
-              <p className="text-[10px] text-slate-400">Upsell con IA</p>
-            </div>
-          </div>
-
-          {/* Badge tiempo real */}
-          <div className="absolute bottom-24 right-0 rounded-2xl bg-white border border-slate-100 shadow-xl shadow-slate-200 px-4 py-3 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-semibold text-slate-600">Sincronizado en tiempo real</span>
+            
           </div>
         </div>
       </div>
+
+      {/* =========================================
+          FASE 3: OLA SVG DIVISORIA ASIMÉTRICA
+      ========================================= */}
+      {/* El translate-y-[1px] elimina una pequeña línea de 1px que a veces renderizan los navegadores */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10 transform translate-y-[1px]">
+        <svg 
+          className="relative block w-full h-[120px] md:h-[180px] lg:h-[240px]" 
+          data-name="Layer 1" 
+          xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 1200 120" 
+          preserveAspectRatio="none"
+        >
+          <path 
+            d="M0,60 C150,110 350,110 500,70 C650,30 850,30 1000,70 C1100,90 1150,95 1200,90 L1200,120 L0,120 Z" 
+            className="fill-slate-50" 
+          ></path>
+        </svg>
+      </div>
+
+      {/* =========================================
+          FASE 4: CELULAR EMERGENTE (VIDEO DEMO MODAL)
+      ========================================= */}
+      {isDemoOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-300"
+          onClick={() => setIsDemoOpen(false)}
+        >
+          <div 
+            className="relative w-full max-w-[360px] h-[640px] max-h-[90vh] rounded-[2.8rem] border-[12px] border-slate-900 bg-slate-950 shadow-[0_0_80px_rgba(249,115,22,0.3)] flex flex-col items-center justify-center overflow-hidden transition-all duration-300 transform scale-100"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Dynamic Island / Notch */}
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-28 h-5 bg-slate-950 rounded-full z-50 flex items-center justify-center pointer-events-none">
+              <span className="absolute right-4 w-1.5 h-1.5 rounded-full bg-slate-900 border border-slate-800" />
+              <span className="absolute right-10 w-2 h-2 rounded-full bg-blue-950/40" />
+            </div>
+
+            {/* Close Button */}
+            <button 
+              onClick={() => setIsDemoOpen(false)}
+              className="absolute top-4 right-4 z-50 text-slate-400 hover:text-white transition-colors bg-black/40 hover:bg-black/60 p-1.5 rounded-full border border-white/10"
+              aria-label="Cerrar video"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Screen Content: Video */}
+            <div className="w-full h-full bg-slate-950 flex items-center justify-center rounded-[2.1rem] overflow-hidden relative">
+              <video 
+                src="/videos/VIDEO HERO.mp4" 
+                controls 
+                autoPlay 
+                playsInline
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

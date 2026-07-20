@@ -1,13 +1,26 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { OrderHistoryBoard } from '@/modules/history/components/OrderHistoryBoard';
 import { ClipboardList } from 'lucide-react';
 
-export const metadata = {
-  title: 'Registro Histórico - Admin',
-};
-
 export default function HistoryAdminPage() {
-  // En producción, este ID vendría del tenant autenticado
-  const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID || '';
+  const [restaurantId, setRestaurantId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const id = localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '';
+    setRestaurantId(id);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-12 flex justify-center">
+        <div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-12">
@@ -19,7 +32,11 @@ export default function HistoryAdminPage() {
         <p className="text-zinc-400 text-lg">Pedidos completados y cancelados.</p>
       </div>
 
-      <OrderHistoryBoard restaurantId={restaurantId} />
+      {restaurantId ? (
+        <OrderHistoryBoard restaurantId={restaurantId} />
+      ) : (
+        <p className="text-zinc-500 text-sm">Registra un restaurante para ver su historial de comandas.</p>
+      )}
     </div>
   );
 }

@@ -32,8 +32,18 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
     loadTables();
   }, [restaurantId, supabase]);
 
-  const handleCreateTable = async () => {
-    const label = window.prompt("Ingresa el nombre o número de la nueva mesa (Ej. Mesa 7):");
+  const handleCreateTable = async (type: 'mesa' | 'waiter' | 'delivery') => {
+    let label = '';
+    if (type === 'mesa') {
+      label = window.prompt("Ingresa el nombre o número de la nueva mesa (Ej. Mesa 7):") || '';
+    } else if (type === 'waiter') {
+      const name = window.prompt("Ingresa el nombre del mesero que tomará pedidos (Ej. Juan):");
+      if (name) label = `Mesero: ${name.trim()}`;
+    } else if (type === 'delivery') {
+      const channel = window.prompt("Ingresa el nombre de la red social o canal de entrega (Ej. Instagram, WhatsApp):");
+      if (channel) label = `Delivery: ${channel.trim()}`;
+    }
+    
     if (!label) return;
     
     setIsLoading(true);
@@ -49,7 +59,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
       } as any);
       
     if (error) {
-      alert("Error al crear mesa.");
+      alert("Error al crear elemento.");
       console.error(error);
       setIsLoading(false);
     } else {
@@ -58,9 +68,24 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
   };
 
   const handleEditTable = async (tableId: string, currentLabel: string) => {
-    const newLabel = window.prompt("Ingresa el nuevo nombre de la mesa:", currentLabel || '');
-    if (!newLabel || newLabel === currentLabel) return;
+    const isWaiter = currentLabel.startsWith('Mesero:');
+    const isDelivery = currentLabel.startsWith('Delivery:');
     
+    let cleanLabel = currentLabel;
+    if (isWaiter) cleanLabel = currentLabel.replace('Mesero:', '').trim();
+    else if (isDelivery) cleanLabel = currentLabel.replace('Delivery:', '').trim();
+
+    const promptMsg = isWaiter ? "Ingresa el nuevo nombre del mesero:" :
+                      isDelivery ? "Ingresa el nuevo nombre del canal de Delivery:" :
+                      "Ingresa el nuevo nombre de la mesa:";
+
+    const userInput = window.prompt(promptMsg, cleanLabel || '');
+    if (!userInput || userInput === cleanLabel) return;
+    
+    let newLabel = userInput;
+    if (isWaiter) newLabel = `Mesero: ${userInput}`;
+    else if (isDelivery) newLabel = `Delivery: ${userInput}`;
+
     setIsLoading(true);
     const { error } = await supabase
       .from('tables')
@@ -68,7 +93,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
       .eq('id', tableId);
       
     if (error) {
-      alert("Error al editar la mesa.");
+      alert("Error al editar el elemento.");
       console.error(error);
       setIsLoading(false);
     } else {
@@ -77,7 +102,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
   };
 
   const handleDeleteTable = async (tableId: string) => {
-    const confirmed = window.confirm("¿Estás seguro de que deseas eliminar esta mesa? Los pedidos vinculados a ella podrían verse afectados.");
+    const confirmed = window.confirm("¿Estás seguro de que deseas eliminar este elemento? Los pedidos vinculados podrían verse afectados.");
     if (!confirmed) return;
     
     setIsLoading(true);
@@ -87,7 +112,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
       .eq('id', tableId);
       
     if (error) {
-      alert("Error al eliminar la mesa.");
+      alert("Error al eliminar el elemento.");
       console.error(error);
       setIsLoading(false);
     } else {
@@ -96,7 +121,6 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
   };
 
   const downloadAll = () => {
-    // In a real app, this would generate a PDF or zip file with all QR codes
     alert('Función de "Descargar Todos" requeriría una librería como jszip o jsPDF.');
   };
 
@@ -106,13 +130,27 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-3 flex-wrap">
         <button 
-          onClick={handleCreateTable}
-          className="brand-bg hover:brightness-110 text-white font-medium py-3 px-6 rounded-xl flex items-center gap-2 transition-all"
+          onClick={() => handleCreateTable('mesa')}
+          className="brand-bg hover:brightness-110 text-white font-medium py-3 px-6 rounded-xl flex items-center gap-2 transition-all shadow-md"
         >
           <Plus className="w-5 h-5" />
           Crear Mesa
+        </button>
+        <button 
+          onClick={() => handleCreateTable('waiter')}
+          className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 px-6 rounded-xl flex items-center gap-2 transition-all shadow-md shadow-indigo-600/10"
+        >
+          <Plus className="w-5 h-5" />
+          Crear Mesero
+        </button>
+        <button 
+          onClick={() => handleCreateTable('delivery')}
+          className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-6 rounded-xl flex items-center gap-2 transition-all shadow-md shadow-blue-600/10"
+        >
+          <Plus className="w-5 h-5" />
+          Crear Link Delivery
         </button>
         <button 
           onClick={downloadAll}
@@ -125,44 +163,73 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {tables.map(table => {
-          const url = `${domain}/${restaurantSlug}/mesa/${table.id}`;
+          const isWaiter = table.label?.startsWith('Mesero:');
+          const isDelivery = table.label?.startsWith('Delivery:');
+          
+          let url = '';
+          let cardTitle = '';
+          let cardColor = brandColor;
+          let badgeText = '';
+
+          if (isWaiter) {
+            const name = table.label?.replace('Mesero:', '').trim() || '';
+            url = `${domain}/${restaurantSlug}/mesa/takeaway?role=waiter&waiterName=${encodeURIComponent(name)}`;
+            cardTitle = `🧑‍💼 Mesero: ${name}`;
+            cardColor = '#4F46E5'; // Indigo
+            badgeText = 'Acceso Mesero';
+          } else if (isDelivery) {
+            const channel = table.label?.replace('Delivery:', '').trim() || '';
+            url = `${domain}/${restaurantSlug}/mesa/takeaway?type=delivery`;
+            cardTitle = `🛵 Delivery: ${channel}`;
+            cardColor = '#2563EB'; // Blue
+            badgeText = 'Enlace Delivery';
+          } else {
+            url = `${domain}/${restaurantSlug}/mesa/${table.id}`;
+            cardTitle = table.label || `Mesa ${table.table_number}`;
+            cardColor = brandColor;
+            badgeText = 'Mesa Física';
+          }
+
           const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}&color=000000&bgcolor=ffffff`;
 
           return (
-            <div key={table.id} className="bg-white rounded-2xl overflow-hidden border border-zinc-200 flex flex-col relative group">
+            <div key={table.id} className="bg-white rounded-2xl overflow-hidden border border-zinc-200 flex flex-col relative group shadow-sm hover:shadow-md transition-shadow">
               {/* Table Actions Overlay */}
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button 
                   onClick={() => handleEditTable(table.id, table.label || '')}
                   className="p-2 bg-black/50 hover:bg-black/80 rounded-lg text-white backdrop-blur-sm transition-colors"
-                  title="Editar Mesa"
+                  title="Editar"
                 >
                   <Edit2 className="w-4 h-4" />
                 </button>
                 <button 
                   onClick={() => handleDeleteTable(table.id)}
                   className="p-2 bg-red-500/80 hover:bg-red-500 rounded-lg text-white backdrop-blur-sm transition-colors"
-                  title="Eliminar Mesa"
+                  title="Eliminar"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
 
               <div 
-                className="py-4 text-center text-white font-bold text-xl"
-                style={{ backgroundColor: brandColor }}
+                className="py-4 text-center text-white font-bold text-xl relative"
+                style={{ backgroundColor: cardColor }}
               >
-                {table.label || `Mesa ${table.table_number}`}
+                {cardTitle}
+                <span className="absolute bottom-1 right-2 text-[9px] bg-white/20 px-1.5 py-0.5 rounded font-normal uppercase">
+                  {badgeText}
+                </span>
               </div>
               
               <div className="p-8 flex-1 flex flex-col items-center justify-center bg-white">
-                <img src={qrUrl} alt={`QR Mesa ${table.table_number}`} className="w-48 h-48 mb-6" />
-                <p className="text-zinc-500 text-sm text-center mb-6 break-all max-w-[200px]">
+                <img src={qrUrl} alt={`QR ${cardTitle}`} className="w-48 h-48 mb-6" />
+                <p className="text-zinc-500 text-xs text-center mb-6 break-all max-w-[220px]">
                   {url.replace(/^https?:\/\//, '')}
                 </p>
                 <a 
                   href={qrUrl}
-                  download={`QR_Mesa_${table.table_number}.png`}
+                  download={`${cardTitle.replace(/\s+/g, '_')}.png`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors border border-zinc-300"
@@ -178,7 +245,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
         {tables.length === 0 && (
           <div className="col-span-full py-12 text-center text-zinc-500 bg-zinc-900/50 rounded-2xl border border-zinc-800 border-dashed">
             <QrCode className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>No hay mesas configuradas.</p>
+            <p>No hay elementos configurados.</p>
           </div>
         )}
       </div>

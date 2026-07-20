@@ -25,25 +25,25 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img src="/logo-mtriq.png" alt="Mtriq Logo" className="w-8 h-8 object-contain" />
-          <span className="text-xl font-bold tracking-tight text-slate-900">
+        <Link href="/#home" className="flex items-center gap-2 bg-white border border-slate-200/80 rounded-full pl-3 pr-4 py-1.5 shadow-sm hover:shadow-md transition-all active:scale-95 duration-200 select-none">
+          <img src="/logo-mtriq.png" alt="Mtriq Logo" className="w-6 h-6 object-contain" />
+          <span className="text-base font-black tracking-tight text-slate-900">
             mtriq<span className="text-orange-500">.app</span>
           </span>
+        </Link>
+
+        <div className={`hidden md:flex items-center gap-8 text-sm font-medium transition-colors duration-300 ${scrolled ? 'text-slate-600' : 'text-slate-300'}`}>
+          <a href="#ecosistema" className={`transition-colors ${scrolled ? 'hover:text-slate-900' : 'hover:text-white'}`}>Ecosistema</a>
+          <a href="#casos" className={`transition-colors ${scrolled ? 'hover:text-slate-900' : 'hover:text-white'}`}>Casos de Uso</a>
+          <a href="#precios" className={`transition-colors ${scrolled ? 'hover:text-slate-900' : 'hover:text-white'}`}>Precios</a>
+          <a href="#faq" className={`transition-colors ${scrolled ? 'hover:text-slate-900' : 'hover:text-white'}`}>FAQ</a>
         </div>
 
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-          <a href="#ecosistema" className="hover:text-slate-900 transition-colors">Ecosistema</a>
-          <a href="#casos" className="hover:text-slate-900 transition-colors">Casos de Uso</a>
-          <a href="#precios" className="hover:text-slate-900 transition-colors">Precios</a>
-          <a href="#faq" className="hover:text-slate-900 transition-colors">FAQ</a>
-        </div>
-
-        <a href="#registro">
+        <Link href="/register">
           <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full px-6 py-2 text-sm transition-all shadow-md shadow-orange-500/10 active:scale-[0.98]">
-            Prueba Gratis
+            Regístrate
           </button>
-        </a>
+        </Link>
       </div>
     </nav>
   );

@@ -109,18 +109,28 @@ export function UpsellModal({ products, onAdd, onSkip, isOpen, currency }: Upsel
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 bg-zinc-950">
-            <button
-              onClick={onSkip}
-              className={`w-full py-4 font-bold rounded-xl transition-all active:scale-[0.98] ${
-                hasAdded 
-                  ? 'brand-bg text-white shadow-lg shadow-orange-500/20 hover:brightness-110' 
-                  : 'bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700'
-              }`}
-            >
-              {hasAdded ? '✓ Confirmar y Continuar al Pago' : t('upsellSkip')}
-            </button>
-          </div>
+          {(() => {
+            const addedCount = products.reduce((acc, p) => {
+              const cartItem = items.find(item => item.product.id === p.id && item.selectedModifiers.length === 0);
+              return acc + (cartItem ? cartItem.quantity : 0);
+            }, 0);
+            const hasAddedAny = addedCount > 0;
+
+            return (
+              <div className="p-4 bg-zinc-950">
+                <button
+                  onClick={onSkip}
+                  className={`w-full py-4 font-bold rounded-xl transition-all active:scale-[0.98] ${
+                    hasAddedAny 
+                      ? 'brand-bg text-white shadow-lg shadow-orange-500/20 hover:brightness-110' 
+                      : 'bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700'
+                  }`}
+                >
+                  {hasAddedAny ? '✓ Confirmar y Continuar al Pago' : t('upsellSkip')}
+                </button>
+              </div>
+            );
+          })()}
         </div>
       </div>
     </>
