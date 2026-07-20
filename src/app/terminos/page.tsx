@@ -70,6 +70,9 @@ export default function TermsPage() {
             <p>
               El cobro se realiza de forma recurrente cada treinta (30) días a partir de la fecha de activación. La contratación es mensual y no existe ningún compromiso de permanencia ni contrato anual forzoso. El Usuario puede solicitar la no renovación o la cancelación de su suscripción en cualquier momento directamente desde su panel administrativo.
             </p>
+            <p>
+              Todos los cargos son facturados por adelantado y no son reembolsables. No se emitirán reembolsos ni créditos por meses parciales de uso del Servicio, ni por meses en los que el Usuario mantenga la cuenta activa sin utilizarla. Al cancelar la suscripción, el Restaurante mantendrá el acceso al panel administrativo y sus funciones hasta el final del ciclo de facturación mensual pagado en curso.
+            </p>
           </section>
 
           <section className="space-y-3">
@@ -96,7 +99,14 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-white tracking-tight">7. Soporte y Contacto</h2>
             <p>
-              Para cualquier consulta legal, asistencia técnica o dudas relacionadas con los presentes Términos y Condiciones de Uso, el Restaurante puede ponerse en contacto con nuestro equipo de atención a través de la dirección de correo electrónico oficial: <a href="mailto:soporte@mtriq.app" className="text-orange-500 font-semibold hover:underline">soporte@mtriq.app</a>.
+              Para cualquier consulta legal, asistencia técnica o dudas relacionadas con los presentes Términos y Condiciones de Uso, el Restaurante puede ponerse en contacto con nuestro equipo de atención a través de la dirección de correo electrónico oficial: <a href="mailto:soporte@mtriq.app" className="text-orange-500 font-semibold hover:underline">soporte@mtriq.app</a>. Mtriq App opera en la ciudad de Bogota. Calle 140A - Cedritos y digitalmente con sede de desarrollo y soporte en Mérida, Venezuela.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl font-bold text-white tracking-tight">8. Ley Aplicable y Jurisdicción</h2>
+            <p>
+              Los presentes Términos y Condiciones se regirán e interpretarán de acuerdo con las leyes de la República de Colombia. Cualquier disputa, controversia o reclamo derivado de la utilización del Servicio será sometido a la jurisdicción exclusiva de los tribunales competentes en dicho territorio, renunciando expresamente a cualquier otro fuero que pudiera corresponderles en razón de sus domicilios presentes o futuros.
             </p>
           </section>
 

@@ -100,7 +100,7 @@ export default function PrivacyPage() {
               Mtriq <strong>no vende, comercializa ni alquila</strong> información personal de restaurantes ni de comensales a terceras empresas. Los datos recopilados solo se comparten con proveedores de infraestructura esenciales para la operatividad del SaaS:
             </p>
             <ul className="list-disc pl-5 space-y-2 text-zinc-400">
-              <li><strong>Pasarelas de Pago (Stripe/Lemon Squeezy)</strong>: Para procesar los cobros mensuales recurrentes de forma encriptada bajo estándares PCI-DSS. Mtriq nunca almacena números completos de tarjetas de crédito en sus servidores.</li>
+              <li><strong>Pasarelas de Pago</strong>: Los cobros de la suscripción mensual del Servicio son procesados a través de Lemon Squeezy, quien actúa como nuestro Comerciante Registrado (Merchant of Record). Lemon Squeezy gestiona toda la información de facturación y tarjetas de crédito de manera encriptada bajo estrictos estándares internacionales PCI-DSS. Mtriq nunca procesa, visualiza ni almacena números de tarjetas de crédito o débito en sus servidores.</li>
               <li><strong>Servidores de Correo (Resend)</strong>: Para el despacho automatizado de correos de confirmación y notificaciones del sistema.</li>
             </ul>
           </section>
@@ -108,7 +108,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-white tracking-tight">6. Sus Derechos</h2>
             <p>
-              El Restaurante y sus comensales tienen derecho a acceder, rectificar, limitar, exportar o solicitar la eliminación total de sus datos personales de nuestros sistemas. Para ejercer estos derechos o revocar los consentimientos otorgados, puede enviar una solicitud formal por escrito a <a href="mailto:soporte@mtriq.app" className="text-orange-500 font-semibold hover:underline">soporte@mtriq.app</a>. Su solicitud será procesada en un plazo máximo de 72 horas hábiles.
+              El Restaurante y sus comensales tienen derecho a acceder, rectificar, limitar, exportar o solicitar la eliminación total de sus datos personales de nuestros sistemas. Para ejercer estos derechos o revocar los consentimientos otorgados, puede enviar una solicitud formal por escrito a <a href="mailto:soporte@mtriq.app" className="text-orange-500 font-semibold hover:underline">soporte@mtriq.app</a>. Mtriq App opera en la ciudad de Bogota. Calle 140A - Cedritos y digitalmente con sede de desarrollo y soporte en Mérida, Venezuela. Su solicitud será procesada en un plazo máximo de 72 horas hábiles.
             </p>
           </section>
 
