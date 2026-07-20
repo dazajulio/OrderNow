@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { sendWelcomeEmail } from '@/lib/mail';
 
 function slugify(text: string): string {
   return text
@@ -176,6 +177,18 @@ export async function POST(request: Request) {
         { success: false, error: `Error al asociar el usuario al restaurante: ${memberError.message}` },
         { status: 500 }
       );
+    }
+
+    // 5. Send Welcome Email via Resend (Safe invocation in background)
+    try {
+      sendWelcomeEmail({
+        toEmail: email,
+        restaurantName,
+        contactName,
+        slug,
+      }).catch(err => console.error('Error enviando correo de bienvenida:', err));
+    } catch (e) {
+      console.error('Error al disparar el proceso de correo de bienvenida:', e);
     }
 
     // Success! Return restaurant ID and slug
