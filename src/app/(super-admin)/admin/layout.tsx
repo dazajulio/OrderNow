@@ -1,7 +1,21 @@
+'use client';
+
 import Link from 'next/link';
-import { Cpu, Users, CreditCard, Settings, LayoutDashboard } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Cpu, Users, CreditCard, Settings, LayoutDashboard, Building2, Mail } from 'lucide-react';
 
 export default function SuperAdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  const navItems = [
+    { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/tenants', label: 'Tenants (Clientes)', icon: Building2 },
+    { href: '/admin/users', label: 'Usuarios', icon: Users },
+    { href: '/admin/emails', label: 'Correos', icon: Mail },
+    { href: '/admin/billing', label: 'Facturación', icon: CreditCard },
+    { href: '/admin/settings', label: 'Configuración Global', icon: Settings },
+  ];
+
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-zinc-300 font-sans flex flex-col md:flex-row">
       {/* ── SIDEBAR ── */}
@@ -13,22 +27,24 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
         </div>
 
         <nav className="space-y-2 flex-1">
-          <Link href="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-purple-500/10 text-purple-400 font-medium transition-colors">
-            <LayoutDashboard className="w-5 h-5" />
-            Dashboard
-          </Link>
-          <Link href="/admin/tenants" className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">
-            <Users className="w-5 h-5" />
-            Tenants (Clientes)
-          </Link>
-          <Link href="/admin/billing" className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">
-            <CreditCard className="w-5 h-5" />
-            Facturación
-          </Link>
-          <Link href="/admin/settings" className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">
-            <Settings className="w-5 h-5" />
-            Configuración Global
-          </Link>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link 
+                key={item.href}
+                href={item.href} 
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${
+                  isActive 
+                    ? 'bg-purple-500/10 text-purple-400' 
+                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
         
         <div className="pt-6 border-t border-white/5">
