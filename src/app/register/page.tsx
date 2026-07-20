@@ -229,10 +229,10 @@ export default function RegisterPage() {
       <main className="relative z-10 max-w-7xl mx-auto px-6 w-full py-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-stretch flex-1">
         
         {/* LEFT COLUMN: Registration & Multi-step Form */}
-        <div className="bg-white border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-between shadow-xl shadow-slate-200/40 relative overflow-hidden">
+        <div className="bg-white border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-start gap-y-6 shadow-xl shadow-slate-200/40 relative overflow-hidden">
           
           {/* Progress Indicators */}
-          <div className="flex items-center gap-2 mb-8 select-none">
+          <div className="flex items-center gap-2 mb-2 select-none">
             <span className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
               step === 'details' 
                 ? 'bg-orange-500/10 text-orange-600 border-orange-500/20' 
@@ -260,19 +260,19 @@ export default function RegisterPage() {
 
           {/* Visual Process Flow (Steps Graphics) */}
           {step !== 'success' && (
-            <div className="grid grid-cols-3 gap-3 mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-center select-none animate-fade-in">
+            <div className="grid grid-cols-3 gap-3 bg-gradient-to-r from-orange-50/40 via-white to-purple-50/40 p-4 rounded-2xl border border-orange-100/60 text-center select-none animate-fade-in shadow-sm">
               <div className="space-y-1">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-bold transition-all ${
-                  step === 'details' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-200 text-slate-500'
+                  step === 'details' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-100 text-slate-400 border border-slate-200/80'
                 }`}>
                   🏢
                 </div>
                 <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'details' ? 'text-slate-800' : 'text-slate-400'}`}>1. Configura</span>
                 <span className="block text-[8.5px] text-slate-400 leading-tight">Nombre y contacto</span>
               </div>
-              <div className="space-y-1 border-x border-slate-200/80">
+              <div className="space-y-1 border-x border-orange-100/50">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-bold transition-all ${
-                  step === 'payment' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-200 text-slate-500'
+                  step === 'payment' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-100 text-slate-400 border border-slate-200/80'
                 }`}>
                   💳
                 </div>
@@ -280,7 +280,7 @@ export default function RegisterPage() {
                 <span className="block text-[8.5px] text-slate-400 leading-tight">$29/mes cancelable</span>
               </div>
               <div className="space-y-1">
-                <div className="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center mx-auto text-xs font-bold">
+                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-400 border border-slate-200/80 flex items-center justify-center mx-auto text-xs font-bold">
                   🚀
                 </div>
                 <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">3. Despega</span>
@@ -290,7 +290,7 @@ export default function RegisterPage() {
           )}
 
           {/* Form Content */}
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="w-full">
             
             {/* STEP 1: Details */}
             {step === 'details' && (
@@ -317,7 +317,7 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: Tu Restaurante" 
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
 
@@ -331,7 +331,7 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: Tu Nombre Completo" 
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: +1 555-0199" 
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
 
@@ -361,7 +361,7 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Ej: Av. Principal N° 124" 
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
                 </div>
@@ -379,7 +379,7 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="ejemplo@correo.com" 
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
 
@@ -394,7 +394,7 @@ export default function RegisterPage() {
                       onChange={handleFormChange}
                       required 
                       placeholder="Mínimo 6 caracteres" 
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
                 </div>
@@ -410,7 +410,7 @@ export default function RegisterPage() {
                         value={formData.instagram}
                         onChange={handleFormChange}
                         placeholder="Instagram" 
-                        className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 transition-colors text-xs"
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-xs"
                       />
                     </div>
                     <div className="relative">
@@ -420,7 +420,7 @@ export default function RegisterPage() {
                         value={formData.facebook}
                         onChange={handleFormChange}
                         placeholder="Facebook" 
-                        className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 transition-colors text-xs"
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-xs"
                       />
                     </div>
                     <div className="relative">
@@ -430,7 +430,7 @@ export default function RegisterPage() {
                         value={formData.tiktok}
                         onChange={handleFormChange}
                         placeholder="TikTok" 
-                        className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 transition-colors text-xs"
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl pl-10 pr-3 py-2.5 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-xs"
                       />
                     </div>
                   </div>
@@ -442,10 +442,7 @@ export default function RegisterPage() {
                 >
                   Continuar al Pago <ChevronRight className="w-5 h-5" />
                 </button>
-              </form>
-            )}
-
-            {/* STEP 2: Payment Simulation */}
+                 {/* STEP 2: Payment Simulation */}
             {step === 'payment' && (
               <form onSubmit={handleProcessRegistration} className="space-y-6">
                 <div className="space-y-2">
@@ -461,7 +458,7 @@ export default function RegisterPage() {
                 </div>
 
                 {errorMsg && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-red-600 text-xs font-semibold">
+                  <div className="bg-red-55 border border-red-200 rounded-xl p-3 text-red-600 text-xs font-semibold">
                     {errorMsg}
                   </div>
                 )}
@@ -503,7 +500,7 @@ export default function RegisterPage() {
                       maxLength={19}
                       placeholder="4000 1234 5678 9010" 
                       required
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
                     />
                   </div>
 
@@ -515,7 +512,7 @@ export default function RegisterPage() {
                       onChange={e => setCardData({...cardData, name: e.target.value.toUpperCase()})}
                       placeholder="TU NOMBRE COMPLETO" 
                       required
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm uppercase"
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm uppercase"
                     />
                   </div>
 
@@ -528,7 +525,7 @@ export default function RegisterPage() {
                         onChange={handleCardChange}
                         placeholder="MM/YY" 
                         required
-                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -540,14 +537,14 @@ export default function RegisterPage() {
                         onChange={handleCardChange}
                         placeholder="123" 
                         required
-                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Price Box */}
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex justify-between items-center text-sm">
+                <div className="bg-orange-50/40 border border-orange-100/80 rounded-2xl p-4 flex justify-between items-center text-sm shadow-sm">
                   <div>
                     <span className="block font-bold text-slate-900">Suscripción Mensual</span>
                     <span className="text-xs text-slate-500">Cancela cuando desees.</span>
@@ -589,14 +586,14 @@ export default function RegisterPage() {
                   </p>
                 </div>
 
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-3 text-left max-w-md mx-auto text-xs">
-                  <div className="flex justify-between border-b border-slate-200/50 pb-2">
+                <div className="bg-emerald-50/40 border border-emerald-100/80 rounded-2xl p-6 space-y-3 text-left max-w-md mx-auto text-xs shadow-sm">
+                  <div className="flex justify-between border-b border-emerald-100/50 pb-2">
                     <span className="text-slate-500">Dirección Web Kiosko:</span>
                     <a href={`/${registeredSlug}`} target="_blank" className="font-bold text-orange-600 hover:underline">
                       mtriq.app/{registeredSlug}
                     </a>
                   </div>
-                  <div className="flex justify-between border-b border-slate-200/50 pb-2">
+                  <div className="flex justify-between border-b border-emerald-100/50 pb-2">
                     <span className="text-slate-500">Usuario de Acceso:</span>
                     <span className="font-bold text-slate-900">{formData.email}</span>
                   </div>
@@ -628,10 +625,7 @@ export default function RegisterPage() {
             <span>Garantía de Cancelación 24/7</span>
           </div>
 
-        </div>
-
-        {/* RIGHT COLUMN: Ecosystem Checklist & Benefits */}
-        <div className="bg-white border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-between shadow-lg relative overflow-hidden">
+         <div className="bg-slate-50/40 border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-between shadow-lg relative overflow-hidden">
           
           <div className="space-y-6">
             <div>
@@ -650,7 +644,7 @@ export default function RegisterPage() {
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
                 return (
-                  <div key={index} className="flex gap-4 p-3 bg-slate-50 border border-slate-200/60 rounded-2xl hover:bg-slate-100/50 transition-colors duration-150 group">
+                  <div key={index} className="flex gap-4 p-4 bg-white border border-slate-200/60 rounded-2xl shadow-sm hover:shadow hover:border-slate-300 transition-all duration-150 group">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${benefit.color} group-hover:scale-105 transition-transform`}>
                       <Icon className="w-5 h-5" />
                     </div>
@@ -664,7 +658,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-slate-200/60 bg-gradient-to-r from-orange-500/5 to-transparent p-4 rounded-2xl border border-orange-500/15 select-none">
+          <div className="mt-8 p-4 bg-white rounded-2xl border border-orange-200/60 shadow-sm select-none">
             <span className="text-lg font-black text-slate-800 block mb-1">Monto único de $29/mes</span>
             <p className="text-xs text-slate-500 leading-relaxed">
               No es contrato obligatorio. Puedes no renovar el mes si así lo decides. Tienes total flexibilidad y control sobre tu suscripción.
