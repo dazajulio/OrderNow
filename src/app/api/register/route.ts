@@ -138,7 +138,7 @@ export async function POST(request: Request) {
           slug,
           phone,
           address,
-          tax_id: JSON.stringify(backupDetails), // Save details here
+          tax_id: null, // Avoid injecting fallback contact details object here
           brand_color_primary: '#FF6B00',
           brand_color_secondary: '#1A1A2E',
           is_active: true,

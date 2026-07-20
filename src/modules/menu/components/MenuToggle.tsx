@@ -115,7 +115,7 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
 
     const { error } = await supabase
       .from('categories')
-      .insert({ restaurant_id: MTRIQ_ID, name: name.trim() });
+      .insert({ restaurant_id: restaurantId, name: name.trim() });
     
     if (error) alert('Error al crear la categoría');
     else loadMenu();

@@ -43,6 +43,12 @@ CREATE TABLE public.restaurants (
     upsell_item_1_id    UUID,
     upsell_item_2_id    UUID,
     super_admin_password TEXT DEFAULT 'admin1234',
+    admin_pin           TEXT DEFAULT '1234',
+    is_first_login      BOOLEAN NOT NULL DEFAULT true,
+    contact_name        TEXT,
+    instagram           TEXT,
+    facebook            TEXT,
+    tiktok              TEXT,
     created_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   
@@ -457,6 +463,86 @@ CREATE POLICY "Enable insert for everyone" ON public.leads FOR INSERT WITH CHECK
 CREATE POLICY "Demo allow ALL on leads" ON public.leads FOR ALL USING (true);
 
 COMMENT ON TABLE public.leads IS 'Solicitudes de prueba gratuita (Marketing). El Super-Admin las convierte en tenants reales desde /admin.';
+
+-- ============================================================================
+-- TRIGGER: Inicializar automáticamente nuevos restaurantes
+-- ============================================================================
+CREATE OR REPLACE FUNCTION public.initialize_new_restaurant()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  v_cat_especialidades_id UUID;
+  v_cat_bebidas_id UUID;
+  v_prod_burger_id UUID;
+  v_prod_papas_id UUID;
+  v_prod_bebida_id UUID;
+  v_group_termino_id UUID;
+  v_group_extras_id UUID;
+BEGIN
+  -- 1. Insertar mesas por defecto
+  INSERT INTO public.tables (restaurant_id, table_number, label) VALUES
+    (NEW.id, 1, 'Mesa 1'),
+    (NEW.id, 2, 'Mesa 2'),
+    (NEW.id, 3, 'Mesa 3'),
+    (NEW.id, 4, 'Mesa 4'),
+    (NEW.id, 5, 'Mesa 5'),
+    (NEW.id, 6, 'Mesa 6');
+
+  -- 2. Insertar categorías por defecto
+  INSERT INTO public.categories (restaurant_id, name, icon, order_index) VALUES
+    (NEW.id, 'Especialidades', 'beef', 1)
+    RETURNING id INTO v_cat_especialidades_id;
+
+  INSERT INTO public.categories (restaurant_id, name, icon, order_index) VALUES
+    (NEW.id, 'Bebidas', 'cup-soda', 2)
+    RETURNING id INTO v_cat_bebidas_id;
+
+  -- 3. Insertar platos/productos por defecto
+  INSERT INTO public.products (restaurant_id, category_id, name, description, base_price, is_featured, order_index) VALUES
+    (NEW.id, v_cat_especialidades_id, 'Burger Master', 'Carne angus, queso cheddar fundido y salsa de la casa', 9.99, true, 1)
+    RETURNING id INTO v_prod_burger_id;
+
+  INSERT INTO public.products (restaurant_id, category_id, name, description, base_price, is_featured, order_index) VALUES
+    (NEW.id, v_cat_especialidades_id, 'Papas Rústicas', 'Papas fritas sazonadas con finas hierbas y parmesano', 3.99, false, 2)
+    RETURNING id INTO v_prod_papas_id;
+
+  INSERT INTO public.products (restaurant_id, category_id, name, description, base_price, is_featured, order_index) VALUES
+    (NEW.id, v_cat_bebidas_id, 'Limonada Fresa', 'Refrescante limonada natural con infusión de fresa', 2.50, false, 3)
+    RETURNING id INTO v_prod_bebida_id;
+
+  -- 4. Asignar sugerencias de venta (Upsell) por defecto
+  UPDATE public.restaurants
+  SET upsell_item_1_id = v_prod_burger_id,
+      upsell_item_2_id = v_prod_papas_id
+  WHERE id = NEW.id;
+
+  -- 5. Crear modificadores para la hamburguesa
+  INSERT INTO public.modifier_groups (restaurant_id, product_id, name, is_required, min_selections, max_selections, order_index) VALUES
+    (NEW.id, v_prod_burger_id, 'Término de cocción', true, 1, 1, 1)
+    RETURNING id INTO v_group_termino_id;
+
+  INSERT INTO public.modifier_groups (restaurant_id, product_id, name, is_required, min_selections, max_selections, order_index) VALUES
+    (NEW.id, v_prod_burger_id, 'Extras sugeridos', false, 0, 3, 2)
+    RETURNING id INTO v_group_extras_id;
+
+  INSERT INTO public.modifiers (group_id, name, extra_price, order_index) VALUES
+    (v_group_termino_id, 'Término Medio', 0.00, 1),
+    (v_group_termino_id, 'Tres Cuartos', 0.00, 2),
+    (v_group_termino_id, 'Bien Cocido', 0.00, 3),
+    (v_group_extras_id, 'Queso Extra', 1.50, 1),
+    (v_group_extras_id, 'Tocineta Adicional', 2.00, 2);
+
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_initialize_new_restaurant ON public.restaurants;
+CREATE TRIGGER trg_initialize_new_restaurant
+  AFTER INSERT ON public.restaurants
+  FOR EACH ROW
+  EXECUTE FUNCTION public.initialize_new_restaurant();
 
 -- ============================================================================
 -- FIN DEL ESQUEMA

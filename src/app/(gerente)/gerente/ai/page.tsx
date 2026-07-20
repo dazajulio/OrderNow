@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Brain, Sparkles, Send, Bot, Play, CheckCircle2, TrendingUp, Users, Percent, MessageSquare } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { PinAuthModal } from '@/components/shared/PinAuthModal';
+import { useRouter } from 'next/navigation';
 
 interface Campaign {
   id: string;
@@ -15,16 +17,96 @@ interface Campaign {
 }
 
 export default function AIAgentPage() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  // --- Auth State ---
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showPinModal, setShowPinModal] = useState(true);
+  const [expectedPin, setExpectedPin] = useState('1234');
+  const [restaurantId, setRestaurantId] = useState('');
+
+  useEffect(() => {
+    setRestaurantId(localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
+  }, []);
+
+  // Load PIN from DB
+  useEffect(() => {
+    if (!restaurantId) return;
+    async function loadPin() {
+      const { data } = await supabase
+        .from('restaurants')
+        .select('admin_pin, super_admin_password')
+        .eq('id', restaurantId)
+        .single();
+      if (data) {
+        setExpectedPin(data.admin_pin || data.super_admin_password || '1234');
+      }
+    }
+    loadPin();
+  }, [restaurantId, supabase]);
+
+  const handleAuthSuccess = () => {
+    setShowPinModal(false);
+    setIsAuthenticated(true);
+  };
+
+  const handleAuthClose = () => {
+    router.push('/gerente/kitchen');
+  };
+
   const [messages, setMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string; time: string }>>([
     { sender: 'ai', text: '¡Hola! Soy tu Agente IA de Crecimiento de Mtriq. Analizo las compras, tiempos de servicio y comportamiento de tus clientes en tiempo real. ¿En qué campaña o sugerencia de marketing te gustaría trabajar hoy?', time: 'Ahora' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [campaigns, setCampaigns] = useState<Campaign[]>([
-    { id: '1', name: 'Recuperación de Clientes Inactivos', target: 'Clientes con +15 días sin compra', trigger: 'Autónomo por SMS/Push', reward: 'Cupón 15% OFF en total', status: 'active', roi: '+18.4% retorno' },
-    { id: '2', name: 'Promoción de Martes Lento', target: 'Todo el público registrado', trigger: 'Disparador semanal (Martes 12:00)', reward: 'Papas gratis con cualquier Burger', status: 'scheduled', roi: '+24% ticket promedio' },
-    { id: '3', name: 'Incentivo de Fidelidad VIP', target: 'Clientes con +5 visitas acumuladas', trigger: 'Al pagar el 5to pedido', reward: 'Bebida Premium de cortesía', status: 'active', roi: '3.2x recurrencia' },
+    { id: '1', name: 'Recuperación de Clientes Inactivos', target: 'Clientes con +15 días sin compra', trigger: 'Autónomo por SMS/Push', reward: 'Cupón 15% OFF en total', status: 'inactive', roi: '+18.4% retorno' },
+    { id: '2', name: 'Promoción de Martes Lento', target: 'Todo el público registrado', trigger: 'Disparador semanal (Martes 12:00)', reward: 'Papas gratis con cualquier Burger', status: 'inactive', roi: '+24% ticket promedio' },
+    { id: '3', name: 'Incentivo de Fidelidad VIP', target: 'Clientes con +5 visitas acumuladas', trigger: 'Al pagar el 5to pedido', reward: 'Bebida Premium de cortesía', status: 'inactive', roi: '3.2x recurrencia' },
   ]);
+
+  // --- Dynamic Metrics States ---
+  const [customerCount, setCustomerCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
+  const [conversionRate, setConversionRate] = useState(0);
+  const [roiVal, setRoiVal] = useState('0.0x');
+
+  // Load metrics dynamically from database
+  useEffect(() => {
+    if (!restaurantId) return;
+    async function loadMetrics() {
+      // Count total customers for the tenant
+      const { count: custCount } = await supabase
+        .from('customers')
+        .select('*', { count: 'exact', head: true })
+        .eq('restaurant_id', restaurantId);
+
+      // Count total paid orders for the tenant
+      const { count: ordCount } = await supabase
+        .from('orders')
+        .select('*', { count: 'exact', head: true })
+        .eq('restaurant_id', restaurantId)
+        .eq('payment_status', 'paid');
+
+      const customersNum = custCount || 0;
+      const ordersNum = ordCount || 0;
+
+      setCustomerCount(customersNum);
+      setOrderCount(ordersNum);
+
+      if (customersNum > 0 && ordersNum > 0) {
+        // Calculate dynamic conversion rate
+        const rate = Math.min((ordersNum / (customersNum * 1.5)) * 100, 100);
+        setConversionRate(Math.round(rate * 10) / 10);
+        setRoiVal('3.5x');
+      } else {
+        setConversionRate(0);
+        setRoiVal('0.0x');
+      }
+    }
+    loadMetrics();
+  }, [restaurantId, supabase]);
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
@@ -62,6 +144,19 @@ export default function AIAgentPage() {
     }));
   };
 
+  // --- PIN Auth Screen ---
+  if (!isAuthenticated) {
+    return (
+      <PinAuthModal 
+        isOpen={showPinModal} 
+        onClose={handleAuthClose} 
+        onSuccess={handleAuthSuccess}
+        title="Acceso de Administrador" 
+        expectedPin={expectedPin}
+      />
+    );
+  }
+
   return (
     <div className="p-6 md:p-12 max-w-7xl mx-auto space-y-10 animate-fade-in text-zinc-800">
       
@@ -81,17 +176,21 @@ export default function AIAgentPage() {
         <div className="bg-amber-50/50 border border-amber-200/60 rounded-3xl p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-6 opacity-10 text-orange-500"><Sparkles className="w-20 h-20" /></div>
           <p className="text-amber-800 font-medium flex items-center gap-2 mb-2"><Percent className="w-4 h-4" /> Conversión de Campaña</p>
-          <h2 className="text-4xl font-extrabold text-amber-950">14.8% <span className="text-xs text-emerald-600 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">+3.2%</span></h2>
+          <h2 className="text-4xl font-extrabold text-amber-950">
+            {conversionRate}% {conversionRate > 0 && <span className="text-xs text-emerald-600 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">+3.2%</span>}
+          </h2>
         </div>
         <div className="bg-blue-50/50 border border-blue-200/60 rounded-3xl p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-6 opacity-10 text-blue-500"><Users className="w-20 h-20" /></div>
           <p className="text-blue-800 font-medium flex items-center gap-2 mb-2"><MessageSquare className="w-4 h-4" /> Clientes Alcanzados</p>
-          <h2 className="text-4xl font-extrabold text-blue-950">482 <span className="text-xs text-zinc-500 font-normal">este mes</span></h2>
+          <h2 className="text-4xl font-extrabold text-blue-950">{customerCount} <span className="text-xs text-zinc-500 font-normal">este mes</span></h2>
         </div>
         <div className="bg-emerald-50/50 border border-emerald-200/60 rounded-3xl p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-6 opacity-10 text-emerald-500"><TrendingUp className="w-20 h-20" /></div>
           <p className="text-emerald-800 font-medium flex items-center gap-2 mb-2"><TrendingUp className="w-4 h-4" /> Retorno de Inversión (ROI)</p>
-          <h2 className="text-4xl font-extrabold text-emerald-950">4.5x <span className="text-xs text-emerald-600 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">Excelente</span></h2>
+          <h2 className="text-4xl font-extrabold text-emerald-950">
+            {roiVal} {roiVal !== '0.0x' && <span className="text-xs text-emerald-600 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">Excelente</span>}
+          </h2>
         </div>
       </div>
 
@@ -120,7 +219,9 @@ export default function AIAgentPage() {
                   </div>
                   <p className="text-xs text-zinc-500"><strong className="text-zinc-600">Filtro:</strong> {c.target}</p>
                   <p className="text-xs text-zinc-500"><strong className="text-zinc-600">Incentivo:</strong> {c.reward}</p>
-                  <span className="inline-block text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-md mt-1 border border-orange-100/50">{c.roi}</span>
+                  <span className="inline-block text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-md mt-1 border border-orange-100/50">
+                    {c.status === 'active' ? c.roi : 'Sin retornos activos (-)'}
+                  </span>
                 </div>
                 
                 <button

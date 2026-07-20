@@ -110,12 +110,11 @@ export default function KioskPage({ params }: KioskPageProps) {
     async function loadData() {
       const supabase = createClient();
       
-      // Get restaurant ID using MTRIQ_ID
-      const targetId = process.env.NEXT_PUBLIC_RESTAURANT_ID || MTRIQ_ID;
+      // Get restaurant by slug
       const { data } = await supabase
         .from('restaurants')
         .select('*')
-        .eq('id', targetId)
+        .eq('slug', slug)
         .eq('is_active', true)
         .single();
         
@@ -255,7 +254,7 @@ export default function KioskPage({ params }: KioskPageProps) {
       const { data: newCust, error } = await supabase
         .from('customers')
         .insert({
-          restaurant_id: MTRIQ_ID,
+          restaurant_id: restaurantId || MTRIQ_ID,
           name: data.name,
           email: data.email,
           phone: data.phone || null
@@ -310,7 +309,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({
-        restaurant_id: MTRIQ_ID,
+        restaurant_id: restaurantId || MTRIQ_ID,
         table_id: (targetTableId && targetTableId !== 'takeaway' && isValidUUID(targetTableId)) ? targetTableId : null,
         customer_id: customerId || null,
         status: 'pending',
@@ -588,26 +587,36 @@ export default function KioskPage({ params }: KioskPageProps) {
         </div>
       
       <div className="p-4 space-y-12 animate-fade-in">
-        {categories.map(category => {
-          const categoryProducts = products.filter(p => p.category_id === category.id);
-          if (categoryProducts.length === 0) return null;
-          
-          return (
-            <div key={category.id} id={`category-${category.id}`} className="scroll-mt-24">
-              <h2 className="text-2xl font-bold text-white mb-6">{category.name}</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {categoryProducts.map(product => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onAdd={handleAddToCart}
-                    currency={currency}
-                  />
-                ))}
+        {categories.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center px-4 bg-zinc-900/40 rounded-3xl border border-zinc-800">
+            <span className="text-4xl mb-4">🍽️</span>
+            <h3 className="text-xl font-bold text-white mb-2">Menú en preparación</h3>
+            <p className="text-sm text-zinc-400 max-w-sm">
+              El restaurante está configurando su menú en este momento. Por favor, vuelve a cargar la página en unos minutos.
+            </p>
+          </div>
+        ) : (
+          categories.map(category => {
+            const categoryProducts = products.filter(p => p.category_id === category.id);
+            if (categoryProducts.length === 0) return null;
+            
+            return (
+              <div key={category.id} id={`category-${category.id}`} className="scroll-mt-24">
+                <h2 className="text-2xl font-bold text-white mb-6">{category.name}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {categoryProducts.map(product => (
+                    <ProductCard 
+                      key={product.id} 
+                      product={product} 
+                      onAdd={handleAddToCart}
+                      currency={currency}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
 
       </div>

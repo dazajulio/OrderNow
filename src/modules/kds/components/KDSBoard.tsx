@@ -20,6 +20,8 @@ import {
   type ShiftStartButtonHandle,
 } from '@/modules/kds/components/ShiftStartButton';
 import type { OrderWithItems, OrderStatus } from '@/types/database';
+import { useKdsStore } from '@/modules/kds/stores/kds-store';
+import { useRouter } from 'next/navigation';
 
 // ----------------------------------------------------------------------------
 // Types
@@ -79,6 +81,29 @@ const COLUMNS: ColumnConfig[] = [
 
 export function KDSBoard({ restaurantId }: KDSBoardProps) {
   const shiftButtonRef = useRef<ShiftStartButtonHandle>(null);
+  const router = useRouter();
+  const { isUnlocked } = useKdsStore();
+
+  // Block page close or reload if shift is active
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isUnlocked) {
+        e.preventDefault();
+        e.returnValue = 'Atención: Tienes un turno activo. Debes desactivar el turno antes de salir.';
+        return e.returnValue;
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isUnlocked]);
+
+  const handleLogout = () => {
+    if (isUnlocked) {
+      alert('Atención: Tienes un turno activo. Debes desactivar el turno antes de salir.');
+      return;
+    }
+    router.push('/gerente/settings');
+  };
 
   // Refs for auto-scrolling columns
   const columnRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -188,6 +213,13 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
           </div>
 
           <ShiftStartButton ref={shiftButtonRef} />
+          
+          <button
+            onClick={handleLogout}
+            className="rounded-xl px-5 py-3.5 text-sm font-bold bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-500/10 active:scale-[0.98] transition-all"
+          >
+            Salir
+          </button>
         </div>
       </header>
 

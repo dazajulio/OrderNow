@@ -6,25 +6,33 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
+import { OnboardingModal } from '@/components/shared/OnboardingModal';
 
 export default function GerenteLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [restaurantName, setRestaurantName] = useState('Cargando...');
   const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
+  const [restaurantId, setRestaurantId] = useState<string>('');
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     async function fetchRestaurant() {
       const supabase = createClient();
       const targetId = localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || 'a12bc706-ffc2-4959-ba03-58ebecada86a';
+      setRestaurantId(targetId);
+      
       const { data } = await supabase
         .from('restaurants')
-        .select('name, logo_url')
+        .select('id, name, logo_url, is_first_login')
         .eq('id', targetId)
         .single();
       
       if (data) {
         setRestaurantName(data.name);
         setRestaurantLogo(data.logo_url);
+        if (data.is_first_login) {
+          setShowOnboarding(true);
+        }
       } else {
         setRestaurantName('Dashboard');
       }
@@ -108,6 +116,12 @@ export default function GerenteLayout({ children }: { children: React.ReactNode 
           })}
         </nav>
       </div>
+      <OnboardingModal 
+        isOpen={showOnboarding}
+        restaurantId={restaurantId}
+        restaurantName={restaurantName}
+        onComplete={() => setShowOnboarding(false)}
+      />
     </div>
   );
 }

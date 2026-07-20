@@ -15,6 +15,8 @@ export default function SettingsAdminPage() {
   // --- Auth ---
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showPinModal, setShowPinModal] = useState(true);
+  const [expectedPin, setExpectedPin] = useState('1234');
+  const [showDefaultPinWarning, setShowDefaultPinWarning] = useState(false);
 
   // --- Settings State ---
   const [restaurant, setRestaurant] = useState<any>(null);
@@ -39,10 +41,29 @@ export default function SettingsAdminPage() {
     setRestaurantId(localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
   }, []);
 
+  // Load PIN from DB
+  useEffect(() => {
+    if (!restaurantId) return;
+    async function loadPin() {
+      const { data } = await supabase
+        .from('restaurants')
+        .select('admin_pin, super_admin_password')
+        .eq('id', restaurantId)
+        .single();
+      if (data) {
+        setExpectedPin(data.admin_pin || data.super_admin_password || '1234');
+      }
+    }
+    loadPin();
+  }, [restaurantId]);
+
   // --- Auth Handlers ---
   const handleAuthSuccess = () => {
     setShowPinModal(false);
     setIsAuthenticated(true);
+    if (expectedPin === '1234') {
+      setShowDefaultPinWarning(true);
+    }
   };
 
   const handleAuthClose = () => {
@@ -128,6 +149,7 @@ export default function SettingsAdminPage() {
     const { error } = await supabase
       .from('restaurants')
       .update({
+        admin_pin: newAdminPassword,
         super_admin_password: newAdminPassword
       } as any)
       .eq('id', restaurantId);
@@ -136,7 +158,8 @@ export default function SettingsAdminPage() {
     if (error) {
       alert('Error al actualizar la contraseña: ' + error.message);
     } else {
-      alert('Contraseña de Super-Admin actualizada correctamente.');
+      alert('Contraseña de Administrador actualizada correctamente.');
+      setExpectedPin(newAdminPassword);
       setNewAdminPassword('');
       setConfirmAdminPassword('');
     }
@@ -150,7 +173,92 @@ export default function SettingsAdminPage() {
         onClose={handleAuthClose} 
         onSuccess={handleAuthSuccess}
         title="Acceso de Administrador" 
+        expectedPin={expectedPin}
       />
+    );
+  }
+
+  // --- Default PIN Blocking Warning Modal ---
+  if (showDefaultPinWarning) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
+        <div className="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scale-in text-center">
+          <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto text-red-500">
+            <Lock className="w-6 h-6" />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-xl font-bold text-white">PIN por Defecto Detectado</h3>
+            <p className="text-sm text-zinc-400">
+              Estás utilizando la clave de acceso por defecto. Por seguridad, debes actualizarla inmediatamente para poder acceder al panel de administración.
+            </p>
+          </div>
+
+          <div className="space-y-4 text-left">
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Nuevo PIN (4 dígitos)</label>
+              <input 
+                type="password"
+                maxLength={4}
+                value={newAdminPassword}
+                onChange={(e) => setNewAdminPassword(e.target.value.replace(/\D/g, ''))}
+                placeholder="Ej: 5678"
+                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Confirmar PIN</label>
+              <input 
+                type="password"
+                maxLength={4}
+                value={confirmAdminPassword}
+                onChange={(e) => setConfirmAdminPassword(e.target.value.replace(/\D/g, ''))}
+                placeholder="Ej: 5678"
+                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <button 
+              onClick={async () => {
+                if (newAdminPassword.length !== 4) {
+                  alert('El PIN debe tener exactamente 4 dígitos.');
+                  return;
+                }
+                if (newAdminPassword === '1234') {
+                  alert('El nuevo PIN no puede ser el PIN por defecto "1234".');
+                  return;
+                }
+                if (newAdminPassword !== confirmAdminPassword) {
+                  alert('Los PIN introducidos no coinciden.');
+                  return;
+                }
+                setIsSavingPassword(true);
+                const { error } = await supabase
+                  .from('restaurants')
+                  .update({
+                    admin_pin: newAdminPassword,
+                    super_admin_password: newAdminPassword
+                  } as any)
+                  .eq('id', restaurantId);
+                setIsSavingPassword(false);
+                if (error) {
+                  alert('Error al guardar el nuevo PIN: ' + error.message);
+                } else {
+                  alert('PIN de Administrador actualizado con éxito.');
+                  setExpectedPin(newAdminPassword);
+                  setShowDefaultPinWarning(false);
+                  setNewAdminPassword('');
+                  setConfirmAdminPassword('');
+                }
+              }}
+              disabled={isSavingPassword || newAdminPassword.length !== 4 || newAdminPassword !== confirmAdminPassword}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20"
+            >
+              {isSavingPassword ? 'Guardando...' : 'Actualizar PIN e Ingresar'}
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 
