@@ -4,7 +4,7 @@
 // COMPONENTE: KDSBoard — Tablero Kanban del Kitchen Display System
 // ============================================================================
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Flame,
   ChefHat,
@@ -83,6 +83,25 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
   const shiftButtonRef = useRef<ShiftStartButtonHandle>(null);
   const router = useRouter();
   const { isUnlocked } = useKdsStore();
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  // Capture PWA install prompt
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`PWA Installation outcome: ${outcome}`);
+    setDeferredPrompt(null);
+  };
 
   // Block page close or reload if shift is active
   useEffect(() => {
@@ -213,6 +232,15 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
           </div>
 
           <ShiftStartButton ref={shiftButtonRef} />
+          
+          {deferredPrompt && (
+            <button
+              onClick={handleInstallClick}
+              className="rounded-xl px-5 py-3.5 text-sm font-bold bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/10 active:scale-[0.98] transition-all flex items-center gap-1.5"
+            >
+              Descargar KDS
+            </button>
+          )}
           
           <button
             onClick={handleLogout}

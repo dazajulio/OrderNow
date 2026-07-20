@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: 'FoodTech SaaS — Pedidos Móviles para Restaurantes',
   description:
     'Plataforma multi-tenant de pedidos QR para restaurantes Fast Food y Fast Casual. Kiosko móvil, Kitchen Display System, y gestión de menú en tiempo real.',
+  manifest: '/manifest.json',
   icons: {
     icon: [
       {
