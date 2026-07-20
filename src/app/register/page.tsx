@@ -442,7 +442,10 @@ export default function RegisterPage() {
                 >
                   Continuar al Pago <ChevronRight className="w-5 h-5" />
                 </button>
-                 {/* STEP 2: Payment Simulation */}
+              </form>
+            )}
+
+            {/* STEP 2: Payment Simulation */}
             {step === 'payment' && (
               <form onSubmit={handleProcessRegistration} className="space-y-6">
                 <div className="space-y-2">
@@ -625,7 +628,10 @@ export default function RegisterPage() {
             <span>Garantía de Cancelación 24/7</span>
           </div>
 
-         <div className="bg-slate-50/40 border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-between shadow-lg relative overflow-hidden">
+        </div>
+
+        {/* RIGHT COLUMN: Ecosystem Checklist & Benefits */}
+        <div className="bg-slate-50/40 border border-slate-200/80 p-6 md:p-10 rounded-3xl flex flex-col justify-between shadow-lg relative overflow-hidden">
           
           <div className="space-y-6">
             <div>
