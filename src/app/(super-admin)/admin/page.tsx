@@ -263,6 +263,19 @@ export default function SuperAdminDashboard() {
     }
   });
 
+  // Helper to count orders today per restaurant
+  const getRestaurantStats = (restId: string) => {
+    const restOrders = orders.filter(o => o.restaurant_id === restId);
+    const restOrdersToday = restOrders.filter(o => new Date(o.created_at) >= startOfToday).length;
+    const restPaidOrders = restOrders.filter(o => o.payment_status === 'paid' && o.status !== 'cancelled');
+    const restGmv = restPaidOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+    return {
+      ordersToday: restOrdersToday,
+      totalGmv: restGmv,
+      ordersCount: restOrders.length
+    };
+  };
+
   // Top 5 restaurants by sales volume
   const topRestaurants = Object.values(restaurantStatsMap)
     .sort((a, b) => b.sales - a.sales)
