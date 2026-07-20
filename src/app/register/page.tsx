@@ -258,6 +258,37 @@ export default function RegisterPage() {
             </span>
           </div>
 
+          {/* Visual Process Flow (Steps Graphics) */}
+          {step !== 'success' && (
+            <div className="grid grid-cols-3 gap-3 mb-6 bg-zinc-950/40 p-4 rounded-2xl border border-white/5 text-center select-none animate-fade-in">
+              <div className="space-y-1">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-bold transition-all ${
+                  step === 'details' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-zinc-800 text-zinc-500'
+                }`}>
+                  🏢
+                </div>
+                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'details' ? 'text-white' : 'text-zinc-500'}`}>1. Configura</span>
+                <span className="block text-[8.5px] text-zinc-500 leading-tight">Nombre y contacto</span>
+              </div>
+              <div className="space-y-1 border-x border-white/5">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-bold transition-all ${
+                  step === 'payment' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-zinc-800 text-zinc-500'
+                }`}>
+                  💳
+                </div>
+                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'payment' ? 'text-white' : 'text-zinc-500'}`}>2. Activa</span>
+                <span className="block text-[8.5px] text-zinc-500 leading-tight">$29/mes cancelable</span>
+              </div>
+              <div className="space-y-1">
+                <div className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-500 flex items-center justify-center mx-auto text-xs font-bold">
+                  🚀
+                </div>
+                <span className="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider">3. Despega</span>
+                <span className="block text-[8.5px] text-zinc-500 leading-tight">Accede al Dashboard</span>
+              </div>
+            </div>
+          )}
+
           {/* Form Content */}
           <div className="flex-1 flex flex-col justify-center">
             
@@ -285,7 +316,7 @@ export default function RegisterPage() {
                       value={formData.restaurantName}
                       onChange={handleFormChange}
                       required 
-                      placeholder="Ej: Burger Palace" 
+                      placeholder="Ej: Tu Restaurante" 
                       className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
@@ -299,7 +330,7 @@ export default function RegisterPage() {
                       value={formData.contactName}
                       onChange={handleFormChange}
                       required 
-                      placeholder="Ej: Julio Daza" 
+                      placeholder="Ej: Tu Nombre Completo" 
                       className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                     />
                   </div>
@@ -482,7 +513,7 @@ export default function RegisterPage() {
                       name="name" 
                       value={cardData.name}
                       onChange={e => setCardData({...cardData, name: e.target.value.toUpperCase()})}
-                      placeholder="JUAN PEREZ" 
+                      placeholder="TU NOMBRE COMPLETO" 
                       required
                       className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm uppercase"
                     />

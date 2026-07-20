@@ -78,7 +78,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
               className={`block w-full pl-11 pr-4 py-3.5 bg-zinc-900 border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
                 errors.name ? 'border-red-500' : 'border-zinc-800'
               }`}
-              placeholder="Ej. Juan Pérez"
+              placeholder="Ej. Tu Nombre Completo"
               disabled={isLoading}
             />
           </div>

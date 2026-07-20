@@ -72,7 +72,7 @@ export function RegisterCTA() {
                   id="restaurantName"
                   name="restaurantName"
                   required
-                  placeholder="Burger Palace"
+                  placeholder="Ej: Tu Restaurante"
                   className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                 />
               </div>
@@ -84,7 +84,7 @@ export function RegisterCTA() {
                   id="contactName"
                   name="contactName"
                   required
-                  placeholder="Julio Daza"
+                  placeholder="Ej: Tu Nombre Completo"
                   className="w-full rounded-xl bg-white border border-slate-200 px-4 py-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
                 />
               </div>
