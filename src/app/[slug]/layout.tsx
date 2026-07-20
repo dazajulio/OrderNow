@@ -2,6 +2,8 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 interface SlugLayoutProps {
   children: React.ReactNode;
   params: Promise<{ slug: string }>;
