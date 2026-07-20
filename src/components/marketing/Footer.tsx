@@ -19,12 +19,12 @@ export function Footer() {
           <a href="#registro" className="hover:text-slate-700 transition-colors">Contacto</a>
           <span className="text-slate-200">|</span>
           <a 
-            href="https://mtriq.app" 
+            href="https://dazajulio.com" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="hover:bg-slate-800 transition-colors font-bold text-white text-xs tracking-wider uppercase bg-[#0f1627] px-4.5 py-1.5 rounded-full border border-slate-800 shadow-sm"
           >
-            POWERED BY MTRIQ.APP
+            Powered By: dazajulio.com
           </a>
         </div>
       </div>
