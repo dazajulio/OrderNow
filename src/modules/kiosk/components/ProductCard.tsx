@@ -16,9 +16,9 @@ export function ProductCard({ product, onAdd, currency }: ProductCardProps) {
   const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
-    <div className="group flex flex-col bg-zinc-900/40 border border-zinc-800/50 rounded-2xl overflow-hidden card-hover">
+    <div className="group flex flex-col bg-white shadow-sm/40 border border-gray-200/50 rounded-2xl overflow-hidden card-hover">
       {/* Product Image Area */}
-      <div className="relative aspect-[4/3] w-full bg-zinc-900 overflow-hidden">
+      <div className="relative aspect-[4/3] w-full bg-white shadow-sm overflow-hidden">
         {product.is_featured && (
           <div className="absolute top-3 left-3 z-10 brand-bg text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">
             Popular
@@ -36,7 +36,7 @@ export function ProductCard({ product, onAdd, currency }: ProductCardProps) {
             }`}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-zinc-800/50 text-zinc-600">
+          <div className="w-full h-full flex items-center justify-center bg-slate-50 text-gray-600">
             <span className="text-sm">Sin imagen</span>
           </div>
         )}
@@ -46,7 +46,7 @@ export function ProductCard({ product, onAdd, currency }: ProductCardProps) {
       <div className="p-4 flex flex-col flex-grow">
         <h3 className="font-bold text-lg text-white mb-1">{product.name}</h3>
         {product.description && (
-          <p className="text-sm text-zinc-400 mb-4 line-clamp-2">
+          <p className="text-sm text-gray-500 mb-4 line-clamp-2">
             {product.description}
           </p>
         )}

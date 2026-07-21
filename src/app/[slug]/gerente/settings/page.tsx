@@ -192,40 +192,40 @@ export default function SettingsAdminPage() {
   // --- Default PIN Blocking Warning Modal ---
   if (showDefaultPinWarning) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
-        <div className="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scale-in text-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-50/90 backdrop-blur-md">
+        <div className="w-full max-w-sm bg-white shadow-sm border border-gray-200 rounded-3xl p-6 shadow-2xl space-y-6 animate-scale-in text-center">
           <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto text-red-500">
             <Lock className="w-6 h-6" />
           </div>
           <div className="space-y-2">
             <h3 className="text-xl font-bold text-white">PIN por Defecto Detectado</h3>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-500">
               Estás utilizando la clave de acceso por defecto. Por seguridad, debes actualizarla inmediatamente para poder acceder al panel de administración.
             </p>
           </div>
 
           <div className="space-y-4 text-left">
             <div>
-              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Nuevo PIN (4 dígitos)</label>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nuevo PIN (4 dígitos)</label>
               <input 
                 type="password"
                 maxLength={4}
                 value={newAdminPassword}
                 onChange={(e) => setNewAdminPassword(e.target.value.replace(/\D/g, ''))}
                 placeholder="Ej: 5678"
-                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full bg-slate-100 border border-gray-200 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Confirmar PIN</label>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Confirmar PIN</label>
               <input 
                 type="password"
                 maxLength={4}
                 value={confirmAdminPassword}
                 onChange={(e) => setConfirmAdminPassword(e.target.value.replace(/\D/g, ''))}
                 placeholder="Ej: 5678"
-                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full bg-slate-100 border border-gray-200 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
@@ -286,7 +286,7 @@ export default function SettingsAdminPage() {
   }
 
   if (isLoading) {
-    return <div className="p-12 flex justify-center"><div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin"/></div>;
+    return <div className="p-12 flex justify-center"><div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"/></div>;
   }
 
   // --- Reports Calculations ---
@@ -349,9 +349,9 @@ export default function SettingsAdminPage() {
       <div>
         <div className="flex items-center gap-3 mb-2">
           <BarChart3 className="w-8 h-8 text-orange-500" />
-          <h1 className="text-3xl font-bold text-white">Administrador</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Administrador</h1>
         </div>
-        <p className="text-zinc-400 text-lg">Reportes financieros, configuración del negocio y opciones del Kiosco.</p>
+        <p className="text-gray-500 text-lg">Reportes financieros, configuración del negocio y opciones del Kiosco.</p>
       </div>
 
       {/* ============================================================ */}
@@ -362,48 +362,48 @@ export default function SettingsAdminPage() {
           <div className="w-10 h-10 rounded-2xl bg-orange-500/20 text-orange-500 flex items-center justify-center">
             <TrendingUp className="w-5 h-5" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Reportes Financieros</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Reportes Financieros</h2>
         </div>
 
         {/* Top KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-amber-500/[0.08] border border-amber-500/20 rounded-3xl p-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-6 opacity-10 text-orange-500"><DollarSign className="w-24 h-24" /></div>
-            <p className="text-amber-800 dark:text-amber-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Hoy</p>
-            <h2 className="text-4xl font-extrabold text-amber-950 dark:text-amber-200">{formatPrice(todaySales, 'USD')}</h2>
+            <p className="text-amber-800  font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Hoy</p>
+            <h2 className="text-4xl font-extrabold text-amber-950 ">{formatPrice(todaySales, 'USD')}</h2>
           </div>
           <div className="bg-blue-500/[0.08] border border-blue-500/20 rounded-3xl p-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-6 opacity-10 text-blue-500"><TrendingUp className="w-24 h-24" /></div>
-            <p className="text-blue-800 dark:text-blue-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Semana</p>
-            <h2 className="text-4xl font-extrabold text-blue-950 dark:text-blue-200">{formatPrice(weekSales, 'USD')}</h2>
+            <p className="text-blue-800  font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Semana</p>
+            <h2 className="text-4xl font-extrabold text-blue-950 ">{formatPrice(weekSales, 'USD')}</h2>
           </div>
           <div className="bg-emerald-500/[0.08] border border-emerald-500/20 rounded-3xl p-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-6 opacity-10 text-emerald-500"><TrendingUp className="w-24 h-24" /></div>
-            <p className="text-emerald-800 dark:text-emerald-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Mes</p>
-            <h2 className="text-4xl font-extrabold text-emerald-950 dark:text-emerald-200">{formatPrice(monthSales, 'USD')}</h2>
+            <p className="text-emerald-800  font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Mes</p>
+            <h2 className="text-4xl font-extrabold text-emerald-950 ">{formatPrice(monthSales, 'USD')}</h2>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Top Products */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-6">
               <Package className="w-5 h-5 text-orange-500" />
               <h3 className="text-lg font-bold text-white">Productos más vendidos</h3>
             </div>
             <div className="space-y-4">
-              {topProducts.length === 0 && <p className="text-zinc-500 text-sm">No hay datos suficientes.</p>}
+              {topProducts.length === 0 && <p className="text-gray-400 text-sm">No hay datos suficientes.</p>}
               {topProducts.map((p, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-zinc-950 border border-zinc-800/50">
+                <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-gray-200/50">
                   <div className="flex items-center gap-4">
-                    <div className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center font-bold text-sm">
+                    <div className="w-8 h-8 rounded-full bg-slate-100 text-gray-500 flex items-center justify-center font-bold text-sm">
                       {i + 1}
                     </div>
                     <span className="font-medium text-white">{p.name}</span>
                   </div>
                   <div className="text-right">
                     <p className="text-orange-500 font-bold">{p.qty} unid.</p>
-                    <p className="text-xs text-zinc-500">{formatPrice(p.revenue, 'USD')}</p>
+                    <p className="text-xs text-gray-400">{formatPrice(p.revenue, 'USD')}</p>
                   </div>
                 </div>
               ))}
@@ -411,22 +411,22 @@ export default function SettingsAdminPage() {
           </div>
 
           {/* Top Customers */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-6">
               <Users className="w-5 h-5 text-emerald-500" />
               <h3 className="text-lg font-bold text-white">Mejores Clientes</h3>
             </div>
             <div className="space-y-4">
-              {topCustomers.length === 0 && <p className="text-zinc-500 text-sm">No hay clientes registrados con compras.</p>}
+              {topCustomers.length === 0 && <p className="text-gray-400 text-sm">No hay clientes registrados con compras.</p>}
               {topCustomers.map((c, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-zinc-950 border border-zinc-800/50">
+                <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-gray-200/50">
                   <div className="flex items-center gap-4">
                     <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-sm">
                       {c.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <span className="font-medium text-white block">{c.name}</span>
-                      <span className="text-xs text-zinc-500">{c.ordersCount} pedidos</span>
+                      <span className="text-xs text-gray-400">{c.ordersCount} pedidos</span>
                     </div>
                   </div>
                   <div className="text-right">
@@ -440,7 +440,7 @@ export default function SettingsAdminPage() {
       </section>
 
       {/* Divider */}
-      <hr className="border-zinc-800" />
+      <hr className="border-gray-200" />
 
       {/* ============================================================ */}
       {/* SECTION 2: CONFIGURACIÓN (Upsell + Datos del Negocio)       */}
@@ -450,26 +450,26 @@ export default function SettingsAdminPage() {
           <div className="w-10 h-10 rounded-2xl bg-orange-500/20 text-orange-500 flex items-center justify-center">
             <Building2 className="w-5 h-5" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Configuración</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Configuración</h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Venta Sugerida */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl h-fit">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 shadow-xl h-fit">
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <span className="text-orange-500">💰</span> Venta Sugerida (Upsell)
             </h2>
-            <p className="text-zinc-400 text-sm mb-6">
+            <p className="text-gray-500 text-sm mb-6">
               Selecciona los 2 productos que se ofrecerán al cliente justo antes de finalizar su pago en el kiosco.
             </p>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Producto Sugerido 1</label>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Producto Sugerido 1</label>
                 <select 
                   value={upsell1} 
                   onChange={(e) => setUpsell1(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="">-- Seleccionar producto --</option>
                   {products.map(p => (
@@ -479,11 +479,11 @@ export default function SettingsAdminPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Producto Sugerido 2</label>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Producto Sugerido 2</label>
                 <select 
                   value={upsell2} 
                   onChange={(e) => setUpsell2(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="">-- Seleccionar producto --</option>
                   {products.map(p => (
@@ -504,34 +504,34 @@ export default function SettingsAdminPage() {
           </div>
 
           {/* Seguridad del Sistema (Super-Admin Password) */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl h-fit">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 shadow-xl h-fit">
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <Lock className="w-5 h-5 text-orange-500" /> Seguridad de la Plataforma
             </h2>
-            <p className="text-zinc-400 text-sm mb-6">
+            <p className="text-gray-500 text-sm mb-6">
               Modifica la contraseña del Super-Admin para el acceso a la ruta de administración global (/admin).
             </p>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Nueva Contraseña</label>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Nueva Contraseña</label>
                 <input 
                   type="password"
                   value={newAdminPassword} 
                   onChange={(e) => setNewAdminPassword(e.target.value)}
                   placeholder="Mínimo 4 caracteres"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Confirmar Contraseña</label>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Confirmar Contraseña</label>
                 <input 
                   type="password"
                   value={confirmAdminPassword} 
                   onChange={(e) => setConfirmAdminPassword(e.target.value)}
                   placeholder="Confirmar nueva contraseña"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
                 />
               </div>
               
@@ -547,8 +547,8 @@ export default function SettingsAdminPage() {
           </div>
 
           {/* Datos del Negocio (Solo Lectura) */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
-            <div className="absolute top-4 right-4 bg-zinc-800 text-zinc-400 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+            <div className="absolute top-4 right-4 bg-slate-100 text-gray-500 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
               <Lock className="w-3 h-3" /> Solo lectura
             </div>
             
@@ -562,36 +562,36 @@ export default function SettingsAdminPage() {
                   <img src={restaurant?.logo_url || '/logo.svg'} alt="Logo" className="w-full h-full object-contain p-1" />
                 </div>
                 <div>
-                  <p className="text-sm text-zinc-500">Nombre de la Empresa</p>
+                  <p className="text-sm text-gray-400">Nombre de la Empresa</p>
                   <p className="text-lg font-bold text-white">{restaurant?.name || 'Cargando...'}</p>
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-zinc-800/50 p-4 rounded-xl">
-                  <p className="text-xs text-zinc-500 mb-1">Identificación Fiscal</p>
+                <div className="bg-slate-50 p-4 rounded-xl">
+                  <p className="text-xs text-gray-400 mb-1">Identificación Fiscal</p>
                   <p className="text-sm font-medium text-white">{restaurant?.tax_id || 'No registrada'}</p>
                 </div>
-                <div className="bg-zinc-800/50 p-4 rounded-xl">
-                  <p className="text-xs text-zinc-500 mb-1">Teléfono</p>
+                <div className="bg-slate-50 p-4 rounded-xl">
+                  <p className="text-xs text-gray-400 mb-1">Teléfono</p>
                   <p className="text-sm font-medium text-white">{restaurant?.phone || 'No registrado'}</p>
                 </div>
               </div>
               
-              <div className="bg-zinc-800/50 p-4 rounded-xl">
-                <p className="text-xs text-zinc-500 mb-1">Dirección</p>
+              <div className="bg-slate-50 p-4 rounded-xl">
+                <p className="text-xs text-gray-400 mb-1">Dirección</p>
                 <p className="text-sm font-medium text-white">{restaurant?.address || 'No registrada'}</p>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-zinc-800/50 p-4 rounded-xl">
-                  <p className="text-xs text-zinc-500 mb-1">Licencia de Uso</p>
+                <div className="bg-slate-50 p-4 rounded-xl">
+                  <p className="text-xs text-gray-400 mb-1">Licencia de Uso</p>
                   <p className="text-sm font-mono text-orange-400 truncate" title={restaurant?.license_code}>
                     {restaurant?.license_code || 'No registrada'}
                   </p>
                 </div>
-                <div className="bg-zinc-800/50 p-4 rounded-xl">
-                  <p className="text-xs text-zinc-500 mb-1">Fecha de Corte</p>
+                <div className="bg-slate-50 p-4 rounded-xl">
+                  <p className="text-xs text-gray-400 mb-1">Fecha de Corte</p>
                   <p className="text-sm font-medium text-white">
                     {restaurant?.license_valid_until 
                       ? new Date(restaurant.license_valid_until).toLocaleDateString() 

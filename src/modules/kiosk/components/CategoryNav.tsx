@@ -25,7 +25,7 @@ export function CategoryNav({ categories, activeId, onSelect }: CategoryNavProps
   }, [activeId]);
 
   return (
-    <div className="sticky top-0 z-40 w-full bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800 shadow-sm py-3">
+    <div className="sticky top-0 z-40 w-full bg-slate-50/80 backdrop-blur-xl border-b border-gray-200 shadow-sm py-3">
       <div 
         ref={scrollRef}
         className="flex overflow-x-auto gap-3 px-4 category-nav snap-x"
@@ -45,7 +45,7 @@ export function CategoryNav({ categories, activeId, onSelect }: CategoryNavProps
                 "flex items-center gap-2 whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all snap-start",
                 isActive 
                   ? "brand-bg text-white shadow-md shadow-black/20" 
-                  : "bg-zinc-900 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                  : "bg-white shadow-sm text-gray-500 hover:text-gray-900 hover:bg-slate-100"
               )}
             >
               {Icon && <Icon className="w-4 h-4" />}

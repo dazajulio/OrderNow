@@ -125,7 +125,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
   };
 
   if (isLoading) {
-    return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin"></div></div>;
+    return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"></div></div>;
   }
 
   return (
@@ -154,7 +154,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
         </button>
         <button 
           onClick={downloadAll}
-          className="bg-zinc-800 hover:bg-zinc-700 text-white font-medium py-3 px-6 rounded-xl flex items-center gap-2 transition-colors"
+          className="bg-slate-100 hover:bg-zinc-700 text-white font-medium py-3 px-6 rounded-xl flex items-center gap-2 transition-colors"
         >
           <Download className="w-5 h-5" />
           Descargar Todos
@@ -198,7 +198,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button 
                   onClick={() => handleEditTable(table.id, table.label || '')}
-                  className="p-2 bg-black/50 hover:bg-black/80 rounded-lg text-white backdrop-blur-sm transition-colors"
+                  className="p-2 bg-white/50 hover:bg-white/80 rounded-lg text-white backdrop-blur-sm transition-colors"
                   title="Editar"
                 >
                   <Edit2 className="w-4 h-4" />
@@ -224,7 +224,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
               
               <div className="p-8 flex-1 flex flex-col items-center justify-center bg-white">
                 <img src={qrUrl} alt={`QR ${cardTitle}`} className="w-48 h-48 mb-6" />
-                <p className="text-zinc-500 text-xs text-center mb-6 break-all max-w-[220px]">
+                <p className="text-gray-400 text-xs text-center mb-6 break-all max-w-[220px]">
                   {url.replace(/^https?:\/\//, '')}
                 </p>
                 <a 
@@ -243,7 +243,7 @@ export function QRGenerator({ restaurantId, restaurantSlug, brandColor }: QRGene
         })}
         
         {tables.length === 0 && (
-          <div className="col-span-full py-12 text-center text-zinc-500 bg-zinc-900/50 rounded-2xl border border-zinc-800 border-dashed">
+          <div className="col-span-full py-12 text-center text-gray-400 bg-slate-500 rounded-2xl border border-gray-200 border-dashed">
             <QrCode className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>No hay elementos configurados.</p>
           </div>

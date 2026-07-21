@@ -351,7 +351,7 @@ export default function KioskPage({ params }: KioskPageProps) {
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">
-      <div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin"/>
+      <div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"/>
     </div>;
   }
 
@@ -361,7 +361,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
           {restaurantLogo ? (
             <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
           ) : (
@@ -370,16 +370,16 @@ export default function KioskPage({ params }: KioskPageProps) {
             </div>
           )}
           <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
-        <button onClick={() => changeStep('browse')} className="flex items-center text-zinc-400 mb-8">
+        <button onClick={() => changeStep('browse')} className="flex items-center text-gray-500 mb-8">
           <ChevronLeft className="w-5 h-5 mr-1" />
           Volver al menú
         </button>
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-white mb-2">Tus Datos</h2>
-          <p className="text-zinc-400">Ingresa tus datos para vincular el pedido a tu mesa.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Tus Datos</h2>
+          <p className="text-gray-500">Ingresa tus datos para vincular el pedido a tu mesa.</p>
         </div>
         <CustomerForm onSubmit={handleCustomerSubmit} isLoading={isProcessing} isDelivery={isDelivery} />
       </div>
@@ -390,7 +390,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in flex flex-col items-center justify-center min-h-[60vh] text-center">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
           {restaurantLogo ? (
             <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
           ) : (
@@ -399,7 +399,7 @@ export default function KioskPage({ params }: KioskPageProps) {
             </div>
           )}
           <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
         <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
@@ -407,8 +407,8 @@ export default function KioskPage({ params }: KioskPageProps) {
             ✓
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">¡Pedido Confirmado!</h2>
-        <p className="text-zinc-400 mb-8 max-w-sm">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Pedido Confirmado!</h2>
+        <p className="text-gray-500 mb-8 max-w-sm">
           {paymentMethod === 'cash' 
             ? 'Tu orden ha sido enviada a la cocina. Paga en caja.' 
             : paymentMethod === 'terminal' 
@@ -416,8 +416,8 @@ export default function KioskPage({ params }: KioskPageProps) {
               : 'El pago ha sido exitoso y la cocina ya prepara tu pedido.'}
         </p>
         
-        <div className="bg-zinc-900 rounded-2xl p-6 w-full max-w-sm mb-8 border border-zinc-800">
-          <p className="text-sm text-zinc-400 mb-1">Total pagado:</p>
+        <div className="bg-white shadow-sm rounded-2xl p-6 w-full max-w-sm mb-8 border border-gray-200">
+          <p className="text-sm text-gray-500 mb-1">Total pagado:</p>
           <p className="text-3xl font-bold brand-text">{formatPrice(lastTotal, currency)}</p>
         </div>
         
@@ -435,7 +435,7 @@ export default function KioskPage({ params }: KioskPageProps) {
               changeStep('browse');
               window.scrollTo(0, 0);
             }}
-            className="w-full bg-zinc-800 text-white font-bold py-4 rounded-xl hover:bg-zinc-700 transition-all"
+            className="w-full bg-slate-100 text-white font-bold py-4 rounded-xl hover:bg-zinc-700 transition-all"
           >
             Hacer un nuevo pedido
           </button>
@@ -448,7 +448,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
           {restaurantLogo ? (
             <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
           ) : (
@@ -457,10 +457,10 @@ export default function KioskPage({ params }: KioskPageProps) {
             </div>
           )}
           <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
-        <button onClick={() => changeStep('success')} className="flex items-center text-zinc-400 mb-8 hover:text-white transition-colors">
+        <button onClick={() => changeStep('success')} className="flex items-center text-gray-500 mb-8 hover:text-white transition-colors">
           <ChevronLeft className="w-5 h-5 mr-1" />
           Volver
         </button>
@@ -473,7 +473,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-zinc-900 bg-zinc-950 mb-8">
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
           {restaurantLogo ? (
             <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
           ) : (
@@ -482,7 +482,7 @@ export default function KioskPage({ params }: KioskPageProps) {
             </div>
           )}
           <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
         <button 
@@ -490,7 +490,7 @@ export default function KioskPage({ params }: KioskPageProps) {
             if (isWaiter) changeStep('browse');
             else changeStep('customer');
           }} 
-          className="flex items-center text-zinc-400 mb-8" 
+          className="flex items-center text-gray-500 mb-8" 
           disabled={isProcessing}
         >
           <ChevronLeft className="w-5 h-5 mr-1" />
@@ -556,9 +556,9 @@ export default function KioskPage({ params }: KioskPageProps) {
       )}
 
       <div className="pb-8">
-        <div className="sticky top-0 bg-zinc-950/95 backdrop-blur-md z-50 border-b border-zinc-900/60 shadow-md">
+        <div className="sticky top-0 bg-slate-50/95 backdrop-blur-md z-50 border-b border-gray-200/60 shadow-md">
           {/* Elegant Header */}
-          <div className="w-full flex flex-col items-center justify-center py-4 bg-zinc-950">
+          <div className="w-full flex flex-col items-center justify-center py-4 bg-slate-50">
             {restaurantLogo ? (
               <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
             ) : (
@@ -569,7 +569,7 @@ export default function KioskPage({ params }: KioskPageProps) {
               </div>
             )}
             <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
-            <p className="text-[10px] text-zinc-500 tracking-widest uppercase mt-0.5">POWERED BY MTRIQ.APP</p>
+            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">POWERED BY MTRIQ.APP</p>
           </div>
 
           {isWaiter && (
@@ -588,10 +588,10 @@ export default function KioskPage({ params }: KioskPageProps) {
       
       <div className="p-4 space-y-12 animate-fade-in">
         {categories.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center px-4 bg-zinc-900/40 rounded-3xl border border-zinc-800">
+          <div className="flex flex-col items-center justify-center py-20 text-center px-4 bg-white shadow-sm/40 rounded-3xl border border-gray-200">
             <span className="text-4xl mb-4">🍽️</span>
             <h3 className="text-xl font-bold text-white mb-2">Menú en preparación</h3>
-            <p className="text-sm text-zinc-400 max-w-sm">
+            <p className="text-sm text-gray-500 max-w-sm">
               El restaurante está configurando su menú en este momento. Por favor, vuelve a cargar la página en unos minutos.
             </p>
           </div>
@@ -602,7 +602,7 @@ export default function KioskPage({ params }: KioskPageProps) {
             
             return (
               <div key={category.id} id={`category-${category.id}`} className="scroll-mt-24">
-                <h2 className="text-2xl font-bold text-white mb-6">{category.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">{category.name}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {categoryProducts.map(product => (
                     <ProductCard 

@@ -62,7 +62,7 @@ function getActionButtonStyles(status: OrderStatus): string {
     case 'ready':
       return 'bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-700 text-white';
     default:
-      return 'bg-zinc-700 text-zinc-400';
+      return 'bg-zinc-700 text-gray-500';
   }
 }
 
@@ -91,7 +91,7 @@ function getCardBorderClass(status: OrderStatus, elapsedMinutes: number): string
   }
   if (status === 'preparing') return 'border-blue-500/30';
   if (status === 'ready') return 'border-emerald-500/30';
-  return 'border-zinc-700/50';
+  return 'border-gray-200';
 }
 
 function getTimeBadgeClass(status: OrderStatus, elapsedMinutes: number): string {
@@ -101,7 +101,7 @@ function getTimeBadgeClass(status: OrderStatus, elapsedMinutes: number): string 
   if (status === 'pending' && elapsedMinutes >= URGENCY_WARN_MINUTES) {
     return 'text-amber-400';
   }
-  return 'text-zinc-400';
+  return 'text-gray-500';
 }
 
 // ----------------------------------------------------------------------------
@@ -340,15 +340,15 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
   return (
     <div
       className={cn(
-        'flex flex-col rounded-xl border bg-zinc-900/80 backdrop-blur-sm transition-all duration-300',
+        'flex flex-col rounded-xl border bg-white/80 backdrop-blur-sm transition-all duration-300',
         getCardBorderClass(order.status, elapsedMinutes)
       )}
     >
       {/* ── Header ──────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3">
+      <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
         {/* Order number */}
         <div className="flex items-center gap-2">
-          <Hash className="h-4 w-4 text-zinc-500" />
+          <Hash className="h-4 w-4 text-gray-400" />
           <span className="text-2xl font-bold tracking-tight text-white">
             {order.order_number}
           </span>
@@ -380,7 +380,7 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
       </div>
 
       {/* ── Meta row (origin + location + customer) ──────────────── */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-zinc-800/60 px-4 py-2 text-sm">
+      <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 px-4 py-2 text-sm">
         {/* Origin Badge */}
         <span className={cn(
           "text-xs font-bold px-2.5 py-0.5 rounded-md uppercase shrink-0",
@@ -394,8 +394,8 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
         </span>
 
         {customerName && (
-          <span className="flex items-center gap-1 text-zinc-300 ml-auto truncate max-w-[140px]">
-            <User className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
+          <span className="flex items-center gap-1 text-gray-800 ml-auto truncate max-w-[140px]">
+            <User className="h-3.5 w-3.5 text-gray-400 shrink-0" />
             <span className="truncate">{customerName}</span>
           </span>
         )}
@@ -406,11 +406,11 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
         {order.order_items.map((item) => (
           <div key={item.id} className="py-1">
             <div className="flex items-start gap-2.5">
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-zinc-800 text-sm font-extrabold text-white">
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 text-sm font-extrabold text-white">
                 {item.quantity}
               </span>
               <div className="flex-1 min-w-0">
-                <p className="text-base font-bold text-zinc-100 leading-snug">
+                <p className="text-base font-bold text-gray-900 leading-snug">
                   {item.product_name}
                 </p>
                 {/* Modifier snapshots */}
@@ -420,9 +420,9 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
                       (mod: ModifierSnapshot, idx: number) => (
                         <p
                           key={`${item.id}-mod-${idx}`}
-                          className="text-sm text-zinc-400 leading-tight"
+                          className="text-sm text-gray-500 leading-tight"
                         >
-                          <span className="text-zinc-500">{mod.group}:</span>{' '}
+                          <span className="text-gray-400">{mod.group}:</span>{' '}
                           {mod.items.map((m) => m.name).join(', ')}
                         </p>
                       )
@@ -444,28 +444,28 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
           
           <div className="space-y-1.5 pt-1 text-xs">
             {delivery.phone && (
-              <div className="flex items-center gap-2 text-zinc-300">
-                <span className="text-zinc-500 font-medium">Teléfono:</span>
+              <div className="flex items-center gap-2 text-gray-800">
+                <span className="text-gray-400 font-medium">Teléfono:</span>
                 <span className="font-semibold text-white">{delivery.phone}</span>
               </div>
             )}
             
             {delivery.address && (
-              <div className="flex items-start gap-2 text-zinc-300">
-                <MapPin className="h-3.5 w-3.5 shrink-0 text-zinc-500 mt-0.5" />
+              <div className="flex items-start gap-2 text-gray-800">
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-400 mt-0.5" />
                 <div>
-                  <span className="text-zinc-500 font-medium mr-1">Dirección:</span>
-                  <span className="text-zinc-200">{delivery.address}</span>
+                  <span className="text-gray-400 font-medium mr-1">Dirección:</span>
+                  <span className="text-gray-900">{delivery.address}</span>
                 </div>
               </div>
             )}
 
             {delivery.reference && (
-              <div className="flex items-start gap-2 text-zinc-300">
-                <Compass className="h-3.5 w-3.5 shrink-0 text-zinc-500 mt-0.5" />
+              <div className="flex items-start gap-2 text-gray-800">
+                <Compass className="h-3.5 w-3.5 shrink-0 text-gray-400 mt-0.5" />
                 <div>
-                  <span className="text-zinc-500 font-medium mr-1">Referencia:</span>
-                  <span className="text-zinc-200 italic">"{delivery.reference}"</span>
+                  <span className="text-gray-400 font-medium mr-1">Referencia:</span>
+                  <span className="text-gray-900 italic">"{delivery.reference}"</span>
                 </div>
               </div>
             )}
@@ -475,7 +475,7 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
 
       {/* ── Notes ───────────────────────────────────────────────── */}
       {cleanNotes && (
-        <div className="mx-4 mb-3 flex items-start gap-2 rounded-lg bg-zinc-800/60 px-3 py-2">
+        <div className="mx-4 mb-3 flex items-start gap-2 rounded-lg bg-slate-50 px-3 py-2">
           <StickyNote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500/70" />
           <p className="text-xs text-amber-200/80 leading-snug">{cleanNotes}</p>
         </div>

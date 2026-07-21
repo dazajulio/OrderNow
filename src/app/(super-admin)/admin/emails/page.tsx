@@ -98,25 +98,25 @@ export default function EmailsPage() {
     <div className="space-y-6 font-sans">
       
       {/* Header */}
-      <div className="bg-zinc-900/25 p-6 border border-white/5 rounded-3xl backdrop-blur-xl space-y-1">
+      <div className="bg-white shadow-sm/25 p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
           Redacción de Correos Corporativos
         </h2>
-        <p className="text-xs text-zinc-500">Envía notificaciones o comunicados a tus clientes envueltos en la plantilla premium de Mtriq</p>
+        <p className="text-xs text-gray-400">Envía notificaciones o comunicados a tus clientes envueltos en la plantilla premium de Mtriq</p>
       </div>
 
       <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-stretch">
         
         {/* LEFT PANEL: Composition Form */}
-        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl space-y-6">
+        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl space-y-6">
           
-          <div className="flex border-b border-white/5 pb-2">
+          <div className="flex border-b border-gray-200 pb-2">
             <button
               onClick={() => setPreviewTab('edit')}
               className={`pb-2.5 px-4 font-bold text-xs uppercase tracking-wider border-b-2 transition-all ${
                 previewTab === 'edit'
-                  ? 'border-purple-500 text-purple-400'
-                  : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                  ? 'border-orange-500 text-orange-500'
+                  : 'border-transparent text-gray-400 hover:text-gray-800'
               }`}
             >
               📝 Composición
@@ -125,8 +125,8 @@ export default function EmailsPage() {
               onClick={() => setPreviewTab('preview')}
               className={`pb-2.5 px-4 font-bold text-xs uppercase tracking-wider border-b-2 transition-all ${
                 previewTab === 'preview'
-                  ? 'border-purple-500 text-purple-400'
-                  : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                  ? 'border-orange-500 text-orange-500'
+                  : 'border-transparent text-gray-400 hover:text-gray-800'
               }`}
             >
               <Eye className="w-3.5 h-3.5 inline mr-1" /> Previsualización
@@ -138,7 +138,7 @@ export default function EmailsPage() {
               
               {/* Recipient Input & Autocomplete dropdown */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-zinc-400">Destinatario (Email)</label>
+                <label className="text-xs font-bold text-gray-500">Destinatario (Email)</label>
                 <div className="flex gap-2">
                   <input
                     type="email"
@@ -146,7 +146,7 @@ export default function EmailsPage() {
                     placeholder="ejemplo@correo.com"
                     value={toEmail}
                     onChange={(e) => setToEmail(e.target.value)}
-                    className="flex-1 bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                    className="flex-1 bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500"
                   />
                   {members.length > 0 && (
                     <select
@@ -156,7 +156,7 @@ export default function EmailsPage() {
                           e.target.value = ''; // Reset select
                         }
                       }}
-                      className="bg-zinc-950/60 border border-white/5 rounded-xl px-2 py-3 text-zinc-400 text-xs focus:outline-none cursor-pointer"
+                      className="bg-slate-50/60 border border-gray-200 rounded-xl px-2 py-3 text-gray-500 text-xs focus:outline-none cursor-pointer"
                       defaultValue=""
                     >
                       <option value="" disabled>Seleccionar cliente...</option>
@@ -168,32 +168,32 @@ export default function EmailsPage() {
                     </select>
                   )}
                 </div>
-                <span className="text-[10px] text-zinc-600 font-mono">Escribe directamente o selecciona un correo de los clientes registrados.</span>
+                <span className="text-[10px] text-gray-600 font-mono">Escribe directamente o selecciona un correo de los clientes registrados.</span>
               </div>
 
               {/* Subject */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-zinc-400">Asunto (Subject)</label>
+                <label className="text-xs font-bold text-gray-500">Asunto (Subject)</label>
                 <input
                   type="text"
                   required
                   placeholder="Escribe el asunto del correo..."
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500"
                 />
               </div>
 
               {/* Body Content */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-zinc-400">Cuerpo del Mensaje (Contenido del correo)</label>
+                <label className="text-xs font-bold text-gray-500">Cuerpo del Mensaje (Contenido del correo)</label>
                 <textarea
                   required
                   placeholder="Redacta el contenido principal de tu correo..."
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   rows={8}
-                  className="w-full bg-zinc-950/60 border border-white/5 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 resize-none font-sans"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500 resize-none font-sans"
                 />
               </div>
 
@@ -216,10 +216,10 @@ export default function EmailsPage() {
               <button
                 type="submit"
                 disabled={isSending}
-                className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:brightness-110 text-white font-bold rounded-xl text-sm transition-all active:scale-[0.98] shadow-lg shadow-purple-500/10 flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 bg-gradient-to-r from-orange-500 to-indigo-600 hover:brightness-110 text-white font-bold rounded-xl text-sm transition-all active:scale-[0.98] shadow-lg shadow-purple-500/10 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isSending ? (
-                  <span className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  <span className="w-5 h-5 border-2 border-gray-200 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
                     <Send className="w-4 h-4" /> Despachar Correo con Resend
@@ -231,18 +231,18 @@ export default function EmailsPage() {
           ) : (
             // Live Preview representation in the composition area
             <div className="space-y-4">
-              <div className="p-4 bg-zinc-950/60 border border-white/5 rounded-2xl space-y-2 text-xs">
-                <div><span className="text-zinc-500 font-mono">Para:</span> <span className="text-white font-mono">{toEmail || '(Vacío)'}</span></div>
-                <div><span className="text-zinc-500 font-mono">Asunto:</span> <span className="text-white font-bold">{subject || '(Vacío)'}</span></div>
+              <div className="p-4 bg-slate-50/60 border border-gray-200 rounded-2xl space-y-2 text-xs">
+                <div><span className="text-gray-400 font-mono">Para:</span> <span className="text-white font-mono">{toEmail || '(Vacío)'}</span></div>
+                <div><span className="text-gray-400 font-mono">Asunto:</span> <span className="text-white font-bold">{subject || '(Vacío)'}</span></div>
               </div>
-              <div className="border border-white/5 rounded-2xl overflow-hidden p-6 bg-[#0B0C10] font-sans min-h-[250px]">
-                <div className="text-center pb-4 border-b border-white/5">
+              <div className="border border-gray-200 rounded-2xl overflow-hidden p-6 bg-slate-50 font-sans min-h-[250px]">
+                <div className="text-center pb-4 border-b border-gray-200">
                   <div className="text-lg font-black text-white select-none">mtriq<span className="text-orange-500">.app</span></div>
                 </div>
-                <div className="py-6 text-zinc-300 text-sm leading-relaxed whitespace-pre-line min-h-[120px]">
+                <div className="py-6 text-gray-800 text-sm leading-relaxed whitespace-pre-line min-h-[120px]">
                   {body || 'El cuerpo del correo se previsualizará aquí...'}
                 </div>
-                <div className="text-center pt-4 border-t border-white/5 text-[10px] text-zinc-600">
+                <div className="text-center pt-4 border-t border-gray-200 text-[10px] text-gray-600">
                   Este es un correo oficial enviado por el Super Administrador de Mtriq.app.<br />
                   Soporte: soporte@mtriq.app | Calle 140A - Cedritos, Bogotá, Colombia.
                 </div>
@@ -253,15 +253,15 @@ export default function EmailsPage() {
         </div>
 
         {/* RIGHT PANEL: Explanation & Autocomplete Quick List */}
-        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex flex-col justify-between space-y-6">
+        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
-              <Mail className="w-5 h-5 text-purple-400" /> Directrices de Envío
+              <Mail className="w-5 h-5 text-orange-500" /> Directrices de Envío
             </h3>
-            <p className="text-xs text-zinc-500 leading-relaxed">
+            <p className="text-xs text-gray-400 leading-relaxed">
               El correo se despacha utilizando tu infraestructura activa en **Resend** asociada a la dirección verificada `soporte@mtriq.app`.
             </p>
-            <ul className="list-disc pl-5 space-y-2 text-[11px] text-zinc-400">
+            <ul className="list-disc pl-5 space-y-2 text-[11px] text-gray-500">
               <li>El destinatario recibirá un correo oficial sin rastros de tu dirección de Gmail personal.</li>
               <li>El membrete, logo oficial y pie de página de Mtriq se inyectan automáticamente en el servidor durante la entrega.</li>
               <li>Las respuestas de los clientes llegarán al redireccionador de Cloudflare que configuramos, derivándolas directamente a tu Gmail.</li>
@@ -269,29 +269,29 @@ export default function EmailsPage() {
           </div>
 
           {/* Quick List of registered clients */}
-          <div className="flex-1 flex flex-col justify-end pt-4 border-t border-white/5 space-y-3">
-            <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider block">Clientes Registrados</span>
+          <div className="flex-1 flex flex-col justify-end pt-4 border-t border-gray-200 space-y-3">
+            <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider block">Clientes Registrados</span>
             {isLoadingMembers ? (
-              <span className="text-xs text-zinc-600">Cargando emails de clientes...</span>
+              <span className="text-xs text-gray-600">Cargando emails de clientes...</span>
             ) : (
               <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1">
                 {members.map(m => (
                   <div 
                     key={m.member_id}
                     onClick={() => setToEmail(m.email)}
-                    className="flex justify-between items-center bg-zinc-950/40 border border-white/5 rounded-xl p-2.5 text-[11px] hover:border-purple-500/40 cursor-pointer transition-all"
+                    className="flex justify-between items-center bg-slate-50/40 border border-gray-200 rounded-xl p-2.5 text-[11px] hover:border-orange-500/40 cursor-pointer transition-all"
                   >
                     <div>
                       <span className="block font-bold text-white">{m.display_name}</span>
-                      <span className="text-[10px] text-zinc-500 font-mono">{m.email}</span>
+                      <span className="text-[10px] text-gray-400 font-mono">{m.email}</span>
                     </div>
-                    <span className="text-[9px] bg-purple-500/15 text-purple-400 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                    <span className="text-[9px] bg-orange-500/15 text-orange-500 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                       {m.restaurant_name}
                     </span>
                   </div>
                 ))}
                 {members.length === 0 && (
-                  <span className="text-xs text-zinc-600">No hay clientes con email verificado aún.</span>
+                  <span className="text-xs text-gray-600">No hay clientes con email verificado aún.</span>
                 )}
               </div>
             )}

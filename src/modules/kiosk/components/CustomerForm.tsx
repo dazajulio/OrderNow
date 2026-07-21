@@ -61,12 +61,12 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
       <div className="space-y-4">
         {/* Name Field */}
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1">
+          <label className="block text-sm font-medium text-gray-500 mb-1.5 ml-1">
             {t('name')} <span className="text-red-400">*</span>
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <User className="h-5 w-5 text-zinc-500" />
+              <User className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="text"
@@ -75,8 +75,8 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                 setName(e.target.value);
                 if (errors.name) setErrors({...errors, name: undefined});
               }}
-              className={`block w-full pl-11 pr-4 py-3.5 bg-zinc-900 border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
-                errors.name ? 'border-red-500' : 'border-zinc-800'
+              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+                errors.name ? 'border-red-500' : 'border-gray-200'
               }`}
               placeholder="Ej. Tu Nombre Completo"
               disabled={isLoading}
@@ -87,12 +87,12 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
 
         {/* Email Field */}
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1">
+          <label className="block text-sm font-medium text-gray-500 mb-1.5 ml-1">
             {t('email')} <span className="text-red-400">*</span>
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Mail className="h-5 w-5 text-zinc-500" />
+              <Mail className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="email"
@@ -101,8 +101,8 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                 setEmail(e.target.value);
                 if (errors.email) setErrors({...errors, email: undefined});
               }}
-              className={`block w-full pl-11 pr-4 py-3.5 bg-zinc-900 border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
-                errors.email ? 'border-red-500' : 'border-zinc-800'
+              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+                errors.email ? 'border-red-500' : 'border-gray-200'
               }`}
               placeholder="tu@correo.com"
               disabled={isLoading}
@@ -114,18 +114,18 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
         {/* Phone Field */}
         <div className="pt-2">
           <div className="flex justify-between items-end mb-1.5 ml-1 mr-1">
-            <label className="block text-sm font-medium text-zinc-400">
+            <label className="block text-sm font-medium text-gray-500">
               {t('phone')} {isDelivery && <span className="text-red-400">*</span>}
             </label>
             {!isDelivery && (
-              <span className="text-xs bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full">
+              <span className="text-xs bg-slate-100 text-gray-800 px-2 py-0.5 rounded-full">
                 {t('optional')}
               </span>
             )}
           </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Phone className="h-5 w-5 text-zinc-500" />
+              <Phone className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="tel"
@@ -134,8 +134,8 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                 setPhone(e.target.value);
                 if (errors.phone) setErrors({...errors, phone: undefined});
               }}
-              className={`block w-full pl-11 pr-4 py-3.5 bg-zinc-900 border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
-                errors.phone ? 'border-red-500' : 'border-zinc-800'
+              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+                errors.phone ? 'border-red-500' : 'border-gray-200'
               }`}
               placeholder="Ej. +58 412 123 4567"
               disabled={isLoading}
@@ -143,7 +143,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
           </div>
           {errors.phone && <p className="text-xs text-red-400 mt-1 ml-1">{errors.phone}</p>}
           {!isDelivery && (
-            <p className="text-xs text-zinc-500 mt-2 ml-1">
+            <p className="text-xs text-gray-400 mt-2 ml-1">
               ✨ {t('affiliatePrompt')}
             </p>
           )}
@@ -153,12 +153,12 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
         {isDelivery && (
           <>
             <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1">
+              <label className="block text-sm font-medium text-gray-500 mb-1.5 ml-1">
                 Dirección Exacta de Entrega <span className="text-red-400">*</span>
               </label>
               <div className="relative">
                 <div className="absolute top-3.5 left-4 pointer-events-none">
-                  <MapPin className="h-5 w-5 text-zinc-500" />
+                  <MapPin className="h-5 w-5 text-gray-400" />
                 </div>
                 <textarea
                   value={address}
@@ -166,8 +166,8 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                     setAddress(e.target.value);
                     if (errors.address) setErrors({...errors, address: undefined});
                   }}
-                  className={`block w-full pl-11 pr-4 py-3.5 bg-zinc-900 border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all min-h-[80px] ${
-                    errors.address ? 'border-red-500' : 'border-zinc-800'
+                  className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all min-h-[80px] ${
+                    errors.address ? 'border-red-500' : 'border-gray-200'
                   }`}
                   placeholder="Ej. Calle 3, Casa #15-A, Sector Las Tapias"
                   disabled={isLoading}
@@ -177,12 +177,12 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-zinc-400 mb-1.5 ml-1">
+              <label className="block text-sm font-medium text-gray-500 mb-1.5 ml-1">
                 Punto de Referencia <span className="text-red-400">*</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Compass className="h-5 w-5 text-zinc-500" />
+                  <Compass className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
                   type="text"
@@ -191,8 +191,8 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                     setReference(e.target.value);
                     if (errors.reference) setErrors({...errors, reference: undefined});
                   }}
-                  className={`block w-full pl-11 pr-4 py-3.5 bg-zinc-900 border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
-                    errors.reference ? 'border-red-500' : 'border-zinc-800'
+                  className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+                    errors.reference ? 'border-red-500' : 'border-gray-200'
                   }`}
                   placeholder="Ej. A 50 metros del Centro Comercial Rodeo Plaza"
                   disabled={isLoading}
@@ -207,7 +207,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full mt-6 brand-bg hover:brightness-110 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+        className="w-full mt-6 brand-bg hover:brightness-110 text-gray-900 font-bold text-lg py-4 rounded-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
       >
         {isLoading ? (
           <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

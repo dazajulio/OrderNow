@@ -44,16 +44,16 @@ export function CheckoutForm({
 
   if (paymentMethod === 'stripe') {
     return (
-      <div className="w-full max-w-md mx-auto space-y-6 animate-fade-in p-6 bg-zinc-900 rounded-3xl border border-zinc-800">
+      <div className="w-full max-w-md mx-auto space-y-6 animate-fade-in p-6 bg-white shadow-sm rounded-3xl border border-gray-200">
         <div className="text-center space-y-2 mb-8">
-          <CreditCard className="w-12 h-12 text-zinc-400 mx-auto" />
+          <CreditCard className="w-12 h-12 text-gray-500 mx-auto" />
           <h3 className="text-xl font-bold text-white">Pago Seguro</h3>
-          <p className="text-zinc-400">Total a pagar: {formatPrice(total, currency)}</p>
+          <p className="text-gray-500">Total a pagar: {formatPrice(total, currency)}</p>
         </div>
         
         {/* Placeholder for Stripe Elements */}
-        <div className="w-full h-48 bg-zinc-950 rounded-xl border border-zinc-800 flex items-center justify-center p-4 text-center">
-          <p className="text-zinc-500 text-sm">
+        <div className="w-full h-48 bg-slate-50 rounded-xl border border-gray-200 flex items-center justify-center p-4 text-center">
+          <p className="text-gray-400 text-sm">
             [Stripe Elements Form load placeholder] <br/>
             (Requires Elements provider wrap in real implementation)
           </p>
@@ -61,7 +61,7 @@ export function CheckoutForm({
 
         <button
           disabled={isProcessing}
-          className="w-full brand-bg hover:brightness-110 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex justify-center items-center gap-2"
+          className="w-full brand-bg hover:brightness-110 text-gray-900 font-bold text-lg py-4 rounded-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex justify-center items-center gap-2"
         >
           {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : `Pagar ${formatPrice(total, currency)}`}
         </button>
@@ -71,18 +71,18 @@ export function CheckoutForm({
 
   if (paymentMethod === 'cash' || paymentMethod === 'terminal') {
     return (
-      <div className="w-full max-w-md mx-auto text-center space-y-6 animate-fade-in p-8 bg-zinc-900 rounded-3xl border border-zinc-800">
+      <div className="w-full max-w-md mx-auto text-center space-y-6 animate-fade-in p-8 bg-white shadow-sm rounded-3xl border border-gray-200">
         <div className="w-20 h-20 brand-bg rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-orange-500/20">
           {paymentMethod === 'cash' ? <Banknote className="w-10 h-10 text-white" /> : <CreditCard className="w-10 h-10 text-white" />}
         </div>
-        <h3 className="text-2xl font-bold text-white">¡Pedido Confirmado!</h3>
-        <p className="text-zinc-400 text-lg">
+        <h3 className="text-2xl font-bold text-gray-900">¡Pedido Confirmado!</h3>
+        <p className="text-gray-500 text-lg">
           {paymentMethod === 'cash' 
             ? 'Tu orden ha sido enviada a la cocina. Paga en caja.' 
             : 'Tu orden ha sido enviada a la cocina. El mesero traerá la terminal.'}
         </p>
-        <div className="p-4 bg-zinc-950 rounded-xl border border-zinc-800 inline-block w-full">
-          <p className="text-zinc-300">Total a pagar:</p>
+        <div className="p-4 bg-slate-50 rounded-xl border border-gray-200 inline-block w-full">
+          <p className="text-gray-800">Total a pagar:</p>
           <p className="text-3xl font-bold brand-text mt-1">{formatPrice(total, currency)}</p>
         </div>
       </div>
@@ -94,14 +94,14 @@ export function CheckoutForm({
       
       {/* Table Selector for Waiter */}
       {isWaiter && tables.length > 0 && (
-        <div className="p-6 bg-zinc-900 rounded-3xl border border-zinc-800 space-y-3">
-          <label className="block text-sm font-bold text-zinc-400 uppercase tracking-wider">
+        <div className="p-6 bg-white shadow-sm rounded-3xl border border-gray-200 space-y-3">
+          <label className="block text-sm font-bold text-gray-500 uppercase tracking-wider">
             Mesa Destino del Pedido
           </label>
           <select 
             value={selectedTableId}
             onChange={(e) => onTableChange?.(e.target.value)}
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-4 text-white font-bold text-base focus:ring-2 focus:ring-orange-500/50 outline-none"
+            className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3 px-4 text-white font-bold text-base focus:ring-2 focus:ring-orange-500/50 outline-none"
           >
             {tables.map((t: any) => {
               const cleanLabel = t.label?.startsWith('Mesero:') || t.label?.startsWith('Delivery:') ? null : t.label;
@@ -115,16 +115,16 @@ export function CheckoutForm({
         </div>
       )}
 
-      <div className="p-6 bg-zinc-900/50 rounded-2xl border border-zinc-800/50 flex justify-between items-center">
-        <span className="text-zinc-400 text-lg">Total del Pedido</span>
-        <span className="text-2xl font-bold text-white">{formatPrice(total, currency)}</span>
+      <div className="p-6 bg-slate-500 rounded-2xl border border-gray-200/50 flex justify-between items-center">
+        <span className="text-gray-500 text-lg">Total del Pedido</span>
+        <span className="text-2xl font-bold text-gray-900">{formatPrice(total, currency)}</span>
       </div>
 
       <div className="space-y-4 pt-4">
         <button
           onClick={onPayWithCard}
           disabled={isProcessing}
-          className="w-full brand-bg hover:brightness-110 text-white font-bold text-lg py-5 px-6 rounded-2xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-between group"
+          className="w-full brand-bg hover:brightness-110 text-gray-900 font-bold text-lg py-5 px-6 rounded-2xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-between group"
         >
           <div className="flex items-center gap-3">
             <CreditCard className="w-6 h-6" />
@@ -140,7 +140,7 @@ export function CheckoutForm({
             <button
               onClick={onPayWithTerminal}
               disabled={isProcessing}
-              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-lg py-5 px-6 rounded-2xl border border-zinc-800 active:scale-[0.98] transition-all flex items-center justify-between"
+              className="w-full bg-white shadow-sm hover:bg-slate-100 text-gray-900 font-bold text-lg py-5 px-6 rounded-2xl border border-gray-200 active:scale-[0.98] transition-all flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
                 <CreditCard className="w-6 h-6 text-orange-400" />
@@ -151,10 +151,10 @@ export function CheckoutForm({
             <button
               onClick={onPayAtCounter}
               disabled={isProcessing}
-              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-lg py-5 px-6 rounded-2xl border border-zinc-800 active:scale-[0.98] transition-all flex items-center justify-between"
+              className="w-full bg-white shadow-sm hover:bg-slate-100 text-gray-900 font-bold text-lg py-5 px-6 rounded-2xl border border-gray-200 active:scale-[0.98] transition-all flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <Banknote className="w-6 h-6 text-zinc-400" />
+                <Banknote className="w-6 h-6 text-gray-500" />
                 <span>{t('payAtCounter')}</span>
               </div>
             </button>

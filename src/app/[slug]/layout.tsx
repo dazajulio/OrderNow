@@ -52,10 +52,10 @@ export default async function SlugLayout({ children, params }: SlugLayoutProps) 
 
   return (
     <div 
-      className="min-h-screen bg-zinc-950 text-white selection:bg-brand-primary/30"
+      className="min-h-screen bg-slate-50 text-white selection:bg-brand-primary/30"
       style={brandStyle}
     >
-      <main className="w-full max-w-2xl mx-auto min-h-screen relative shadow-2xl shadow-black/50 bg-zinc-950 pb-32">
+      <main className="w-full max-w-2xl mx-auto min-h-screen relative shadow-2xl shadow-black/50 bg-slate-50 pb-32">
         {children}
       </main>
     </div>

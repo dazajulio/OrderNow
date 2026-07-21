@@ -120,40 +120,40 @@ export default function UsersPage() {
     <div className="space-y-6 font-sans">
       
       {/* Header */}
-      <div className="bg-zinc-900/25 p-6 border border-white/5 rounded-3xl backdrop-blur-xl space-y-1">
+      <div className="bg-white shadow-sm/25 p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
           Control Global de Usuarios
         </h2>
-        <p className="text-xs text-zinc-500">Lista y filtra los gerentes y operarios registrados en todas las cuentas</p>
+        <p className="text-xs text-gray-400">Lista y filtra los gerentes y operarios registrados en todas las cuentas</p>
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 shadow-lg backdrop-blur-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 shadow-lg backdrop-blur-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Search */}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Buscar por nombre o correo</label>
+          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Buscar por nombre o correo</label>
           <div className="relative">
-            <Search className="absolute left-3.5 top-3 w-4 h-4 text-zinc-500" />
+            <Search className="absolute left-3.5 top-3 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Buscar..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-purple-500"
+              className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-orange-500"
             />
           </div>
         </div>
 
         {/* Restaurant Filter */}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Filtrar por Restaurante</label>
+          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Filtrar por Restaurante</label>
           <div className="relative">
-            <Building2 className="absolute left-3.5 top-3 w-4 h-4 text-zinc-500" />
+            <Building2 className="absolute left-3.5 top-3 w-4 h-4 text-gray-400" />
             <select
               value={selectedRestaurantId}
               onChange={(e) => setSelectedRestaurantId(e.target.value)}
-              className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-purple-500 appearance-none cursor-pointer"
+              className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-orange-500 appearance-none cursor-pointer"
             >
               <option value="">Todos los locales</option>
               {restaurants.map(r => (
@@ -165,13 +165,13 @@ export default function UsersPage() {
 
         {/* Role Filter */}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Filtrar por Rol</label>
+          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Filtrar por Rol</label>
           <div className="relative">
-            <Briefcase className="absolute left-3.5 top-3 w-4 h-4 text-zinc-500" />
+            <Briefcase className="absolute left-3.5 top-3 w-4 h-4 text-gray-400" />
             <select
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-purple-500 appearance-none cursor-pointer"
+              className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-orange-500 appearance-none cursor-pointer"
             >
               <option value="">Todos los roles</option>
               <option value="owner">Dueño (Owner)</option>
@@ -185,15 +185,15 @@ export default function UsersPage() {
 
         {/* City Filter */}
         <div className="space-y-1.5">
-          <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Filtrar por Ciudad / Dirección</label>
+          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Filtrar por Ciudad / Dirección</label>
           <div className="relative">
-            <MapPin className="absolute left-3.5 top-3 w-4 h-4 text-zinc-500" />
+            <MapPin className="absolute left-3.5 top-3 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Ej: Bogotá, Mérida..."
               value={cityFilter}
               onChange={(e) => setCityFilter(e.target.value)}
-              className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-purple-500"
+              className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-orange-500"
             />
           </div>
         </div>
@@ -201,16 +201,16 @@ export default function UsersPage() {
       </div>
 
       {/* Users Table */}
-      <div className="bg-zinc-900/40 border border-white/5 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
+      <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
         {isLoading ? (
           <div className="p-12 text-center">
-            <div className="w-8 h-8 border-3 border-zinc-800 border-t-purple-500 rounded-full animate-spin mx-auto mb-4" />
-            <span className="text-zinc-500 text-xs font-bold uppercase tracking-wider">Cargando personal...</span>
+            <div className="w-8 h-8 border-3 border-gray-200 border-t-purple-500 rounded-full animate-spin mx-auto mb-4" />
+            <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">Cargando personal...</span>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-white/5 text-zinc-500 uppercase text-[9px] tracking-wider font-bold">
+              <thead className="bg-slate-50 text-gray-400 uppercase text-[9px] tracking-wider font-bold">
                 <tr>
                   <th className="px-6 py-4">Usuario</th>
                   <th className="px-6 py-4">Correo Electrónico</th>
@@ -221,14 +221,14 @@ export default function UsersPage() {
                   <th className="px-6 py-4 text-center">Fecha de Alta</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-zinc-300">
+              <tbody className="divide-y divide-white/5 text-gray-800">
                 {filteredMembers.map((member) => {
                   let roleLabel = member.role;
-                  let roleColor = 'bg-zinc-800 text-zinc-400 border-zinc-700/50';
+                  let roleColor = 'bg-slate-100 text-gray-500 border-gray-200';
                   
                   if (member.role === 'owner') {
                     roleLabel = 'Propietario';
-                    roleColor = 'bg-purple-500/10 text-purple-400 border-purple-500/20';
+                    roleColor = 'bg-orange-500/10 text-orange-500 border-orange-500/20';
                   } else if (member.role === 'manager') {
                     roleLabel = 'Gerente';
                     roleColor = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
@@ -243,12 +243,12 @@ export default function UsersPage() {
                   return (
                     <tr key={member.member_id} className="hover:bg-white/[0.01] transition-colors">
                       <td className="px-6 py-4 font-semibold text-white flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500/20 to-orange-500/20 flex items-center justify-center text-xs font-bold text-white border border-white/5">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500/20 to-orange-500/20 flex items-center justify-center text-xs font-bold text-white border border-gray-200">
                           {member.display_name.substring(0, 2).toUpperCase()}
                         </div>
                         {member.display_name}
                       </td>
-                      <td className="px-6 py-4 font-mono text-zinc-400 text-xs">
+                      <td className="px-6 py-4 font-mono text-gray-500 text-xs">
                         {member.email}
                       </td>
                       <td className="px-6 py-4">
@@ -256,10 +256,10 @@ export default function UsersPage() {
                           {roleLabel}
                         </span>
                       </td>
-                      <td className="px-6 py-4 font-semibold text-zinc-300">
+                      <td className="px-6 py-4 font-semibold text-gray-800">
                         {member.restaurant_name}
                       </td>
-                      <td className="px-6 py-4 text-zinc-400 font-mono text-xs">
+                      <td className="px-6 py-4 text-gray-500 font-mono text-xs">
                         {extractCity(member.restaurant_address)}
                       </td>
                       <td className="px-6 py-4 text-center">
@@ -273,7 +273,7 @@ export default function UsersPage() {
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-center text-zinc-500 font-mono text-xs">
+                      <td className="px-6 py-4 text-center text-gray-400 font-mono text-xs">
                         {new Date(member.created_at).toLocaleDateString()}
                       </td>
                     </tr>
@@ -281,7 +281,7 @@ export default function UsersPage() {
                 })}
                 {filteredMembers.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-zinc-500">
+                    <td colSpan={7} className="px-6 py-12 text-center text-gray-400">
                       No se encontraron usuarios que coincidan con los filtros.
                     </td>
                   </tr>

@@ -38,26 +38,26 @@ export function UpsellModal({ products, onAdd, onSkip, isOpen, currency }: Upsel
   return (
     <>
       <div 
-        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity animate-fade-in"
+        className="fixed inset-0 z-50 bg-white/60 backdrop-blur-sm transition-opacity animate-fade-in"
       />
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-        <div className="bg-zinc-900 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl pointer-events-auto animate-scale-in">
+        <div className="bg-white shadow-sm rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl pointer-events-auto animate-scale-in">
           
           {/* Header */}
-          <div className="p-6 text-center border-b border-zinc-800/80">
+          <div className="p-6 text-center border-b border-gray-200/80">
             <h3 className="text-xl font-bold text-white mb-2">{t('upsellTitle')}</h3>
-            <p className="text-zinc-400 text-sm">Complementa tu pedido con estas opciones</p>
+            <p className="text-gray-500 text-sm">Complementa tu pedido con estas opciones</p>
           </div>
 
           {/* Product List */}
           <div className="max-h-[50vh] overflow-y-auto p-2">
             {products.slice(0, 3).map((product) => (
-              <div key={product.id} className="flex items-center gap-4 p-4 rounded-2xl hover:bg-zinc-800/50 transition-colors">
-                <div className="w-16 h-16 rounded-xl bg-zinc-800 flex-shrink-0 overflow-hidden">
+              <div key={product.id} className="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors">
+                <div className="w-16 h-16 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden">
                   {product.image_url ? (
                     <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">Sin img</div>
+                    <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">Sin img</div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -73,7 +73,7 @@ export function UpsellModal({ products, onAdd, onSkip, isOpen, currency }: Upsel
                   
                   if (quantity > 0) {
                     return (
-                      <div className="flex items-center gap-3 bg-zinc-800 rounded-full p-1 border border-zinc-700">
+                      <div className="flex items-center gap-3 bg-slate-100 rounded-full p-1 border border-gray-200">
                         <button 
                           onClick={() => updateQuantity(cartItem!.id, quantity - 1)} 
                           className="w-8 h-8 rounded-full bg-zinc-700 text-white flex items-center justify-center hover:bg-zinc-600 transition-colors"
@@ -117,13 +117,13 @@ export function UpsellModal({ products, onAdd, onSkip, isOpen, currency }: Upsel
             const hasAddedAny = addedCount > 0;
 
             return (
-              <div className="p-4 bg-zinc-950">
+              <div className="p-4 bg-slate-50">
                 <button
                   onClick={onSkip}
                   className={`w-full py-4 font-bold rounded-xl transition-all active:scale-[0.98] ${
                     hasAddedAny 
                       ? 'brand-bg text-white shadow-lg shadow-orange-500/20 hover:brightness-110' 
-                      : 'bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700'
+                      : 'bg-slate-100 text-gray-800 hover:text-white hover:bg-zinc-700'
                   }`}
                 >
                   {hasAddedAny ? '✓ Confirmar y Continuar al Pago' : t('upsellSkip')}

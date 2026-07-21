@@ -138,19 +138,19 @@ export default function TenantsPage() {
     <div className="space-y-6 font-sans relative">
       
       {/* Search and Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-zinc-900/25 p-6 border border-white/5 rounded-3xl backdrop-blur-xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-sm/25 p-6 border border-gray-200 rounded-3xl backdrop-blur-xl">
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-white">Tenants Registrados (Locales)</h2>
-          <p className="text-xs text-zinc-500">Administra la afiliación, licencias y parámetros de los restaurantes</p>
+          <p className="text-xs text-gray-400">Administra la afiliación, licencias y parámetros de los restaurantes</p>
         </div>
         <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3.5 top-3 w-4 h-4 text-zinc-500" />
+          <Search className="absolute left-3.5 top-3 w-4 h-4 text-gray-400" />
           <input
             type="text"
             placeholder="Buscar por nombre, slug o licencia..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-2 pl-10 pr-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-purple-500 text-sm"
+            className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-orange-500 text-sm"
           />
         </div>
       </div>
@@ -159,16 +159,16 @@ export default function TenantsPage() {
       <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-stretch">
         
         {/* Table List of Restaurants */}
-        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
           {isLoading ? (
             <div className="p-12 text-center">
-              <div className="w-8 h-8 border-3 border-zinc-800 border-t-purple-500 rounded-full animate-spin mx-auto mb-4" />
-              <span className="text-zinc-500 text-xs font-bold uppercase tracking-wider">Cargando restaurantes...</span>
+              <div className="w-8 h-8 border-3 border-gray-200 border-t-purple-500 rounded-full animate-spin mx-auto mb-4" />
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider">Cargando restaurantes...</span>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-white/5 text-zinc-500 uppercase text-[9px] tracking-wider font-bold">
+                <thead className="bg-slate-50 text-gray-400 uppercase text-[9px] tracking-wider font-bold">
                   <tr>
                     <th className="px-6 py-4">Restaurante</th>
                     <th className="px-6 py-4">Código Licencia</th>
@@ -178,7 +178,7 @@ export default function TenantsPage() {
                     <th className="px-6 py-4 text-right">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 text-zinc-300">
+                <tbody className="divide-y divide-white/5 text-gray-800">
                   {filteredTenants.map((tenant) => {
                     const stats = getTenantStats(tenant.id);
                     const isSelected = selectedTenant?.id === tenant.id;
@@ -188,29 +188,29 @@ export default function TenantsPage() {
                         key={tenant.id} 
                         onClick={() => setSelectedTenant(tenant)}
                         className={`hover:bg-white/[0.01] cursor-pointer transition-colors ${
-                          isSelected ? 'bg-purple-500/5' : ''
+                          isSelected ? 'bg-orange-500/5' : ''
                         }`}
                       >
                         <td className="px-6 py-4 font-semibold text-white flex items-center gap-3">
                           {tenant.logo_url ? (
                             <img src={tenant.logo_url} alt={tenant.name} className="w-8 h-8 rounded-lg object-cover" />
                           ) : (
-                            <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-xs font-black text-zinc-400">
+                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-black text-gray-500">
                               {tenant.name.substring(0,2).toUpperCase()}
                             </div>
                           )}
                           <div>
                             <span className="block">{tenant.name}</span>
-                            <span className="text-[10px] text-zinc-500 font-mono">/{tenant.slug}</span>
+                            <span className="text-[10px] text-gray-400 font-mono">/{tenant.slug}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 font-mono font-bold text-zinc-400">
+                        <td className="px-6 py-4 font-mono font-bold text-gray-500">
                           {tenant.license_code ? (
-                            <span className="bg-zinc-950/60 border border-white/5 px-2.5 py-1 rounded text-xs text-white">
+                            <span className="bg-slate-50/60 border border-gray-200 px-2.5 py-1 rounded text-xs text-white">
                               {tenant.license_code}
                             </span>
                           ) : (
-                            <span className="text-zinc-600 text-xs italic">Sin licencia</span>
+                            <span className="text-gray-600 text-xs italic">Sin licencia</span>
                           )}
                         </td>
                         <td className="px-6 py-4 text-right font-mono font-semibold">{stats.ordersCount}</td>
@@ -228,7 +228,7 @@ export default function TenantsPage() {
                         </td>
                         <td className="px-6 py-4 text-right">
                           <button 
-                            className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white font-bold px-3 py-1.5 rounded-lg transition-all"
+                            className="text-xs bg-slate-100 hover:bg-zinc-700 text-white font-bold px-3 py-1.5 rounded-lg transition-all"
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedTenant(tenant);
@@ -242,7 +242,7 @@ export default function TenantsPage() {
                   })}
                   {filteredTenants.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="px-6 py-12 text-center text-zinc-500">
+                      <td colSpan={6} className="px-6 py-12 text-center text-gray-400">
                         No se encontraron restaurantes con los criterios de búsqueda.
                       </td>
                     </tr>
@@ -255,41 +255,41 @@ export default function TenantsPage() {
 
         {/* SIDEBAR DETAILED DRAWER (Only shows when tenant is selected) */}
         {selectedTenant && (
-          <div className="w-full lg:w-96 bg-zinc-900/50 border border-purple-500/15 rounded-3xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden shrink-0 animate-fade-in-right">
+          <div className="w-full lg:w-96 bg-slate-500 border border-orange-500/15 rounded-3xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden shrink-0 animate-fade-in-right">
             
             {/* Header of Drawer */}
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-purple-500/10 rounded-2xl border border-purple-500/20 text-purple-400">
+                <div className="p-3 bg-orange-500/10 rounded-2xl border border-orange-500/20 text-orange-500">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="font-black text-white text-lg tracking-tight">{selectedTenant.name}</h3>
-                  <span className="text-[10px] text-zinc-500 font-mono">ID: {selectedTenant.id.substring(0, 8)}...</span>
+                  <span className="text-[10px] text-gray-400 font-mono">ID: {selectedTenant.id.substring(0, 8)}...</span>
                 </div>
               </div>
               <button 
                 onClick={() => setSelectedTenant(null)}
-                className="p-1.5 hover:bg-white/5 rounded-full text-zinc-400 hover:text-white transition-colors"
+                className="p-1.5 hover:bg-slate-50 rounded-full text-gray-500 hover:text-white transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Status Switcher & Actions */}
-            <div className="border-t border-b border-white/5 py-4 space-y-4">
+            <div className="border-t border-b border-gray-200 py-4 space-y-4">
               
               {/* Active status switcher */}
-              <div className="flex justify-between items-center bg-zinc-950/40 p-4 rounded-2xl border border-white/5">
+              <div className="flex justify-between items-center bg-slate-50/40 p-4 rounded-2xl border border-gray-200">
                 <div>
                   <span className="block text-xs font-bold text-white uppercase tracking-wider">Estatus Afiliación</span>
-                  <span className="text-[10px] text-zinc-500">Activa o suspende el restaurante</span>
+                  <span className="text-[10px] text-gray-400">Activa o suspende el restaurante</span>
                 </div>
                 <button
                   disabled={isUpdating}
                   onClick={() => toggleTenantStatus(selectedTenant)}
                   className={`w-12 h-6 rounded-full p-1 transition-all ${
-                    selectedTenant.is_active ? 'bg-green-500' : 'bg-zinc-800'
+                    selectedTenant.is_active ? 'bg-green-500' : 'bg-slate-100'
                   }`}
                 >
                   <div className={`bg-white w-4 h-4 rounded-full shadow-md transition-all ${
@@ -299,16 +299,16 @@ export default function TenantsPage() {
               </div>
 
               {/* License management */}
-              <div className="bg-zinc-950/40 p-4 rounded-2xl border border-white/5 space-y-3">
+              <div className="bg-slate-50/40 p-4 rounded-2xl border border-gray-200 space-y-3">
                 <div>
                   <span className="block text-xs font-bold text-white uppercase tracking-wider">Licencia de Ecosistema</span>
-                  <span className="text-[10px] text-zinc-500">Código único de control</span>
+                  <span className="text-[10px] text-gray-400">Código único de control</span>
                 </div>
                 
                 {selectedTenant.license_code ? (
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="font-mono text-sm font-bold text-white bg-zinc-900 border border-white/5 px-2.5 py-1 rounded">
+                      <span className="font-mono text-sm font-bold text-white bg-white shadow-sm border border-gray-200 px-2.5 py-1 rounded">
                         {selectedTenant.license_code}
                       </span>
                       <span className="text-[10px] text-green-400 font-bold uppercase tracking-wider flex items-center gap-1">
@@ -316,7 +316,7 @@ export default function TenantsPage() {
                       </span>
                     </div>
                     {selectedTenant.license_valid_until && (
-                      <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 font-mono">
+                      <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-mono">
                         <Calendar className="w-3.5 h-3.5" />
                         Vence: {new Date(selectedTenant.license_valid_until).toLocaleDateString()}
                       </div>
@@ -326,7 +326,7 @@ export default function TenantsPage() {
                   <button
                     disabled={isUpdating}
                     onClick={() => generateLicense(selectedTenant.id)}
-                    className="w-full py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:brightness-110 text-white font-bold text-xs rounded-xl uppercase tracking-wider transition-all disabled:opacity-50"
+                    className="w-full py-2.5 bg-gradient-to-r from-orange-500 to-indigo-600 hover:brightness-110 text-white font-bold text-xs rounded-xl uppercase tracking-wider transition-all disabled:opacity-50"
                   >
                     Generar Licencia
                   </button>
@@ -337,17 +337,17 @@ export default function TenantsPage() {
 
             {/* Performance Stats */}
             <div className="space-y-3">
-              <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider block">Rendimiento Operativo</span>
+              <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider block">Rendimiento Operativo</span>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-zinc-950/20 border border-white/5 p-3 rounded-2xl">
-                  <span className="text-zinc-500 text-[9px] font-bold uppercase block">Ventas (GMV)</span>
+                <div className="bg-slate-50/20 border border-gray-200 p-3 rounded-2xl">
+                  <span className="text-gray-400 text-[9px] font-bold uppercase block">Ventas (GMV)</span>
                   <span className="text-sm font-black text-orange-400 font-mono">
                     ${getTenantStats(selectedTenant.id).totalGmv.toLocaleString()}
                   </span>
                 </div>
-                <div className="bg-zinc-950/20 border border-white/5 p-3 rounded-2xl">
-                  <span className="text-zinc-500 text-[9px] font-bold uppercase block">Órdenes Hoy</span>
+                <div className="bg-slate-50/20 border border-gray-200 p-3 rounded-2xl">
+                  <span className="text-gray-400 text-[9px] font-bold uppercase block">Órdenes Hoy</span>
                   <span className="text-sm font-black text-white font-mono">
                     {getTenantStats(selectedTenant.id).ordersToday}
                   </span>
@@ -357,35 +357,35 @@ export default function TenantsPage() {
 
             {/* Contact Details */}
             <div className="space-y-4">
-              <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider block">Contacto y Parámetros</span>
+              <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider block">Contacto y Parámetros</span>
               
               <div className="space-y-3 text-xs">
                 
                 {selectedTenant.phone && (
-                  <div className="flex items-center gap-3 text-zinc-400">
-                    <Phone className="w-4 h-4 text-purple-400 shrink-0" />
+                  <div className="flex items-center gap-3 text-gray-500">
+                    <Phone className="w-4 h-4 text-orange-500 shrink-0" />
                     <span className="font-mono">{selectedTenant.phone}</span>
                   </div>
                 )}
 
                 {selectedTenant.address && (
-                  <div className="flex items-start gap-3 text-zinc-400">
-                    <MapPin className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-3 text-gray-500">
+                    <MapPin className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
                     <span className="leading-relaxed">{selectedTenant.address}</span>
                   </div>
                 )}
 
-                <div className="flex items-center gap-3 text-zinc-400">
-                  <Globe className="w-4 h-4 text-purple-400 shrink-0" />
+                <div className="flex items-center gap-3 text-gray-500">
+                  <Globe className="w-4 h-4 text-orange-500 shrink-0" />
                   <span className="font-mono">mtriq.app/{selectedTenant.slug}</span>
                 </div>
 
                 {/* Social media if available */}
                 {(selectedTenant.instagram || selectedTenant.facebook) && (
-                  <div className="flex items-center gap-3 border-t border-white/5 pt-3">
+                  <div className="flex items-center gap-3 border-t border-gray-200 pt-3">
                     {selectedTenant.instagram && (
-                      <a href={selectedTenant.instagram} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-zinc-950/60 rounded-lg hover:text-white transition-colors flex items-center justify-center">
-                        <svg className="w-4 h-4 text-purple-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <a href={selectedTenant.instagram} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-slate-50/60 rounded-lg hover:text-white transition-colors flex items-center justify-center">
+                        <svg className="w-4 h-4 text-orange-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                           <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                           <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
@@ -393,8 +393,8 @@ export default function TenantsPage() {
                       </a>
                     )}
                     {selectedTenant.facebook && (
-                      <a href={selectedTenant.facebook} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-zinc-950/60 rounded-lg hover:text-white transition-colors flex items-center justify-center">
-                        <svg className="w-4 h-4 text-purple-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <a href={selectedTenant.facebook} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-slate-50/60 rounded-lg hover:text-white transition-colors flex items-center justify-center">
+                        <svg className="w-4 h-4 text-orange-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                         </svg>
                       </a>
@@ -407,9 +407,9 @@ export default function TenantsPage() {
 
             {/* Overlay Loader during actions */}
             {isUpdating && (
-              <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-20">
-                <div className="w-8 h-8 border-3 border-zinc-800 border-t-purple-500 rounded-full animate-spin" />
-                <span className="text-zinc-400 text-xs font-bold uppercase tracking-wider">{actionMessage}</span>
+              <div className="absolute inset-0 bg-slate-50/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-20">
+                <div className="w-8 h-8 border-3 border-gray-200 border-t-purple-500 rounded-full animate-spin" />
+                <span className="text-gray-500 text-xs font-bold uppercase tracking-wider">{actionMessage}</span>
               </div>
             )}
 

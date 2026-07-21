@@ -132,54 +132,54 @@ export default function ReportsPage() {
           <BarChart3 className="w-6 h-6" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">Reportes Financieros</h1>
-          <p className="text-zinc-400">Resumen de desempeño y ventas</p>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Reportes Financieros</h1>
+          <p className="text-gray-500">Resumen de desempeño y ventas</p>
         </div>
       </div>
 
       {isLoading ? (
-        <div className="text-center py-20 text-zinc-500">Calculando métricas...</div>
+        <div className="text-center py-20 text-gray-400">Calculando métricas...</div>
       ) : (
         <>
           {/* Top KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-amber-500/[0.08] border border-amber-500/20 rounded-3xl p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-6 opacity-10 text-orange-500"><DollarSign className="w-24 h-24" /></div>
-              <p className="text-amber-800 dark:text-amber-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Hoy</p>
-              <h2 className="text-4xl font-extrabold text-amber-950 dark:text-amber-200">{formatPrice(todaySales, 'USD')}</h2>
+              <p className="text-amber-800  font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Hoy</p>
+              <h2 className="text-4xl font-extrabold text-amber-950 ">{formatPrice(todaySales, 'USD')}</h2>
             </div>
             <div className="bg-blue-500/[0.08] border border-blue-500/20 rounded-3xl p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-6 opacity-10 text-blue-500"><TrendingUp className="w-24 h-24" /></div>
-              <p className="text-blue-800 dark:text-blue-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Semana</p>
-              <h2 className="text-4xl font-extrabold text-blue-950 dark:text-blue-200">{formatPrice(weekSales, 'USD')}</h2>
+              <p className="text-blue-800  font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Semana</p>
+              <h2 className="text-4xl font-extrabold text-blue-950 ">{formatPrice(weekSales, 'USD')}</h2>
             </div>
             <div className="bg-emerald-500/[0.08] border border-emerald-500/20 rounded-3xl p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-6 opacity-10 text-emerald-500"><TrendingUp className="w-24 h-24" /></div>
-              <p className="text-emerald-800 dark:text-emerald-400 font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Mes</p>
-              <h2 className="text-4xl font-extrabold text-emerald-950 dark:text-emerald-200">{formatPrice(monthSales, 'USD')}</h2>
+              <p className="text-emerald-800  font-bold flex items-center gap-2 mb-2"><Calendar className="w-4 h-4"/> Ventas Mes</p>
+              <h2 className="text-4xl font-extrabold text-emerald-950 ">{formatPrice(monthSales, 'USD')}</h2>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Top Products */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+            <div className="bg-white shadow-sm border border-gray-200 rounded-3xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <Package className="w-5 h-5 text-orange-500" />
                 <h3 className="text-lg font-bold text-white">Productos más vendidos</h3>
               </div>
               <div className="space-y-4">
-                {topProducts.length === 0 && <p className="text-zinc-500 text-sm">No hay datos suficientes.</p>}
+                {topProducts.length === 0 && <p className="text-gray-400 text-sm">No hay datos suficientes.</p>}
                 {topProducts.map((p, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-zinc-950 border border-zinc-800/50">
+                  <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-gray-200/50">
                     <div className="flex items-center gap-4">
-                      <div className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 flex items-center justify-center font-bold text-sm">
+                      <div className="w-8 h-8 rounded-full bg-slate-100 text-gray-500 flex items-center justify-center font-bold text-sm">
                         {i + 1}
                       </div>
                       <span className="font-medium text-white">{p.name}</span>
                     </div>
                     <div className="text-right">
                       <p className="text-orange-500 font-bold">{p.qty} unid.</p>
-                      <p className="text-xs text-zinc-500">{formatPrice(p.revenue, 'USD')}</p>
+                      <p className="text-xs text-gray-400">{formatPrice(p.revenue, 'USD')}</p>
                     </div>
                   </div>
                 ))}
@@ -187,22 +187,22 @@ export default function ReportsPage() {
             </div>
 
             {/* Top Customers */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+            <div className="bg-white shadow-sm border border-gray-200 rounded-3xl p-6">
               <div className="flex items-center gap-3 mb-6">
                 <Users className="w-5 h-5 text-emerald-500" />
                 <h3 className="text-lg font-bold text-white">Mejores Clientes</h3>
               </div>
               <div className="space-y-4">
-                {topCustomers.length === 0 && <p className="text-zinc-500 text-sm">No hay clientes registrados con compras.</p>}
+                {topCustomers.length === 0 && <p className="text-gray-400 text-sm">No hay clientes registrados con compras.</p>}
                 {topCustomers.map((c, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-zinc-950 border border-zinc-800/50">
+                  <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-gray-200/50">
                     <div className="flex items-center gap-4">
                       <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-sm">
                         {c.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
                         <span className="font-medium text-white block">{c.name}</span>
-                        <span className="text-xs text-zinc-500">{c.ordersCount} pedidos</span>
+                        <span className="text-xs text-gray-400">{c.ordersCount} pedidos</span>
                       </div>
                     </div>
                     <div className="text-right">

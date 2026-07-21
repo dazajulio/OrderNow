@@ -145,45 +145,45 @@ export default function SuperAdminDashboard() {
   // --- Render Login Gate ---
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0B0C10] flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse" />
 
-        <div className="relative z-10 w-full max-w-md bg-zinc-900/60 border border-white/5 p-8 rounded-3xl backdrop-blur-md space-y-8 shadow-2xl">
+        <div className="relative z-10 w-full max-w-md bg-white/60 border border-gray-200 p-8 rounded-3xl backdrop-blur-md space-y-8 shadow-2xl">
           <div className="text-center space-y-2">
             <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/20">
               <Lock className="w-6 h-6 text-orange-500" />
             </div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">Acceso Restringido</h2>
-            <p className="text-zinc-500 text-sm">Ingresa las credenciales autorizadas del Super-Admin</p>
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Acceso Restringido</h2>
+            <p className="text-gray-400 text-sm">Ingresa las credenciales autorizadas del Super-Admin</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Correo Electrónico</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Correo Electrónico</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-3.5 w-5 h-5 text-zinc-600" />
+                <Mail className="absolute left-4 top-3.5 w-5 h-5 text-gray-600" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ejemplo@correo.com"
-                  className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2">Contraseña</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Contraseña</label>
               <div className="relative">
-                <Key className="absolute left-4 top-3.5 w-5 h-5 text-zinc-600" />
+                <Key className="absolute left-4 top-3.5 w-5 h-5 text-gray-600" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-zinc-950/60 border border-white/5 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
                   required
                 />
               </div>
@@ -212,8 +212,8 @@ export default function SuperAdminDashboard() {
   // --- Render Dashboard ---
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0B0C10] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin" />
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin" />
       </div>
     );
   }
@@ -339,7 +339,7 @@ export default function SuperAdminDashboard() {
   }).join(' ');
 
   return (
-    <div className="min-h-screen bg-[#0B0C10] text-zinc-300 space-y-8 animate-fade-in font-sans">
+    <div className="min-h-screen bg-slate-50 text-gray-800 space-y-8 animate-fade-in font-sans">
       
       {/* ── HEADER ── */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -347,14 +347,14 @@ export default function SuperAdminDashboard() {
           <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
             Visión Global <span className="text-xs bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Dashboard</span>
           </h2>
-          <p className="text-zinc-500 text-sm">Métricas de salud financiera y volumen operativo de mtriq.app</p>
+          <p className="text-gray-400 text-sm">Métricas de salud financiera y volumen operativo de mtriq.app</p>
         </div>
         <button
           onClick={() => {
             sessionStorage.removeItem('mtriq_super_admin_logged');
             setIsAuthenticated(false);
           }}
-          className="px-4 py-2 border border-white/5 bg-zinc-950/40 hover:bg-zinc-900 text-zinc-400 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
+          className="px-4 py-2 border border-gray-200 bg-slate-50/40 hover:bg-white shadow-sm text-gray-500 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
         >
           Cerrar Sesión
         </button>
@@ -364,23 +364,23 @@ export default function SuperAdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
         {/* MRR Card */}
-        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-purple-500/10 rounded-xl border border-purple-500/20 text-purple-400">
+            <div className="p-3 bg-orange-500/10 rounded-xl border border-orange-500/20 text-orange-500">
               <CreditCard className="w-5 h-5" />
             </div>
             <span className="flex items-center text-[10px] font-bold text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
               MoM +15%
             </span>
           </div>
-          <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Ingreso Recurrente (MRR)</h3>
-          <p className="text-3xl font-black text-white">${totalMRR.toLocaleString()}<span className="text-xs font-normal text-zinc-500">/mes</span></p>
-          <span className="text-[10px] text-zinc-600 block mt-2 font-mono">ARR Proyectado: ${totalARR.toLocaleString()}/año</span>
+          <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Ingreso Recurrente (MRR)</h3>
+          <p className="text-3xl font-black text-white">${totalMRR.toLocaleString()}<span className="text-xs font-normal text-gray-400">/mes</span></p>
+          <span className="text-[10px] text-gray-600 block mt-2 font-mono">ARR Proyectado: ${totalARR.toLocaleString()}/año</span>
         </div>
 
         {/* GMV Global Card */}
-        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-orange-500/10 rounded-xl border border-orange-500/20 text-orange-400">
@@ -390,13 +390,13 @@ export default function SuperAdminDashboard() {
               Transaccionado
             </span>
           </div>
-          <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Ventas Globales (GMV)</h3>
+          <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Ventas Globales (GMV)</h3>
           <p className="text-3xl font-black text-white">${gmvGlobal.toLocaleString()}</p>
-          <span className="text-[10px] text-zinc-600 block mt-2 font-mono">Ticket Promedio: ${averageTicketGlobal.toFixed(2)} USD</span>
+          <span className="text-[10px] text-gray-600 block mt-2 font-mono">Ticket Promedio: ${averageTicketGlobal.toFixed(2)} USD</span>
         </div>
 
         {/* Volumen de Órdenes Card */}
-        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-cyan-500/10 rounded-xl border border-cyan-500/20 text-cyan-400">
@@ -406,13 +406,13 @@ export default function SuperAdminDashboard() {
               Conversión {conversionRate.toFixed(1)}%
             </span>
           </div>
-          <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Órdenes Totales</h3>
+          <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Órdenes Totales</h3>
           <p className="text-3xl font-black text-white">{totalOrders.toLocaleString()}</p>
-          <span className="text-[10px] text-zinc-600 block mt-2 font-mono">Conversiones Exitosas: {paidOrders.length}</span>
+          <span className="text-[10px] text-gray-600 block mt-2 font-mono">Conversiones Exitosas: {paidOrders.length}</span>
         </div>
 
         {/* Carga del Sistema / Uptime Card */}
-        <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-emerald-400">
@@ -422,9 +422,9 @@ export default function SuperAdminDashboard() {
               Estable
             </span>
           </div>
-          <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Salud del Sistema</h3>
+          <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Salud del Sistema</h3>
           <p className="text-3xl font-black text-white">99.99%</p>
-          <span className="text-[10px] text-zinc-600 block mt-2 font-mono">Uptime en vivo | Latencia: {dbLatency}ms</span>
+          <span className="text-[10px] text-gray-600 block mt-2 font-mono">Uptime en vivo | Latencia: {dbLatency}ms</span>
         </div>
 
       </div>
@@ -436,14 +436,14 @@ export default function SuperAdminDashboard() {
         <div className="space-y-8 flex flex-col justify-between">
           
           {/* Crecimiento MRR vs GMV Graph */}
-          <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h3 className="text-lg font-bold text-white tracking-tight">Tendencia del Negocio</h3>
-                <p className="text-xs text-zinc-500">Comparativa mensual de suscripciones (MRR) frente a ventas de inquilinos (GMV)</p>
+                <p className="text-xs text-gray-400">Comparativa mensual de suscripciones (MRR) frente a ventas de inquilinos (GMV)</p>
               </div>
               <div className="flex items-center gap-4 text-xs font-semibold">
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span> MRR</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> MRR</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> GMV</span>
               </div>
             </div>
@@ -508,10 +508,10 @@ export default function SuperAdminDashboard() {
           </div>
 
           {/* Funnel de Conversión de Pedidos */}
-          <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div>
               <h3 className="text-lg font-bold text-white tracking-tight">Embudo de Conversión (Funnel)</h3>
-              <p className="text-xs text-zinc-500">Comportamiento agregado de los comensales a nivel global</p>
+              <p className="text-xs text-gray-400">Comportamiento agregado de los comensales a nivel global</p>
             </div>
 
             <div className="space-y-4 mt-6">
@@ -519,10 +519,10 @@ export default function SuperAdminDashboard() {
               {/* Step 1 */}
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="font-semibold text-zinc-400">1. Menús Abiertos (QR / Web)</span>
+                  <span className="font-semibold text-gray-500">1. Menús Abiertos (QR / Web)</span>
                   <span className="font-bold text-white font-mono">{Math.round(simulatedViews)} visitas (100%)</span>
                 </div>
-                <div className="h-2.5 bg-zinc-950/60 rounded-full overflow-hidden border border-white/5">
+                <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
                   <div className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full" style={{ width: '100%' }}></div>
                 </div>
               </div>
@@ -530,21 +530,21 @@ export default function SuperAdminDashboard() {
               {/* Step 2 */}
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="font-semibold text-zinc-400">2. Producto Añadido al Carrito</span>
+                  <span className="font-semibold text-gray-500">2. Producto Añadido al Carrito</span>
                   <span className="font-bold text-white font-mono">{Math.round(simulatedAdds)} ({((simulatedAdds / simulatedViews) * 100).toFixed(0)}%)</span>
                 </div>
-                <div className="h-2.5 bg-zinc-950/60 rounded-full overflow-hidden border border-white/5">
-                  <div className="h-full bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-full" style={{ width: `${(simulatedAdds / simulatedViews) * 100}%` }}></div>
+                <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
+                  <div className="h-full bg-gradient-to-r from-indigo-500 to-orange-600 rounded-full" style={{ width: `${(simulatedAdds / simulatedViews) * 100}%` }}></div>
                 </div>
               </div>
 
               {/* Step 3 */}
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="font-semibold text-zinc-400">3. Pedido Generado</span>
+                  <span className="font-semibold text-gray-500">3. Pedido Generado</span>
                   <span className="font-bold text-white font-mono">{totalOrders} ({((totalOrders / simulatedAdds) * 100).toFixed(0)}%)</span>
                 </div>
-                <div className="h-2.5 bg-zinc-950/60 rounded-full overflow-hidden border border-white/5">
+                <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
                   <div className="h-full bg-gradient-to-r from-cyan-500 to-amber-500 rounded-full" style={{ width: `${(totalOrders / simulatedAdds) * 100}%` }}></div>
                 </div>
               </div>
@@ -552,10 +552,10 @@ export default function SuperAdminDashboard() {
               {/* Step 4 */}
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="font-semibold text-zinc-400">4. Pedidos Exitosos / Pagados</span>
+                  <span className="font-semibold text-gray-500">4. Pedidos Exitosos / Pagados</span>
                   <span className="font-bold text-orange-400 font-mono">{paidOrders.length} ({((paidOrders.length / totalOrders) * 100).toFixed(0)}%)</span>
                 </div>
-                <div className="h-2.5 bg-zinc-950/60 rounded-full overflow-hidden border border-white/5">
+                <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
                   <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: `${(paidOrders.length / totalOrders) * 100}%` }}></div>
                 </div>
               </div>
@@ -569,10 +569,10 @@ export default function SuperAdminDashboard() {
         <div className="space-y-8 flex flex-col justify-between">
           
           {/* Top 5 Restaurantes */}
-          <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div>
               <h3 className="text-lg font-bold text-white tracking-tight">Top 5 Restaurantes</h3>
-              <p className="text-xs text-zinc-500">Establecimientos con mayor facturación total procesada</p>
+              <p className="text-xs text-gray-400">Establecimientos con mayor facturación total procesada</p>
             </div>
 
             <div className="space-y-5 mt-6">
@@ -584,21 +584,21 @@ export default function SuperAdminDashboard() {
                   <div key={idx} className="space-y-2">
                     <div className="flex justify-between items-center text-xs font-semibold">
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-md bg-zinc-800 text-[10px] text-zinc-400 flex items-center justify-center font-bold">
+                        <span className="w-5 h-5 rounded-md bg-slate-100 text-[10px] text-gray-500 flex items-center justify-center font-bold">
                           #{idx + 1}
                         </span>
                         <span className="text-white">{restaurant.name}</span>
                       </div>
-                      <span className="text-orange-400 font-mono">${restaurant.sales.toLocaleString()} <span className="text-zinc-600">({restaurant.orderCount} ord)</span></span>
+                      <span className="text-orange-400 font-mono">${restaurant.sales.toLocaleString()} <span className="text-gray-600">({restaurant.orderCount} ord)</span></span>
                     </div>
-                    <div className="h-2 bg-zinc-950/60 rounded-full overflow-hidden border border-white/5">
-                      <div className="h-full bg-gradient-to-r from-purple-500 to-orange-500 rounded-full transition-all duration-500" style={{ width: `${salesPercent}%` }}></div>
+                    <div className="h-2 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
+                      <div className="h-full bg-gradient-to-r from-orange-500 to-orange-500 rounded-full transition-all duration-500" style={{ width: `${salesPercent}%` }}></div>
                     </div>
                   </div>
                 );
               })}
               {topRestaurants.length === 0 && (
-                <div className="text-center py-8 text-zinc-600 text-sm">
+                <div className="text-center py-8 text-gray-600 text-sm">
                   Sin transacciones cargadas.
                 </div>
               )}
@@ -606,59 +606,59 @@ export default function SuperAdminDashboard() {
           </div>
 
           {/* Monitor de Infraestructura y Estabilidad */}
-          <div className="bg-zinc-900/40 border border-white/5 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div>
               <h3 className="text-lg font-bold text-white tracking-tight">Monitor del Sistema</h3>
-              <p className="text-xs text-zinc-500">Estadísticas de red y concurrencia global en tiempo real</p>
+              <p className="text-xs text-gray-400">Estadísticas de red y concurrencia global en tiempo real</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-6">
               
               {/* Latency DB */}
-              <div className="bg-zinc-950/40 border border-white/5 p-4 rounded-2xl flex flex-col justify-between gap-2">
+              <div className="bg-slate-50/40 border border-gray-200 p-4 rounded-2xl flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Latencia DB</span>
-                  <Database className="w-4 h-4 text-purple-400" />
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Latencia DB</span>
+                  <Database className="w-4 h-4 text-orange-500" />
                 </div>
                 <div>
                   <p className="text-xl font-bold text-white font-mono">{dbLatency} ms</p>
-                  <span className="text-[9px] text-zinc-600 font-semibold block">Conexión Supabase</span>
+                  <span className="text-[9px] text-gray-600 font-semibold block">Conexión Supabase</span>
                 </div>
               </div>
 
               {/* Concurrent Sessions */}
-              <div className="bg-zinc-950/40 border border-white/5 p-4 rounded-2xl flex flex-col justify-between gap-2">
+              <div className="bg-slate-50/40 border border-gray-200 p-4 rounded-2xl flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Sesiones Activas</span>
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Sesiones Activas</span>
                   <Users className="w-4 h-4 text-orange-500 animate-pulse" />
                 </div>
                 <div>
                   <p className="text-xl font-bold text-white font-mono">{liveSessions}</p>
-                  <span className="text-[9px] text-zinc-600 font-semibold block">Dispositivos en línea</span>
+                  <span className="text-[9px] text-gray-600 font-semibold block">Dispositivos en línea</span>
                 </div>
               </div>
 
               {/* Webhook Error Rate */}
-              <div className="bg-zinc-950/40 border border-white/5 p-4 rounded-2xl flex flex-col justify-between gap-2">
+              <div className="bg-slate-50/40 border border-gray-200 p-4 rounded-2xl flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Error Rate</span>
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Error Rate</span>
                   <ShieldAlert className="w-4 h-4 text-red-500" />
                 </div>
                 <div>
                   <p className="text-xl font-bold text-white font-mono">0.05%</p>
-                  <span className="text-[9px] text-zinc-600 font-semibold block">Fallas en webhooks</span>
+                  <span className="text-[9px] text-gray-600 font-semibold block">Fallas en webhooks</span>
                 </div>
               </div>
 
               {/* Active integrations */}
-              <div className="bg-zinc-950/40 border border-white/5 p-4 rounded-2xl flex flex-col justify-between gap-2">
+              <div className="bg-slate-50/40 border border-gray-200 p-4 rounded-2xl flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Sistemas</span>
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Sistemas</span>
                   <Zap className="w-4 h-4 text-cyan-400" />
                 </div>
                 <div>
                   <p className="text-xl font-bold text-white font-mono">100%</p>
-                  <span className="text-[9px] text-zinc-600 font-semibold block">Pasarelas en línea</span>
+                  <span className="text-[9px] text-gray-600 font-semibold block">Pasarelas en línea</span>
                 </div>
               </div>
 
@@ -670,16 +670,16 @@ export default function SuperAdminDashboard() {
       </div>
 
       {/* ── FILA 3: RECENT TENANTS TABLE (MEJORADA) ── */}
-      <div className="bg-zinc-900/40 border border-white/5 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
-        <div className="p-6 border-b border-white/5 flex justify-between items-center">
+      <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
+        <div className="p-6 border-b border-gray-200 flex justify-between items-center">
           <h3 className="text-lg font-bold text-white tracking-tight">Últimos Restaurantes Afiliados</h3>
-          <span className="text-xs bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
+          <span className="text-xs bg-orange-500/10 text-orange-500 border border-orange-500/20 px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
             Total: {restaurants.length}
           </span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-white/5 text-zinc-500 uppercase text-[9px] tracking-wider font-bold">
+            <thead className="bg-slate-50 text-gray-400 uppercase text-[9px] tracking-wider font-bold">
               <tr>
                 <th className="px-6 py-4 font-bold">Restaurante</th>
                 <th className="px-6 py-4 font-bold">Slug / Enlace</th>
@@ -689,7 +689,7 @@ export default function SuperAdminDashboard() {
                 <th className="px-6 py-4 font-bold text-center">Fecha de Alta</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-zinc-300">
+            <tbody className="divide-y divide-white/5 text-gray-800">
               {restaurants.map((tenant) => {
                 const stats = getRestaurantStats(tenant.id);
                 return (
@@ -698,24 +698,24 @@ export default function SuperAdminDashboard() {
                       {tenant.logo_url ? (
                         <img src={tenant.logo_url} alt={tenant.name} className="w-8 h-8 rounded-lg object-cover" />
                       ) : (
-                        <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-xs font-black text-zinc-400">
+                        <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-black text-gray-500">
                           {tenant.name.substring(0,2).toUpperCase()}
                         </div>
                       )}
                       {tenant.name}
                     </td>
-                    <td className="px-6 py-4 font-mono text-zinc-400">
-                      <a href={`/${tenant.slug}`} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 hover:underline">
+                    <td className="px-6 py-4 font-mono text-gray-500">
+                      <a href={`/${tenant.slug}`} target="_blank" rel="noopener noreferrer" className="text-orange-500 hover:text-orange-400 hover:underline">
                         /{tenant.slug}
                       </a>
                     </td>
-                    <td className="px-6 py-4 text-center font-mono font-bold text-zinc-300">
+                    <td className="px-6 py-4 text-center font-mono font-bold text-gray-800">
                       {stats.ordersToday > 0 ? (
                         <span className="inline-block bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded text-xs">
                           {stats.ordersToday}
                         </span>
                       ) : (
-                        <span className="text-zinc-600">-</span>
+                        <span className="text-gray-600">-</span>
                       )}
                     </td>
                     <td className="px-6 py-4 text-right font-mono font-bold text-white">
@@ -734,7 +734,7 @@ export default function SuperAdminDashboard() {
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-center text-zinc-500 font-mono text-xs">
+                    <td className="px-6 py-4 text-center text-gray-400 font-mono text-xs">
                       {new Date(tenant.created_at).toLocaleDateString()}
                     </td>
                   </tr>
@@ -742,7 +742,7 @@ export default function SuperAdminDashboard() {
               })}
               {restaurants.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-zinc-600">
+                  <td colSpan={6} className="px-6 py-8 text-center text-gray-600">
                     No hay restaurantes registrados aún.
                   </td>
                 </tr>

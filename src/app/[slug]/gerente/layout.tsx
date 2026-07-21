@@ -66,9 +66,9 @@ export default function GerenteLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col md:flex-row gerente-light-theme">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row gerente-light-theme">
       {/* Sidebar (Desktop) */}
-      <aside className="hidden md:flex flex-col w-64 border-r border-zinc-800 bg-zinc-950 p-6">
+      <aside className="hidden md:flex flex-col w-64 border-r border-gray-200 bg-slate-50 p-6">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20 overflow-hidden shrink-0">
             {restaurantLogo ? (
@@ -79,7 +79,7 @@ export default function GerenteLayout({
           </div>
           <div className="min-w-0">
             <h1 className="font-bold text-white text-lg leading-tight truncate">{restaurantName}</h1>
-            <span className="text-xs text-zinc-500 truncate block">Dashboard</span>
+            <span className="text-xs text-gray-400 truncate block">Dashboard</span>
           </div>
         </div>
         
@@ -94,10 +94,10 @@ export default function GerenteLayout({
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                   isActive 
                     ? 'bg-orange-500/10 text-orange-500 font-medium' 
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+                    : 'text-gray-500 hover:text-white hover:bg-white shadow-sm'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'text-zinc-500'}`} />
+                <Icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'text-gray-400'}`} />
                 {link.label}
               </Link>
             );
@@ -106,13 +106,13 @@ export default function GerenteLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 bg-zinc-900 min-h-screen overflow-y-auto pb-20 md:pb-0 relative">
+      <main className="flex-1 bg-white shadow-sm min-h-screen overflow-y-auto pb-20 md:pb-0 relative">
         <WaiterNotificationBell />
         {children}
       </main>
 
       {/* Bottom Nav (Mobile) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 border-t border-zinc-800 bg-zinc-950 pb-safe z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-slate-50 pb-safe z-50">
         <nav className="flex justify-around p-2">
           {links.map((link) => {
             const Icon = link.icon;
@@ -122,7 +122,7 @@ export default function GerenteLayout({
                 key={link.href}
                 href={link.href}
                 className={`flex flex-col items-center p-2 rounded-lg min-w-[72px] ${
-                  isActive ? 'text-orange-500' : 'text-zinc-400'
+                  isActive ? 'text-orange-500' : 'text-gray-500'
                 }`}
               >
                 <Icon className="w-6 h-6 mb-1" />

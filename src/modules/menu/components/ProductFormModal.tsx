@@ -195,11 +195,11 @@ export function ProductFormModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-center items-center bg-black/80 backdrop-blur-sm p-4">
-      <div className="bg-zinc-900 w-full max-w-2xl rounded-2xl border border-zinc-800 max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-zinc-800">
+    <div className="fixed inset-0 z-[100] flex justify-center items-center bg-white/80 backdrop-blur-sm p-4">
+      <div className="bg-white shadow-sm w-full max-w-2xl rounded-2xl border border-gray-200 max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-bold text-white">{productToEdit ? 'Editar Plato' : 'Añadir Nuevo Plato'}</h2>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full text-zinc-400">
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full text-gray-500">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -207,16 +207,16 @@ export function ProductFormModal({
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
           {/* Basic Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-white">Información Básica</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Información Básica</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-zinc-400 mb-1">Nombre del plato *</label>
-                <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
+                <label className="block text-sm text-gray-500 mb-1">Nombre del plato *</label>
+                <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
               </div>
               <div>
-                <label className="block text-sm text-zinc-400 mb-1">Categoría *</label>
-                <select required value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none">
+                <label className="block text-sm text-gray-500 mb-1">Categoría *</label>
+                <select required value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none">
                   {categories.map(c => (
                     <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
@@ -225,36 +225,36 @@ export function ProductFormModal({
             </div>
 
             <div>
-              <label className="block text-sm text-zinc-400 mb-1">Descripción</label>
-              <textarea value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" rows={2} />
+              <label className="block text-sm text-gray-500 mb-1">Descripción</label>
+              <textarea value={description} onChange={e => setDescription(e.target.value)} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" rows={2} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm text-zinc-400 mb-1">Precio Base ($) *</label>
-                <input required type="number" step="0.01" min="0" value={price} onChange={e => setPrice(parseFloat(e.target.value))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
+                <label className="block text-sm text-gray-500 mb-1">Precio Base ($) *</label>
+                <input required type="number" step="0.01" min="0" value={price} onChange={e => setPrice(parseFloat(e.target.value))} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
               </div>
               <div className="flex flex-col">
-                <label className="block text-sm text-zinc-400 mb-1">Imagen del Plato (Opcional)</label>
+                <label className="block text-sm text-gray-500 mb-1">Imagen del Plato (Opcional)</label>
                 <div className="flex gap-2 mb-2">
                   <button 
                     type="button" 
                     onClick={() => setUploadMode('url')} 
-                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'url' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800'}`}
+                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'url' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-white shadow-sm border border-gray-200 text-gray-500 hover:bg-slate-100'}`}
                   >
                     Enlace (URL)
                   </button>
                   <button 
                     type="button" 
                     onClick={() => setUploadMode('file')} 
-                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'file' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800'}`}
+                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'file' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-white shadow-sm border border-gray-200 text-gray-500 hover:bg-slate-100'}`}
                   >
                     Subir Archivo
                   </button>
                 </div>
                 
                 {uploadMode === 'url' ? (
-                  <input type="url" placeholder="https://..." value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all" />
+                  <input type="url" placeholder="https://..." value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-orange-500 outline-none transition-all" />
                 ) : (
                   <input 
                     type="file" 
@@ -275,17 +275,17 @@ export function ProductFormModal({
                       };
                       reader.readAsDataURL(file);
                     }} 
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2 text-white focus:ring-2 focus:ring-orange-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-300 hover:file:bg-zinc-700 cursor-pointer transition-all" 
+                    className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-2 text-white focus:ring-2 focus:ring-orange-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-gray-800 hover:file:bg-zinc-700 cursor-pointer transition-all" 
                   />
                 )}
 
                 {imageUrl && (
-                  <div className="mt-3 relative w-full h-32 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
+                  <div className="mt-3 relative w-full h-32 rounded-xl overflow-hidden border border-gray-200 bg-slate-50">
                     <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
                     <button 
                       type="button" 
                       onClick={() => setImageUrl('')} 
-                      className="absolute top-2 right-2 bg-black/50 hover:bg-red-500/80 p-1.5 rounded-full text-white backdrop-blur-sm transition-colors"
+                      className="absolute top-2 right-2 bg-white/50 hover:bg-red-500/80 p-1.5 rounded-full text-white backdrop-blur-sm transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -295,12 +295,12 @@ export function ProductFormModal({
             </div>
           </div>
 
-          <div className="h-px bg-zinc-800 my-8" />
+          <div className="h-px bg-slate-100 my-8" />
 
           {/* Modifiers */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">Grupos de Modificadores</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Grupos de Modificadores</h3>
               <button type="button" onClick={addGroup} className="flex items-center text-sm font-medium text-brand-primary hover:brightness-110">
                 <Plus className="w-4 h-4 mr-1" />
                 Añadir Grupo
@@ -308,30 +308,30 @@ export function ProductFormModal({
             </div>
 
             {groups.length === 0 && (
-              <p className="text-zinc-500 text-sm">No hay grupos de modificadores. (Ej. "Elige tu término", "Extras").</p>
+              <p className="text-gray-400 text-sm">No hay grupos de modificadores. (Ej. "Elige tu término", "Extras").</p>
             )}
 
             {groups.map((group, groupIdx) => (
-              <div key={groupIdx} className="bg-zinc-950/50 border border-zinc-800 rounded-xl p-4 space-y-4">
+              <div key={groupIdx} className="bg-slate-50/50 border border-gray-200 rounded-xl p-4 space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="grid grid-cols-2 gap-3 flex-1 mr-4">
                     <input required placeholder="Nombre del grupo (Ej. Salsas)" value={group.name} onChange={e => {
                       const newGroups = [...groups]; newGroups[groupIdx].name = e.target.value; setGroups(newGroups);
-                    }} className="col-span-2 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-white" />
+                    }} className="col-span-2 bg-white shadow-sm border border-gray-200 rounded-lg px-3 py-2 text-white" />
                     
                     <div className="flex items-center space-x-2">
-                      <label className="text-xs text-zinc-400">Min. Selecciones</label>
+                      <label className="text-xs text-gray-500">Min. Selecciones</label>
                       <input type="number" min="0" value={group.min_selections} onChange={e => {
                         const newGroups = [...groups]; newGroups[groupIdx].min_selections = parseInt(e.target.value); 
                         newGroups[groupIdx].is_required = parseInt(e.target.value) > 0;
                         setGroups(newGroups);
-                      }} className="w-16 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1 text-white text-center" />
+                      }} className="w-16 bg-white shadow-sm border border-gray-200 rounded-lg px-2 py-1 text-white text-center" />
                     </div>
                     <div className="flex items-center space-x-2">
-                      <label className="text-xs text-zinc-400">Max. Selecciones</label>
+                      <label className="text-xs text-gray-500">Max. Selecciones</label>
                       <input type="number" min="1" value={group.max_selections} onChange={e => {
                         const newGroups = [...groups]; newGroups[groupIdx].max_selections = parseInt(e.target.value); setGroups(newGroups);
-                      }} className="w-16 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1 text-white text-center" />
+                      }} className="w-16 bg-white shadow-sm border border-gray-200 rounded-lg px-2 py-1 text-white text-center" />
                     </div>
                   </div>
                   <button type="button" onClick={() => removeGroup(groupIdx)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg">
@@ -339,18 +339,18 @@ export function ProductFormModal({
                   </button>
                 </div>
 
-                <div className="pl-4 border-l-2 border-zinc-800 space-y-2">
+                <div className="pl-4 border-l-2 border-gray-200 space-y-2">
                   {group.modifiers.map((mod, modIdx) => (
                     <div key={modIdx} className="flex items-center space-x-2">
                       <input required placeholder="Opcion (Ej. Queso Cheddar)" value={mod.name} onChange={e => {
                         const newGroups = [...groups]; newGroups[groupIdx].modifiers[modIdx].name = e.target.value; setGroups(newGroups);
-                      }} className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-white text-sm" />
+                      }} className="flex-1 bg-white shadow-sm border border-gray-200 rounded-lg px-3 py-2 text-white text-sm" />
                       
                       <div className="flex items-center">
-                        <span className="text-zinc-500 mr-2 text-sm">+$</span>
+                        <span className="text-gray-400 mr-2 text-sm">+$</span>
                         <input type="number" step="0.01" min="0" value={mod.extra_price} onChange={e => {
                           const newGroups = [...groups]; newGroups[groupIdx].modifiers[modIdx].extra_price = parseFloat(e.target.value); setGroups(newGroups);
-                        }} className="w-20 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-2 text-white text-sm text-center" />
+                        }} className="w-20 bg-white shadow-sm border border-gray-200 rounded-lg px-2 py-2 text-white text-sm text-center" />
                       </div>
                       
                       <button type="button" onClick={() => removeModifier(groupIdx, modIdx)} className="p-1.5 text-red-500 hover:bg-red-500/10 rounded-md">
@@ -358,7 +358,7 @@ export function ProductFormModal({
                       </button>
                     </div>
                   ))}
-                  <button type="button" onClick={() => addModifier(groupIdx)} className="text-xs text-zinc-400 hover:text-white flex items-center mt-2">
+                  <button type="button" onClick={() => addModifier(groupIdx)} className="text-xs text-gray-500 hover:text-white flex items-center mt-2">
                     <Plus className="w-3 h-3 mr-1" /> Añadir Opción
                   </button>
                 </div>
@@ -367,8 +367,8 @@ export function ProductFormModal({
           </div>
         </form>
 
-        <div className="p-6 border-t border-zinc-800 flex justify-end gap-3 bg-zinc-900">
-          <button type="button" onClick={onClose} disabled={isSubmitting} className="px-6 py-3 rounded-xl font-medium text-zinc-300 hover:bg-zinc-800 transition-colors">
+        <div className="p-6 border-t border-gray-200 flex justify-end gap-3 bg-white shadow-sm">
+          <button type="button" onClick={onClose} disabled={isSubmitting} className="px-6 py-3 rounded-xl font-medium text-gray-800 hover:bg-slate-100 transition-colors">
             Cancelar
           </button>
           <button type="button" onClick={handleSubmit} disabled={isSubmitting} className="brand-bg px-6 py-3 rounded-xl font-bold text-white hover:brightness-110 transition-colors flex items-center disabled:opacity-50">

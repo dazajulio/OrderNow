@@ -44,38 +44,38 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
   );
 
   if (isLoading) {
-    return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin"></div></div>;
+    return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"></div></div>;
   }
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-500" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
         <input 
           type="text" 
           placeholder="Buscar por número de orden, cliente o mesa..." 
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl py-4 pl-14 pr-6 text-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full bg-white shadow-sm border border-gray-200 rounded-2xl py-4 pl-14 pr-6 text-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
         />
       </div>
 
       {/* Orders Table/List */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+      <div className="bg-white shadow-sm border border-gray-200 rounded-2xl overflow-hidden">
         {filteredOrders.length === 0 ? (
-          <div className="p-12 text-center text-zinc-500">
+          <div className="p-12 text-center text-gray-400">
             No se encontraron pedidos en el historial.
           </div>
         ) : (
-          <div className="divide-y divide-zinc-800/50">
+          <div className="divide-y divide-gray-200/50">
             {filteredOrders.map(order => (
-              <div key={order.id} className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-800/20 transition-colors">
+              <div key={order.id} className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-100/20 transition-colors">
                 
                 {/* Info block */}
                 <div className="flex items-start gap-4">
-                  <div className="bg-zinc-800 rounded-xl p-3 flex flex-col items-center justify-center min-w-[4rem]">
-                    <span className="text-xs text-zinc-400">#</span>
+                  <div className="bg-slate-100 rounded-xl p-3 flex flex-col items-center justify-center min-w-[4rem]">
+                    <span className="text-xs text-gray-500">#</span>
                     <span className="text-xl font-bold text-white">{order.order_number}</span>
                   </div>
                   
@@ -86,13 +86,13 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
                       }`}>
                         {order.status === 'delivered' ? 'Entregado' : 'Cancelado'}
                       </span>
-                      <span className="text-zinc-500 text-sm flex items-center">
+                      <span className="text-gray-400 text-sm flex items-center">
                         <Clock className="w-3.5 h-3.5 mr-1" />
                         {new Date(order.created_at).toLocaleString()}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-3 text-sm text-zinc-400">
+                    <div className="flex items-center gap-3 text-sm text-gray-500">
                       {order.table && (
                         <span className="flex items-center">
                           <MapPin className="w-3.5 h-3.5 mr-1" />
@@ -120,11 +120,11 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
                 {/* Items Summary & Total */}
                 <div className="flex flex-col sm:items-end gap-2 sm:max-w-xs">
                   <span className="text-xl font-bold text-white">{formatPrice(order.total_amount, 'USD')}</span>
-                  <p className="text-sm text-zinc-400 line-clamp-2 text-left sm:text-right">
+                  <p className="text-sm text-gray-500 line-clamp-2 text-left sm:text-right">
                     {order.order_items.map(item => `${item.quantity}x ${item.product_name}`).join(', ')}
                   </p>
                   {order.payment_method && (
-                    <span className="text-xs px-2 py-1 bg-zinc-800 text-zinc-300 rounded-md">
+                    <span className="text-xs px-2 py-1 bg-slate-100 text-gray-800 rounded-md">
                       Pago: {order.payment_method === 'stripe' ? 'Tarjeta' : (order.payment_method as any) === 'terminal' ? 'Terminal' : 'Efectivo'}
                     </span>
                   )}

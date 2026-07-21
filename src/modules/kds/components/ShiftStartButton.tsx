@@ -171,12 +171,12 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
         {/* Tone Selector */}
         <div className="relative group/tone hidden sm:flex">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Music className="h-4 w-4 text-zinc-500" />
+            <Music className="h-4 w-4 text-gray-400" />
           </div>
           <select
             value={selectedTone}
             onChange={handleToneChange}
-            className="appearance-none bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm rounded-xl pl-9 pr-8 py-2.5 outline-none hover:bg-zinc-800 focus:ring-2 focus:ring-orange-500/50 transition-colors cursor-pointer"
+            className="appearance-none bg-white shadow-sm border border-gray-200 text-gray-800 text-sm rounded-xl pl-9 pr-8 py-2.5 outline-none hover:bg-slate-100 focus:ring-2 focus:ring-orange-500/50 transition-colors cursor-pointer"
           >
             <option value="new-order">Campana Clásica</option>
             <option value="digital-chime">Timbre Digital</option>
@@ -209,7 +209,7 @@ export const ShiftStartButton = forwardRef<ShiftStartButtonHandle>(
           {isUnlocked ? (
             <Volume2 className="h-5 w-5 text-emerald-400" />
           ) : (
-            <VolumeX className="h-5 w-5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
+            <VolumeX className="h-5 w-5 text-gray-500 group-hover:text-gray-900 transition-colors" />
           )}
 
           {/* Label */}

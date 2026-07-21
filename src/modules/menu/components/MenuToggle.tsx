@@ -207,7 +207,7 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
   );
 
   if (isLoading && products.length === 0) {
-    return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin"></div></div>;
+    return <div className="p-8 flex justify-center"><div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"></div></div>;
   }
 
   return (
@@ -215,19 +215,19 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-500" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
           <input 
             type="text" 
             placeholder="Buscar producto..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl py-4 pl-14 pr-6 text-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full bg-white shadow-sm border border-gray-200 rounded-2xl py-4 pl-14 pr-6 text-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
           <button 
             onClick={createCategory}
-            className="bg-zinc-800 hover:bg-zinc-700 text-white rounded-2xl px-5 py-4 font-bold flex items-center justify-center transition-all flex-1 sm:flex-none whitespace-nowrap"
+            className="bg-slate-100 hover:bg-zinc-700 text-white rounded-2xl px-5 py-4 font-bold flex items-center justify-center transition-all flex-1 sm:flex-none whitespace-nowrap"
           >
             <FolderPlus className="w-5 h-5 mr-2" />
             Categoría
@@ -265,10 +265,10 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
                       <div 
                         ref={catProvided.innerRef}
                         {...catProvided.draggableProps}
-                        className={`bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl ${catSnapshot.isDragging ? 'ring-2 ring-orange-500 shadow-2xl z-50' : ''}`}
+                        className={`bg-white shadow-sm border border-gray-200 rounded-2xl overflow-hidden shadow-xl ${catSnapshot.isDragging ? 'ring-2 ring-orange-500 shadow-2xl z-50' : ''}`}
                       >
-                        <div className="bg-zinc-800/50 px-6 py-5 flex items-center gap-3 border-b border-zinc-800 group">
-                          <div {...catProvided.dragHandleProps} className="text-zinc-500 hover:text-white cursor-grab active:cursor-grabbing p-1 -ml-2">
+                        <div className="bg-slate-50 px-6 py-5 flex items-center gap-3 border-b border-gray-200 group">
+                          <div {...catProvided.dragHandleProps} className="text-gray-400 hover:text-white cursor-grab active:cursor-grabbing p-1 -ml-2">
                             <GripVertical className="w-5 h-5" />
                           </div>
                           <UtensilsCrossed className="w-5 h-5 text-orange-500 flex-shrink-0" />
@@ -277,7 +277,7 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
                           <div className="flex gap-1 ml-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                             <button 
                               onClick={() => editCategory(category)}
-                              className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-700 rounded-lg transition-colors"
+                              className="p-1.5 text-gray-500 hover:text-white hover:bg-zinc-700 rounded-lg transition-colors"
                               title="Editar nombre de categoría"
                             >
                               <Edit2 className="w-4 h-4" />
@@ -291,7 +291,7 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
                             </button>
                           </div>
 
-                          <span className="ml-auto text-sm text-zinc-500 font-medium">{categoryProducts.length} productos</span>
+                          <span className="ml-auto text-sm text-gray-400 font-medium">{categoryProducts.length} productos</span>
                         </div>
                         
                         <Droppable droppableId={category.id} type="product">
@@ -299,10 +299,10 @@ export function MenuToggle({ restaurantId }: MenuToggleProps) {
                             <div 
                               {...provided.droppableProps} 
                               ref={provided.innerRef}
-                              className="divide-y divide-zinc-800/50 min-h-[50px]"
+                              className="divide-y divide-gray-200/50 min-h-[50px]"
                             >
                               {categoryProducts.length === 0 ? (
-                                <div className="p-6 text-center text-zinc-500 italic">No hay productos en esta categoría.</div>
+                                <div className="p-6 text-center text-gray-400 italic">No hay productos en esta categoría.</div>
                               ) : (
                                 categoryProducts.map((product, index) => (
                                   <ProductRow 

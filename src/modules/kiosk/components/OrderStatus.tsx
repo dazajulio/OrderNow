@@ -54,13 +54,13 @@ export function OrderStatus({ orderId, restaurantId }: OrderStatusProps) {
   if (isLoading) {
     return (
       <div className="flex justify-center p-12">
-        <div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!order) {
-    return <div className="text-center text-zinc-500 p-6">No se encontró la orden.</div>;
+    return <div className="text-center text-gray-400 p-6">No se encontró la orden.</div>;
   }
 
   const isPaid = order.payment_status === 'paid';
@@ -93,21 +93,21 @@ export function OrderStatus({ orderId, restaurantId }: OrderStatusProps) {
   ];
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8 animate-fade-in w-full max-w-md mx-auto shadow-2xl shadow-black">
+    <div className="bg-white shadow-sm border border-gray-200 rounded-3xl p-6 md:p-8 animate-fade-in w-full max-w-md mx-auto shadow-2xl shadow-black">
       <div className="text-center mb-10">
-        <p className="text-zinc-500 text-sm uppercase tracking-widest font-bold mb-1">Orden #</p>
+        <p className="text-gray-400 text-sm uppercase tracking-widest font-bold mb-1">Orden #</p>
         <h2 className="text-5xl font-black text-white">{order.order_number}</h2>
       </div>
 
       <div className="relative">
         {/* Line connection */}
-        <div className="absolute left-8 top-8 bottom-8 w-1 bg-zinc-800 rounded-full -translate-x-1/2 z-0" />
+        <div className="absolute left-8 top-8 bottom-8 w-1 bg-slate-100 rounded-full -translate-x-1/2 z-0" />
         
         <div className="space-y-8 relative z-10">
           {steps.map((step, index) => {
             const Icon = step.icon;
-            let iconColor = 'text-zinc-500';
-            let bgColor = 'bg-zinc-900 border-2 border-zinc-800';
+            let iconColor = 'text-gray-400';
+            let bgColor = 'bg-white shadow-sm border-2 border-gray-200';
             
             if (step.isCompleted) {
               iconColor = 'text-green-500';
@@ -127,10 +127,10 @@ export function OrderStatus({ orderId, restaurantId }: OrderStatusProps) {
                   )}
                 </div>
                 <div className="pt-2">
-                  <h3 className={`text-xl font-bold ${step.isActive ? 'text-white' : step.isCompleted ? 'text-zinc-300' : 'text-zinc-600'}`}>
+                  <h3 className={`text-xl font-bold ${step.isActive ? 'text-white' : step.isCompleted ? 'text-gray-800' : 'text-gray-600'}`}>
                     {step.label}
                   </h3>
-                  <p className="text-zinc-500 text-sm mt-1">{step.description}</p>
+                  <p className="text-gray-400 text-sm mt-1">{step.description}</p>
                 </div>
               </div>
             );

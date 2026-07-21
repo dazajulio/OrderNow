@@ -167,40 +167,40 @@ export default function AIAgentPage() {
   // --- Default PIN Blocking Warning Modal ---
   if (showDefaultPinWarning) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
-        <div className="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scale-in text-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-50/90 backdrop-blur-md">
+        <div className="w-full max-w-sm bg-white shadow-sm border border-gray-200 rounded-3xl p-6 shadow-2xl space-y-6 animate-scale-in text-center">
           <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto text-red-500">
             <Lock className="w-6 h-6" />
           </div>
           <div className="space-y-2">
             <h3 className="text-xl font-bold text-white">PIN por Defecto Detectado</h3>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-500">
               Estás utilizando la clave de acceso por defecto. Por seguridad, debes actualizarla inmediatamente para poder acceder a la consola del Agente IA.
             </p>
           </div>
 
           <div className="space-y-4 text-left">
             <div>
-              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Nuevo PIN (4 dígitos)</label>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nuevo PIN (4 dígitos)</label>
               <input 
                 type="password"
                 maxLength={4}
                 value={newPin}
                 onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="Ej: 5678"
-                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full bg-slate-100 border border-gray-200 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Confirmar PIN</label>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Confirmar PIN</label>
               <input 
                 type="password"
                 maxLength={4}
                 value={confirmPin}
                 onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="Ej: 5678"
-                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full bg-slate-100 border border-gray-200 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
@@ -270,7 +270,7 @@ export default function AIAgentPage() {
         </div>
         <div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Agente IA de Crecimiento</h1>
-          <p className="text-zinc-500">Campañas automáticas y sugerencias autónomas de mercadeo</p>
+          <p className="text-gray-400">Campañas automáticas y sugerencias autónomas de mercadeo</p>
         </div>
       </div>
 
@@ -286,7 +286,7 @@ export default function AIAgentPage() {
         <div className="bg-blue-50/50 border border-blue-200/60 rounded-3xl p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-6 opacity-10 text-blue-500"><Users className="w-20 h-20" /></div>
           <p className="text-blue-800 font-medium flex items-center gap-2 mb-2"><MessageSquare className="w-4 h-4" /> Clientes Alcanzados</p>
-          <h2 className="text-4xl font-extrabold text-blue-950">{customerCount} <span className="text-xs text-zinc-500 font-normal">este mes</span></h2>
+          <h2 className="text-4xl font-extrabold text-blue-950">{customerCount} <span className="text-xs text-gray-400 font-normal">este mes</span></h2>
         </div>
         <div className="bg-emerald-50/50 border border-emerald-200/60 rounded-3xl p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-6 opacity-10 text-emerald-500"><TrendingUp className="w-20 h-20" /></div>
@@ -315,13 +315,13 @@ export default function AIAgentPage() {
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                       c.status === 'active' ? 'bg-emerald-100 text-emerald-700' :
                       c.status === 'scheduled' ? 'bg-blue-100 text-blue-700' :
-                      'bg-zinc-200 text-zinc-600'
+                      'bg-zinc-200 text-gray-600'
                     }`}>
                       {c.status === 'active' ? 'Activa' : c.status === 'scheduled' ? 'Programada' : 'Pausada'}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-500"><strong className="text-zinc-600">Filtro:</strong> {c.target}</p>
-                  <p className="text-xs text-zinc-500"><strong className="text-zinc-600">Incentivo:</strong> {c.reward}</p>
+                  <p className="text-xs text-gray-400"><strong className="text-gray-600">Filtro:</strong> {c.target}</p>
+                  <p className="text-xs text-gray-400"><strong className="text-gray-600">Incentivo:</strong> {c.reward}</p>
                   <span className="inline-block text-[11px] font-bold text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-md mt-1 border border-orange-100/50">
                     {c.status === 'active' ? c.roi : 'Sin retornos activos (-)'}
                   </span>
@@ -370,7 +370,7 @@ export default function AIAgentPage() {
                 }`}>
                   {m.text}
                 </div>
-                <span className="text-[10px] text-zinc-400 mt-1 px-1">{m.time}</span>
+                <span className="text-[10px] text-gray-500 mt-1 px-1">{m.time}</span>
               </div>
             ))}
 

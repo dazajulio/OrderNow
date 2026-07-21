@@ -165,13 +165,13 @@ export function WaiterNotificationBell() {
   if (calls.length === 0 || typeof document === 'undefined') return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
-      <div className="bg-zinc-900 border-2 border-orange-500 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl shadow-orange-500/20 transform animate-bounce-in">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-white/60 backdrop-blur-sm p-4 animate-fade-in">
+      <div className="bg-white shadow-sm border-2 border-orange-500 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl shadow-orange-500/20 transform animate-bounce-in">
         <div className="w-20 h-20 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
           <Bell className="w-10 h-10 text-orange-500 animate-pulse" />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">¡Llamado de Mesero!</h2>
-        <p className="text-xl text-zinc-300 mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Llamado de Mesero!</h2>
+        <p className="text-xl text-gray-800 mb-8">
           La {calls[0].tables?.label || `Mesa ${calls[0].tables?.table_number || 'Desconocida'}`} requiere atención.
         </p>
         
@@ -183,7 +183,7 @@ export function WaiterNotificationBell() {
         </button>
         
         {calls.length > 1 && (
-          <p className="text-sm text-zinc-500 mt-4">
+          <p className="text-sm text-gray-400 mt-4">
             + {calls.length - 1} llamado(s) pendiente(s)
           </p>
         )}

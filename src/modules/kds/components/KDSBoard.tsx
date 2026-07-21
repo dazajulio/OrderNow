@@ -199,16 +199,16 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
   // ------------------------------------------------------------------
 
   return (
-    <div className="flex h-full flex-col bg-zinc-950">
+    <div className="flex h-full flex-col bg-slate-50">
       {/* ── Top Bar ─────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between border-b border-zinc-800/60 bg-zinc-950/90 backdrop-blur-md px-4 py-3 lg:px-6">
+      <header className="flex items-center justify-between border-b border-gray-200 bg-slate-50/90 backdrop-blur-md px-4 py-3 lg:px-6">
         <div className="flex items-center gap-3">
-          <UtensilsCrossed className="h-6 w-6 text-zinc-400" />
+          <UtensilsCrossed className="h-6 w-6 text-gray-500" />
           <div>
             <h1 className="text-lg font-bold tracking-tight text-white">
               Cocina
             </h1>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-gray-400">
               Kitchen Display System
             </p>
           </div>
@@ -255,7 +255,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
       {/* ── Loading state ───────────────────────────────────────── */}
       {isLoading && (
         <div className="flex flex-1 items-center justify-center">
-          <div className="flex flex-col items-center gap-3 text-zinc-500">
+          <div className="flex flex-col items-center gap-3 text-gray-400">
             <Loader2 className="h-8 w-8 animate-spin" />
             <p className="text-sm">Cargando pedidos…</p>
           </div>
@@ -271,7 +271,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
             return (
               <div
                 key={col.key}
-                className="flex flex-1 flex-col border-r border-zinc-800/40 last:border-r-0 min-h-0"
+                className="flex flex-1 flex-col border-r border-gray-200 last:border-r-0 min-h-0"
               >
                 {/* Column header */}
                 <div className={cn(
@@ -306,7 +306,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
                 >
                   {columnOrders.length === 0 ? (
                     <div className="flex h-32 items-center justify-center">
-                      <p className="text-sm text-zinc-600">{col.emptyMessage}</p>
+                      <p className="text-sm text-gray-600">{col.emptyMessage}</p>
                     </div>
                   ) : (
                     columnOrders.map((order) => (

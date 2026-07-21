@@ -41,7 +41,7 @@ export default function QRAdminPage() {
   if (loading) {
     return (
       <div className="p-12 flex justify-center">
-        <div className="w-8 h-8 border-4 border-zinc-800 border-t-orange-500 rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin" />
       </div>
     );
   }
@@ -51,9 +51,9 @@ export default function QRAdminPage() {
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-2">
           <QrCode className="w-8 h-8 text-orange-500" />
-          <h1 className="text-3xl font-bold text-white">Códigos QR de Mesas</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Códigos QR de Mesas</h1>
         </div>
-        <p className="text-zinc-400 text-lg">Genera e imprime los códigos QR para pedidos desde mesa.</p>
+        <p className="text-gray-500 text-lg">Genera e imprime los códigos QR para pedidos desde mesa.</p>
       </div>
 
       {restaurantId ? (
@@ -63,7 +63,7 @@ export default function QRAdminPage() {
           brandColor={brandColor} 
         />
       ) : (
-        <p className="text-zinc-500 text-sm">Registra un restaurante para generar códigos QR.</p>
+        <p className="text-gray-400 text-sm">Registra un restaurante para generar códigos QR.</p>
       )}
     </div>
   );
