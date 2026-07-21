@@ -44,13 +44,24 @@ export function OnboardingModal({ isOpen, restaurantId, restaurantName, onComple
     }
 
     setIsSaving(true);
-    const { error } = await supabase
+    let { error } = await supabase
       .from('restaurants')
       .update({
         admin_pin: pin,
         super_admin_password: pin
       } as any)
       .eq('id', restaurantId);
+
+    if (error && error.message && error.message.includes('admin_pin')) {
+      console.warn('admin_pin column not found in schema. Falling back to super_admin_password only...');
+      const fallback = await supabase
+        .from('restaurants')
+        .update({
+          super_admin_password: pin
+        } as any)
+        .eq('id', restaurantId);
+      error = fallback.error;
+    }
 
     setIsSaving(false);
     if (error) {

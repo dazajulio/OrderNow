@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Brain, Sparkles, Send, Bot, Play, CheckCircle2, TrendingUp, Users, Percent, MessageSquare } from 'lucide-react';
+import { Brain, Sparkles, Send, Bot, Play, CheckCircle2, TrendingUp, Users, Percent, MessageSquare, Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { PinAuthModal } from '@/components/shared/PinAuthModal';
 import { useRouter } from 'next/navigation';
@@ -25,6 +25,10 @@ export default function AIAgentPage() {
   const [showPinModal, setShowPinModal] = useState(true);
   const [expectedPin, setExpectedPin] = useState('1234');
   const [restaurantId, setRestaurantId] = useState('');
+  const [showDefaultPinWarning, setShowDefaultPinWarning] = useState(false);
+  const [newPin, setNewPin] = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
+  const [isSavingPin, setIsSavingPin] = useState(false);
 
   useEffect(() => {
     setRestaurantId(localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
@@ -49,6 +53,9 @@ export default function AIAgentPage() {
   const handleAuthSuccess = () => {
     setShowPinModal(false);
     setIsAuthenticated(true);
+    if (expectedPin === '1234') {
+      setShowDefaultPinWarning(true);
+    }
   };
 
   const handleAuthClose = () => {
@@ -154,6 +161,102 @@ export default function AIAgentPage() {
         title="Acceso de Administrador" 
         expectedPin={expectedPin}
       />
+    );
+  }
+
+  // --- Default PIN Blocking Warning Modal ---
+  if (showDefaultPinWarning) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/90 backdrop-blur-md">
+        <div className="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-6 animate-scale-in text-center">
+          <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto text-red-500">
+            <Lock className="w-6 h-6" />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-xl font-bold text-white">PIN por Defecto Detectado</h3>
+            <p className="text-sm text-zinc-400">
+              Estás utilizando la clave de acceso por defecto. Por seguridad, debes actualizarla inmediatamente para poder acceder a la consola del Agente IA.
+            </p>
+          </div>
+
+          <div className="space-y-4 text-left">
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Nuevo PIN (4 dígitos)</label>
+              <input 
+                type="password"
+                maxLength={4}
+                value={newPin}
+                onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ''))}
+                placeholder="Ej: 5678"
+                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Confirmar PIN</label>
+              <input 
+                type="password"
+                maxLength={4}
+                value={confirmPin}
+                onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ''))}
+                placeholder="Ej: 5678"
+                className="w-full bg-zinc-850 border border-zinc-800 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <button 
+              onClick={async () => {
+                if (newPin.length !== 4) {
+                  alert('El PIN debe tener exactamente 4 dígitos.');
+                  return;
+                }
+                if (newPin === '1234') {
+                  alert('El nuevo PIN no puede ser el PIN por defecto "1234".');
+                  return;
+                }
+                if (newPin !== confirmPin) {
+                  alert('Los PIN introducidos no coinciden.');
+                  return;
+                }
+                setIsSavingPin(true);
+                let { error } = await supabase
+                  .from('restaurants')
+                  .update({
+                    admin_pin: newPin,
+                    super_admin_password: newPin
+                  } as any)
+                  .eq('id', restaurantId);
+
+                if (error && error.message && error.message.includes('admin_pin')) {
+                  console.warn('admin_pin column not found in schema. Falling back to super_admin_password only...');
+                  const fallback = await supabase
+                    .from('restaurants')
+                    .update({
+                      super_admin_password: newPin
+                    } as any)
+                    .eq('id', restaurantId);
+                  error = fallback.error;
+                }
+
+                setIsSavingPin(false);
+                if (error) {
+                  alert('Error al guardar el nuevo PIN: ' + error.message);
+                } else {
+                  alert('PIN de Administrador actualizado con éxito.');
+                  setExpectedPin(newPin);
+                  setShowDefaultPinWarning(false);
+                  setNewPin('');
+                  setConfirmPin('');
+                }
+              }}
+              disabled={isSavingPin || newPin.length !== 4 || newPin !== confirmPin}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20"
+            >
+              {isSavingPin ? 'Guardando...' : 'Actualizar PIN e Ingresar'}
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 

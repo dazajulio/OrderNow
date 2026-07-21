@@ -146,7 +146,7 @@ export default function SettingsAdminPage() {
     }
     
     setIsSavingPassword(true);
-    const { error } = await supabase
+    let { error } = await supabase
       .from('restaurants')
       .update({
         admin_pin: newAdminPassword,
@@ -154,6 +154,17 @@ export default function SettingsAdminPage() {
       } as any)
       .eq('id', restaurantId);
       
+    if (error && error.message && error.message.includes('admin_pin')) {
+      console.warn('admin_pin column not found in schema. Falling back to super_admin_password only...');
+      const fallback = await supabase
+        .from('restaurants')
+        .update({
+          super_admin_password: newAdminPassword
+        } as any)
+        .eq('id', restaurantId);
+      error = fallback.error;
+    }
+
     setIsSavingPassword(false);
     if (error) {
       alert('Error al actualizar la contraseña: ' + error.message);
@@ -233,13 +244,25 @@ export default function SettingsAdminPage() {
                   return;
                 }
                 setIsSavingPassword(true);
-                const { error } = await supabase
+                let { error } = await supabase
                   .from('restaurants')
                   .update({
                     admin_pin: newAdminPassword,
                     super_admin_password: newAdminPassword
                   } as any)
                   .eq('id', restaurantId);
+
+                if (error && error.message && error.message.includes('admin_pin')) {
+                  console.warn('admin_pin column not found in schema. Falling back to super_admin_password only...');
+                  const fallback = await supabase
+                    .from('restaurants')
+                    .update({
+                      super_admin_password: newAdminPassword
+                    } as any)
+                    .eq('id', restaurantId);
+                  error = fallback.error;
+                }
+
                 setIsSavingPassword(false);
                 if (error) {
                   alert('Error al guardar el nuevo PIN: ' + error.message);
