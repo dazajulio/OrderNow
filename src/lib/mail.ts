@@ -166,9 +166,8 @@ export async function sendWelcomeEmail({
         </div>
         <div class="content">
           <h1>¡Hola, ${contactName}!</h1>
-          <p>
-            Te damos la bienvenida a <strong>Mtriq</strong>. Tu cuenta mensual de $29/mes para <strong>${restaurantName}</strong> ya está activa. Tu ecosistema de autopedido y cocina ya fue inicializado con éxito.
-          </p>
+          <p>¡Bienvenido al ecosistema <strong>MTRIQ</strong>!</p>
+          <p>Tu cuenta para <strong>${restaurantName}</strong> ha sido desplegada con éxito. Tu nuevo Kiosko inteligente y tu monitor de cocina (KDS) ya están sincronizados y listos para llevar la digitalización de tu restaurante al siguiente nivel.</p>
 
           <div class="card">
             <div class="card-title">Datos de tu cuenta</div>
