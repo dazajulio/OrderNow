@@ -24,7 +24,7 @@ export default async function CocinaPage({ params }: CocinaPageProps) {
   }
 
   return (
-    <main className="h-screen overflow-hidden bg-white">
+    <main className="h-full w-full overflow-hidden bg-white">
       <KDSBoard restaurantId={restaurant.id} />
     </main>
   );

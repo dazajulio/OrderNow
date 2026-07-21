@@ -40,7 +40,16 @@ export async function POST(request: Request) {
 
     const supabaseAdmin = createAdminClient();
 
-    // 1. Generate unique slug
+    // 1. Pre-validate: Direct lookup by email in Supabase Auth (O(1), no pagination issues)
+    const { data: existingAuthUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
+    if (existingAuthUser?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Este correo electrónico ya está registrado. Si eres el propietario, intenta iniciar sesión o contacta a soporte@mtriq.app.' },
+        { status: 400 }
+      );
+    }
+
+    // 2. Generate unique slug
     let baseSlug = slugify(restaurantName);
     if (!baseSlug || baseSlug.length < 3) {
       baseSlug = 'restaurant';
@@ -69,7 +78,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 2. Create user in Supabase Auth using Admin Client (bypassing confirmation)
+    // 3. Create user in Supabase Auth using Admin Client (bypassing confirmation)
     const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -78,8 +87,15 @@ export async function POST(request: Request) {
 
     if (authError) {
       console.error('Auth User creation error:', authError);
+      // Normalize error message to always show friendly Spanish
+      const isDuplicate = authError.message?.toLowerCase().includes('already registered') ||
+                          authError.message?.toLowerCase().includes('already been registered') ||
+                          authError.message?.toLowerCase().includes('email address is already');
+      const friendlyError = isDuplicate
+        ? 'Este correo electrónico ya está registrado. Intenta iniciar sesión o usa otro correo.'
+        : 'No se pudo crear la cuenta. Por favor verifica los datos e intenta de nuevo.';
       return NextResponse.json(
-        { success: false, error: `Error de autenticación: ${authError.message}` },
+        { success: false, error: friendlyError },
         { status: 400 }
       );
     }
@@ -179,16 +195,19 @@ export async function POST(request: Request) {
       );
     }
 
-    // 5. Send Welcome Email via Resend (Safe invocation in background)
+    // 5. Send Welcome Email via Resend (awaited to ensure delivery)
     try {
-      sendWelcomeEmail({
+      const emailSent = await sendWelcomeEmail({
         toEmail: email,
         restaurantName,
         contactName,
         slug,
-      }).catch(err => console.error('Error enviando correo de bienvenida:', err));
+      });
+      if (!emailSent) {
+        console.warn('El correo de bienvenida no pudo enviarse, pero el registro fue exitoso.');
+      }
     } catch (e) {
-      console.error('Error al disparar el proceso de correo de bienvenida:', e);
+      console.error('Error al enviar el correo de bienvenida:', e);
     }
 
     // Success! Return restaurant ID and slug

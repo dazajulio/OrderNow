@@ -36,7 +36,9 @@ export default function SuperAdminDashboard() {
   const [orders, setOrders] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dbLatency, setDbLatency] = useState<number>(0);
-  const [liveSessions, setLiveSessions] = useState(12);
+  const [tablesCount, setTablesCount] = useState(0);
+  const [customersCount, setCustomersCount] = useState(0);
+  const [hasError, setHasError] = useState(false);
 
   const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID || 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
 
@@ -54,10 +56,11 @@ export default function SuperAdminDashboard() {
 
     async function loadData() {
       setIsLoading(true);
+      setHasError(false);
       const startTime = performance.now();
       
-      // Fetch restaurants and orders in parallel
-      const [restRes, ordersRes] = await Promise.all([
+      // Fetch restaurants, orders, tables, and customers in parallel
+      const [restRes, ordersRes, tablesRes, customersRes] = await Promise.all([
         supabase
           .from('restaurants')
           .select('*')
@@ -65,11 +68,21 @@ export default function SuperAdminDashboard() {
         supabase
           .from('orders')
           .select('id, restaurant_id, total_amount, status, payment_status, created_at')
-          .order('created_at', { ascending: false })
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('tables')
+          .select('id', { count: 'exact', head: true }),
+        supabase
+          .from('customers')
+          .select('id', { count: 'exact', head: true })
       ]);
 
       const endTime = performance.now();
       setDbLatency(Math.round(endTime - startTime));
+
+      if (restRes.error || ordersRes.error || tablesRes.error || customersRes.error) {
+        setHasError(true);
+      }
 
       if (!restRes.error && restRes.data) {
         setRestaurants(restRes.data);
@@ -77,28 +90,18 @@ export default function SuperAdminDashboard() {
       if (!ordersRes.error && ordersRes.data) {
         setOrders(ordersRes.data);
       }
+      if (!tablesRes.error && tablesRes.count !== null) {
+        setTablesCount(tablesRes.count);
+      }
+      if (!customersRes.error && customersRes.count !== null) {
+        setCustomersCount(customersRes.count);
+      }
       
       setIsLoading(false);
     }
 
     loadData();
   }, [isAuthenticated]);
-
-  // --- Live session simulation ---
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    
-    const activeRestaurantsCount = restaurants.filter(r => r.is_active).length;
-
-    const interval = setInterval(() => {
-      const base = Math.max(activeRestaurantsCount * 3, 8);
-      const jitter = Math.floor(Math.random() * 5) - 2; // -2 to 2
-      setLiveSessions(Math.max(base + jitter, 1));
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [isAuthenticated, restaurants]);
-
   // --- Handle Login ---
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -168,7 +171,7 @@ export default function SuperAdminDashboard() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ejemplo@correo.com"
-                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
                   required
                 />
               </div>
@@ -183,7 +186,7 @@ export default function SuperAdminDashboard() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
                   required
                 />
               </div>
@@ -233,10 +236,10 @@ export default function SuperAdminDashboard() {
   // Average ticket
   const averageTicketGlobal = paidOrders.length > 0 ? gmvGlobal / paidOrders.length : 0;
 
-  // Conversion funnel metrics
-  const simulatedViews = Math.max(totalOrders * 3.5, 30);
-  const simulatedAdds = Math.max(totalOrders * 1.8, 18);
-  const conversionRate = simulatedViews > 0 ? (paidOrders.length / simulatedViews) * 100 : 0;
+  // Real database-backed metrics
+  const realViews = Math.max(customersCount, totalOrders);
+  const realAdds = Math.max(orders.filter(o => o.status !== 'cancelled').length, paidOrders.length);
+  const conversionRate = realViews > 0 ? (paidOrders.length / realViews) * 100 : 0;
 
   // Group sales (GMV) by restaurant
   const restaurantStatsMap: { [key: string]: { name: string; sales: number; orderCount: number; ordersToday: number; logo_url: string; slug: string } } = {};
@@ -443,7 +446,7 @@ export default function SuperAdminDashboard() {
                 <p className="text-xs text-gray-400">Comparativa mensual de suscripciones (MRR) frente a ventas de inquilinos (GMV)</p>
               </div>
               <div className="flex items-center gap-4 text-xs font-semibold">
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> MRR</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span> MRR</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> GMV</span>
               </div>
             </div>
@@ -470,19 +473,19 @@ export default function SuperAdminDashboard() {
                     y1={paddingTop + r * graphHeight} 
                     x2={svgWidth - paddingRight} 
                     y2={paddingTop + r * graphHeight} 
-                    stroke="rgba(255,255,255,0.03)" 
+                    stroke="#e2e8f0" 
                     strokeWidth="1" 
                   />
                 ))}
 
                 {/* Y-Axis labels */}
-                <text x="32" y={paddingTop + 5} fill="rgba(255,255,255,0.2)" fontSize="9" textAnchor="end" fontFamily="monospace">
+                <text x="32" y={paddingTop + 5} fill="#94a3b8" fontSize="9" textAnchor="end" fontFamily="monospace">
                   ${Math.round(maxChartVal)}
                 </text>
-                <text x="32" y={paddingTop + graphHeight / 2 + 3} fill="rgba(255,255,255,0.2)" fontSize="9" textAnchor="end" fontFamily="monospace">
+                <text x="32" y={paddingTop + graphHeight / 2 + 3} fill="#94a3b8" fontSize="9" textAnchor="end" fontFamily="monospace">
                   ${Math.round(maxChartVal / 2)}
                 </text>
-                <text x="32" y={paddingTop + graphHeight + 3} fill="rgba(255,255,255,0.2)" fontSize="9" textAnchor="end" fontFamily="monospace">
+                <text x="32" y={paddingTop + graphHeight + 3} fill="#94a3b8" fontSize="9" textAnchor="end" fontFamily="monospace">
                   $0
                 </text>
 
@@ -498,7 +501,7 @@ export default function SuperAdminDashboard() {
                 {monthlyChartData.map((d, i) => {
                   const x = paddingLeft + (i / 5) * graphWidth;
                   return (
-                    <text key={i} x={x} y={svgHeight - 5} fill="rgba(255,255,255,0.3)" fontSize="8.5" fontWeight="bold" textAnchor="middle">
+                    <text key={i} x={x} y={svgHeight - 5} fill="#94a3b8" fontSize="8.5" fontWeight="bold" textAnchor="middle">
                       {d.label}
                     </text>
                   );
@@ -520,10 +523,10 @@ export default function SuperAdminDashboard() {
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
                   <span className="font-semibold text-gray-500">1. Menús Abiertos (QR / Web)</span>
-                  <span className="font-bold text-gray-900 font-mono">{Math.round(simulatedViews)} visitas (100%)</span>
+                  <span className="font-bold text-gray-900 font-mono">{realViews} visitas (100%)</span>
                 </div>
                 <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
-                  <div className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full" style={{ width: '100%' }}></div>
+                  <div className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" style={{ width: '100%' }}></div>
                 </div>
               </div>
 
@@ -531,10 +534,10 @@ export default function SuperAdminDashboard() {
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
                   <span className="font-semibold text-gray-500">2. Producto Añadido al Carrito</span>
-                  <span className="font-bold text-gray-900 font-mono">{Math.round(simulatedAdds)} ({((simulatedAdds / simulatedViews) * 100).toFixed(0)}%)</span>
+                  <span className="font-bold text-gray-900 font-mono">{realAdds} ({realViews > 0 ? ((realAdds / realViews) * 100).toFixed(0) : 0}%)</span>
                 </div>
                 <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
-                  <div className="h-full bg-gradient-to-r from-indigo-500 to-orange-600 rounded-full" style={{ width: `${(simulatedAdds / simulatedViews) * 100}%` }}></div>
+                  <div className="h-full bg-gradient-to-r from-orange-600 to-orange-500 rounded-full" style={{ width: `${realViews > 0 ? (realAdds / realViews) * 100 : 0}%` }}></div>
                 </div>
               </div>
 
@@ -542,10 +545,10 @@ export default function SuperAdminDashboard() {
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
                   <span className="font-semibold text-gray-500">3. Pedido Generado</span>
-                  <span className="font-bold text-gray-900 font-mono">{totalOrders} ({((totalOrders / simulatedAdds) * 100).toFixed(0)}%)</span>
+                  <span className="font-bold text-gray-900 font-mono">{totalOrders} ({realAdds > 0 ? ((totalOrders / realAdds) * 100).toFixed(0) : 0}%)</span>
                 </div>
                 <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
-                  <div className="h-full bg-gradient-to-r from-cyan-500 to-amber-500 rounded-full" style={{ width: `${(totalOrders / simulatedAdds) * 100}%` }}></div>
+                  <div className="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full" style={{ width: `${realAdds > 0 ? (totalOrders / realAdds) * 100 : 0}%` }}></div>
                 </div>
               </div>
 
@@ -553,10 +556,10 @@ export default function SuperAdminDashboard() {
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
                   <span className="font-semibold text-gray-500">4. Pedidos Exitosos / Pagados</span>
-                  <span className="font-bold text-orange-400 font-mono">{paidOrders.length} ({((paidOrders.length / totalOrders) * 100).toFixed(0)}%)</span>
+                  <span className="font-bold text-orange-400 font-mono">{paidOrders.length} ({totalOrders > 0 ? ((paidOrders.length / totalOrders) * 100).toFixed(0) : 0}%)</span>
                 </div>
                 <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
-                  <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: `${(paidOrders.length / totalOrders) * 100}%` }}></div>
+                  <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full" style={{ width: `${totalOrders > 0 ? (paidOrders.length / totalOrders) * 100 : 0}%` }}></div>
                 </div>
               </div>
 
@@ -629,12 +632,12 @@ export default function SuperAdminDashboard() {
               {/* Concurrent Sessions */}
               <div className="bg-slate-50/40 border border-gray-200 p-4 rounded-2xl flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Sesiones Activas</span>
-                  <Users className="w-4 h-4 text-orange-500 animate-pulse" />
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Locales Activos</span>
+                  <Users className="w-4 h-4 text-orange-500" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-gray-900 font-mono">{liveSessions}</p>
-                  <span className="text-[9px] text-gray-600 font-semibold block">Dispositivos en línea</span>
+                  <p className="text-xl font-bold text-gray-900 font-mono">{activeRestaurants.length}</p>
+                  <span className="text-[9px] text-gray-600 font-semibold block">En producción</span>
                 </div>
               </div>
 
@@ -645,20 +648,20 @@ export default function SuperAdminDashboard() {
                   <ShieldAlert className="w-4 h-4 text-red-500" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-gray-900 font-mono">0.05%</p>
-                  <span className="text-[9px] text-gray-600 font-semibold block">Fallas en webhooks</span>
+                  <p className="text-xl font-bold text-gray-900 font-mono">{hasError ? '100.00%' : '0.00%'}</p>
+                  <span className="text-[9px] text-gray-600 font-semibold block">Fallas de API</span>
                 </div>
               </div>
 
               {/* Active integrations */}
               <div className="bg-slate-50/40 border border-gray-200 p-4 rounded-2xl flex flex-col justify-between gap-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Sistemas</span>
-                  <Zap className="w-4 h-4 text-cyan-400" />
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">Mesas / Kioskos</span>
+                  <Zap className="w-4 h-4 text-cyan-500" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-gray-900 font-mono">100%</p>
-                  <span className="text-[9px] text-gray-600 font-semibold block">Pasarelas en línea</span>
+                  <p className="text-xl font-bold text-gray-900 font-mono">{tablesCount}</p>
+                  <span className="text-[9px] text-gray-600 font-semibold block">Mesas registradas</span>
                 </div>
               </div>
 

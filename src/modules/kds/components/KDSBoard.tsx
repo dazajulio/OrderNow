@@ -205,7 +205,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
         <div className="flex items-center gap-3">
           <UtensilsCrossed className="h-6 w-6 text-gray-500" />
           <div>
-            <h1 className="text-lg font-bold tracking-tight text-white">
+            <h1 className="text-lg font-bold tracking-tight text-gray-900">
               Cocina
             </h1>
             <p className="text-xs text-gray-400">
@@ -216,7 +216,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
 
         <div className="flex items-center gap-4">
           {/* Order count summary */}
-          <div className="hidden items-center gap-2 sm:flex">
+          <div className="flex items-center gap-2">
             {COLUMNS.map((col) => (
               <span
                 key={col.key}
@@ -264,7 +264,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
 
       {/* ── Kanban Columns ──────────────────────────────────────── */}
       {!isLoading && (
-        <div className="flex flex-1 gap-0 overflow-hidden md:flex-row flex-col">
+        <div className="flex flex-1 flex-row gap-0 overflow-hidden">
           {COLUMNS.map((col) => {
             const columnOrders = ordersByColumn[col.key];
 
