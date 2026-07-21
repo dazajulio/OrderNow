@@ -40,13 +40,22 @@ export async function POST(request: Request) {
 
     const supabaseAdmin = createAdminClient();
 
-    // 1. Pre-validate: Direct lookup by email in Supabase Auth (O(1), no pagination issues)
-    const { data: existingAuthUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
-    if (existingAuthUser?.user) {
-      return NextResponse.json(
-        { success: false, error: 'Este correo electrónico ya está registrado. Si eres el propietario, intenta iniciar sesión o contacta a soporte@mtriq.app.' },
-        { status: 400 }
-      );
+    // 1. Pre-validate: Check if email exists by querying auth via listUsers (compatible with all Supabase versions)
+    try {
+      const { data: usersPage } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+      if (usersPage?.users) {
+        const emailTaken = usersPage.users.some(
+          (u: any) => u.email?.toLowerCase() === email.toLowerCase()
+        );
+        if (emailTaken) {
+          return NextResponse.json(
+            { success: false, error: 'Este correo electrónico ya está registrado. Si eres el propietario, intenta iniciar sesión o contacta a soporte@mtriq.app.' },
+            { status: 400 }
+          );
+        }
+      }
+    } catch (_) {
+      // If listUsers fails for any reason, continue — the createUser call below will catch duplicates
     }
 
     // 2. Generate unique slug
