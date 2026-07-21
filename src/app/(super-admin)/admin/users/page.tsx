@@ -120,15 +120,15 @@ export default function UsersPage() {
     <div className="space-y-6 font-sans">
       
       {/* Header */}
-      <div className="bg-white shadow-sm/25 p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+      <div className="bg-white shadow-md p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
           Control Global de Usuarios
         </h2>
         <p className="text-xs text-gray-400">Lista y filtra los gerentes y operarios registrados en todas las cuentas</p>
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 shadow-lg backdrop-blur-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 shadow-lg backdrop-blur-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Search */}
         <div className="space-y-1.5">
@@ -201,7 +201,7 @@ export default function UsersPage() {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
+      <div className="bg-white shadow-md border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
         {isLoading ? (
           <div className="p-12 text-center">
             <div className="w-8 h-8 border-3 border-gray-200 border-t-purple-500 rounded-full animate-spin mx-auto mb-4" />
@@ -221,7 +221,7 @@ export default function UsersPage() {
                   <th className="px-6 py-4 text-center">Fecha de Alta</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-gray-800">
+              <tbody className="divide-y divide-gray-200 text-gray-800">
                 {filteredMembers.map((member) => {
                   let roleLabel = member.role;
                   let roleColor = 'bg-slate-100 text-gray-500 border-gray-200';
@@ -241,9 +241,9 @@ export default function UsersPage() {
                   }
 
                   return (
-                    <tr key={member.member_id} className="hover:bg-white/[0.01] transition-colors">
-                      <td className="px-6 py-4 font-semibold text-white flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500/20 to-orange-500/20 flex items-center justify-center text-xs font-bold text-white border border-gray-200">
+                    <tr key={member.member_id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500/20 to-orange-500/20 flex items-center justify-center text-xs font-bold text-gray-900 border border-gray-200">
                           {member.display_name.substring(0, 2).toUpperCase()}
                         </div>
                         {member.display_name}

@@ -28,8 +28,8 @@ export default function GlobalSettingsPage() {
     <div className="space-y-6 font-sans">
       
       {/* Header */}
-      <div className="bg-white shadow-sm/25 p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+      <div className="bg-white shadow-md p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
           Configuración Global de Mtriq.app
         </h2>
         <p className="text-xs text-gray-400">Ajusta los parámetros operativos generales y variables del ecosistema</p>
@@ -38,10 +38,10 @@ export default function GlobalSettingsPage() {
       <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-stretch">
         
         {/* Form panel */}
-        <form onSubmit={handleSaveSettings} className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl space-y-6">
+        <form onSubmit={handleSaveSettings} className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl space-y-6">
           
           <div className="space-y-4">
-            <h3 className="text-md font-bold text-white tracking-tight flex items-center gap-2 pb-3 border-b border-gray-200">
+            <h3 className="text-md font-bold text-gray-900 tracking-tight flex items-center gap-2 pb-3 border-b border-gray-200">
               <Sliders className="w-4 h-4 text-orange-500" /> Parámetros de Suscripción y Precios
             </h3>
             
@@ -68,14 +68,14 @@ export default function GlobalSettingsPage() {
           </div>
 
           <div className="space-y-4 pt-4">
-            <h3 className="text-md font-bold text-white tracking-tight flex items-center gap-2 pb-3 border-b border-gray-200">
+            <h3 className="text-md font-bold text-gray-900 tracking-tight flex items-center gap-2 pb-3 border-b border-gray-200">
               <Lock className="w-4 h-4 text-orange-500" /> Seguridad e Infraestructura
             </h3>
             
             {/* Maintenance switch */}
             <div className="flex justify-between items-center bg-slate-50/40 p-4 rounded-2xl border border-gray-200">
               <div>
-                <span className="block text-xs font-bold text-white uppercase tracking-wider">Modo de Mantenimiento</span>
+                <span className="block text-xs font-bold text-gray-900 uppercase tracking-wider">Modo de Mantenimiento</span>
                 <span className="text-[10px] text-gray-400">Muestra una pantalla de soporte al ingresar al portal</span>
               </div>
               <button
@@ -108,9 +108,9 @@ export default function GlobalSettingsPage() {
         </form>
 
         {/* Right Info sidebar */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex flex-col justify-between space-y-6">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            <h3 className="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2">
               <Database className="w-5 h-5 text-orange-500" /> Variables de Servidor
             </h3>
             <p className="text-xs text-gray-400 leading-relaxed">

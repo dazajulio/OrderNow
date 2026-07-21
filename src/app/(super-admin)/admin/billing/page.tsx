@@ -24,8 +24,8 @@ export default function BillingPage() {
     <div className="space-y-6 font-sans">
       
       {/* Header */}
-      <div className="bg-white shadow-sm/25 p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+      <div className="bg-white shadow-md p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
           Estado de Cuenta & Facturación SaaS
         </h2>
         <p className="text-xs text-gray-400">Monitoreo de ingresos de suscripciones y transacciones de Lemon Squeezy</p>
@@ -51,23 +51,23 @@ export default function BillingPage() {
       <div className="grid md:grid-cols-3 gap-6">
         
         {/* KPI 1 */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 space-y-2">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 space-y-2">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Ventas Netas (Mes)</span>
-          <p className="text-2xl font-black text-white">$58.00 USD</p>
+          <p className="text-2xl font-black text-gray-900">$58.00 USD</p>
           <span className="text-[10px] text-green-400 font-bold block flex items-center gap-1">
             <CheckCircle className="w-3.5 h-3.5" /> 2 Restaurantes activos
           </span>
         </div>
 
         {/* KPI 2 */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 space-y-2">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 space-y-2">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Transacciones Procesadas</span>
-          <p className="text-2xl font-black text-white">3 Facturas</p>
+          <p className="text-2xl font-black text-gray-900">3 Facturas</p>
           <span className="text-[10px] text-gray-400 font-mono block">Ticket recurrente: $29.00/mes</span>
         </div>
 
         {/* KPI 3 */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 space-y-2">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 space-y-2">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Comisión de Pasarela (Est.)</span>
           <p className="text-2xl font-black text-gray-400">$2.32 USD</p>
           <span className="text-[10px] text-gray-600 block">Basado en el fee de 4.0% de MoR</span>
@@ -76,9 +76,9 @@ export default function BillingPage() {
       </div>
 
       {/* Mock Billing history table */}
-      <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
+      <div className="bg-white shadow-md border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
         <div className="p-6 border-b border-gray-200">
-          <h3 className="text-lg font-bold text-white tracking-tight">Historial de Transacciones (Simulado)</h3>
+          <h3 className="text-lg font-bold text-gray-900 tracking-tight">Historial de Transacciones (Simulado)</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
@@ -91,13 +91,13 @@ export default function BillingPage() {
                 <th className="px-6 py-4 text-center">Estatus</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-gray-800">
+            <tbody className="divide-y divide-gray-200 text-gray-800">
               {mockInvoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-white/[0.01] transition-colors">
+                <tr key={inv.id} className="hover:bg-slate-50/80 transition-colors">
                   <td className="px-6 py-4 font-mono font-bold text-orange-500 text-xs">
                     {inv.id}
                   </td>
-                  <td className="px-6 py-4 font-semibold text-white">
+                  <td className="px-6 py-4 font-semibold text-gray-900">
                     {inv.description}
                   </td>
                   <td className="px-6 py-4 text-center text-gray-500 font-mono text-xs">

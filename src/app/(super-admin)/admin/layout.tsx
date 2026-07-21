@@ -17,7 +17,7 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
 
   const navItems = [
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/admin/tenants', label: 'Tenants (Clientes)', icon: Building2 },
+    { href: '/admin/tenants', label: 'Clientes', icon: Building2 },
     { href: '/admin/users', label: 'Usuarios', icon: Users },
     { href: '/admin/emails', label: 'Correos', icon: Mail },
     { href: '/admin/billing', label: 'Facturación', icon: CreditCard },
@@ -25,13 +25,13 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-800 font-sans flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-50 text-gray-900 font-sans flex flex-col md:flex-row">
       {/* ── SIDEBAR ── */}
-      <aside className="w-full md:w-64 border-r border-gray-200 bg-slate-50/80 backdrop-blur-md p-6 flex flex-col shrink-0">
+      <aside className="w-full md:w-64 border-r border-gray-200 bg-white p-6 flex flex-col shrink-0">
         <div className="flex items-center gap-2 mb-12">
           <Cpu className="w-6 h-6 text-orange-500" />
           <span className="text-xl font-bold tracking-tight text-gray-900">mtriq<span className="text-orange-500">.app</span></span>
-          <span className="text-[10px] bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full ml-auto uppercase tracking-wider font-bold">Admin</span>
+          <span className="text-[10px] bg-orange-500/10 text-orange-600 px-2 py-0.5 rounded-full ml-auto uppercase tracking-wider font-bold">Admin</span>
         </div>
 
         <nav className="space-y-2 flex-1">
@@ -44,8 +44,8 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
                 href={item.href} 
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${
                   isActive 
-                    ? 'bg-orange-500/10 text-orange-500' 
-                    : 'text-gray-500 hover:text-white hover:bg-slate-50'
+                    ? 'bg-orange-500/10 text-orange-600 font-bold' 
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -61,13 +61,13 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
               JD
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Julio Daza</p>
-              <p className="text-xs text-gray-400">Super Admin</p>
+              <p className="text-sm font-bold text-gray-900">Julio Daza</p>
+              <p className="text-xs text-gray-500">Super Admin</p>
             </div>
           </div>
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-red-400 hover:text-white hover:bg-red-500/10 border border-red-500/20 hover:border-red-500/30 transition-all active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-red-600 transition-all active:scale-[0.98]"
           >
             <LogOut className="w-4 h-4" /> Cerrar sesión
           </button>
@@ -76,7 +76,7 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
 
       {/* ── MAIN CONTENT ── */}
       <main className="flex-1 min-h-screen overflow-y-auto">
-        <header className="h-16 border-b border-gray-200 bg-slate-50/80 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-10">
+        <header className="h-16 border-b border-gray-200 bg-white px-8 flex items-center justify-between sticky top-0 z-10">
           <h1 className="text-lg font-semibold text-gray-900">Centro de Comando</h1>
           <div className="flex items-center gap-4">
             <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" title="Sistemas Operativos"></span>

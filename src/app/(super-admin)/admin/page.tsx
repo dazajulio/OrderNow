@@ -344,7 +344,7 @@ export default function SuperAdminDashboard() {
       {/* ── HEADER ── */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-2">
             Visión Global <span className="text-xs bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Dashboard</span>
           </h2>
           <p className="text-gray-400 text-sm">Métricas de salud financiera y volumen operativo de mtriq.app</p>
@@ -354,7 +354,7 @@ export default function SuperAdminDashboard() {
             sessionStorage.removeItem('mtriq_super_admin_logged');
             setIsAuthenticated(false);
           }}
-          className="px-4 py-2 border border-gray-200 bg-slate-50/40 hover:bg-white shadow-sm text-gray-500 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
+          className="px-4 py-2 border border-gray-200 bg-slate-50/40 hover:bg-white shadow-sm text-gray-500 hover:text-gray-900 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
         >
           Cerrar Sesión
         </button>
@@ -364,7 +364,7 @@ export default function SuperAdminDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
         {/* MRR Card */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-orange-500/10 rounded-xl border border-orange-500/20 text-orange-500">
@@ -375,12 +375,12 @@ export default function SuperAdminDashboard() {
             </span>
           </div>
           <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Ingreso Recurrente (MRR)</h3>
-          <p className="text-3xl font-black text-white">${totalMRR.toLocaleString()}<span className="text-xs font-normal text-gray-400">/mes</span></p>
+          <p className="text-3xl font-black text-gray-900">${totalMRR.toLocaleString()}<span className="text-xs font-normal text-gray-400">/mes</span></p>
           <span className="text-[10px] text-gray-600 block mt-2 font-mono">ARR Proyectado: ${totalARR.toLocaleString()}/año</span>
         </div>
 
         {/* GMV Global Card */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-orange-500/10 rounded-xl border border-orange-500/20 text-orange-400">
@@ -391,12 +391,12 @@ export default function SuperAdminDashboard() {
             </span>
           </div>
           <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Ventas Globales (GMV)</h3>
-          <p className="text-3xl font-black text-white">${gmvGlobal.toLocaleString()}</p>
+          <p className="text-3xl font-black text-gray-900">${gmvGlobal.toLocaleString()}</p>
           <span className="text-[10px] text-gray-600 block mt-2 font-mono">Ticket Promedio: ${averageTicketGlobal.toFixed(2)} USD</span>
         </div>
 
         {/* Volumen de Órdenes Card */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-cyan-500/10 rounded-xl border border-cyan-500/20 text-cyan-400">
@@ -407,12 +407,12 @@ export default function SuperAdminDashboard() {
             </span>
           </div>
           <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Órdenes Totales</h3>
-          <p className="text-3xl font-black text-white">{totalOrders.toLocaleString()}</p>
+          <p className="text-3xl font-black text-gray-900">{totalOrders.toLocaleString()}</p>
           <span className="text-[10px] text-gray-600 block mt-2 font-mono">Conversiones Exitosas: {paidOrders.length}</span>
         </div>
 
         {/* Carga del Sistema / Uptime Card */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 relative overflow-hidden group shadow-lg backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-emerald-400">
@@ -423,7 +423,7 @@ export default function SuperAdminDashboard() {
             </span>
           </div>
           <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Salud del Sistema</h3>
-          <p className="text-3xl font-black text-white">99.99%</p>
+          <p className="text-3xl font-black text-gray-900">99.99%</p>
           <span className="text-[10px] text-gray-600 block mt-2 font-mono">Uptime en vivo | Latencia: {dbLatency}ms</span>
         </div>
 
@@ -436,10 +436,10 @@ export default function SuperAdminDashboard() {
         <div className="space-y-8 flex flex-col justify-between">
           
           {/* Crecimiento MRR vs GMV Graph */}
-          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h3 className="text-lg font-bold text-white tracking-tight">Tendencia del Negocio</h3>
+                <h3 className="text-lg font-bold text-gray-900 tracking-tight">Tendencia del Negocio</h3>
                 <p className="text-xs text-gray-400">Comparativa mensual de suscripciones (MRR) frente a ventas de inquilinos (GMV)</p>
               </div>
               <div className="flex items-center gap-4 text-xs font-semibold">
@@ -508,9 +508,9 @@ export default function SuperAdminDashboard() {
           </div>
 
           {/* Funnel de Conversión de Pedidos */}
-          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white tracking-tight">Embudo de Conversión (Funnel)</h3>
+              <h3 className="text-lg font-bold text-gray-900 tracking-tight">Embudo de Conversión (Funnel)</h3>
               <p className="text-xs text-gray-400">Comportamiento agregado de los comensales a nivel global</p>
             </div>
 
@@ -520,7 +520,7 @@ export default function SuperAdminDashboard() {
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
                   <span className="font-semibold text-gray-500">1. Menús Abiertos (QR / Web)</span>
-                  <span className="font-bold text-white font-mono">{Math.round(simulatedViews)} visitas (100%)</span>
+                  <span className="font-bold text-gray-900 font-mono">{Math.round(simulatedViews)} visitas (100%)</span>
                 </div>
                 <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
                   <div className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full" style={{ width: '100%' }}></div>
@@ -531,7 +531,7 @@ export default function SuperAdminDashboard() {
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
                   <span className="font-semibold text-gray-500">2. Producto Añadido al Carrito</span>
-                  <span className="font-bold text-white font-mono">{Math.round(simulatedAdds)} ({((simulatedAdds / simulatedViews) * 100).toFixed(0)}%)</span>
+                  <span className="font-bold text-gray-900 font-mono">{Math.round(simulatedAdds)} ({((simulatedAdds / simulatedViews) * 100).toFixed(0)}%)</span>
                 </div>
                 <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
                   <div className="h-full bg-gradient-to-r from-indigo-500 to-orange-600 rounded-full" style={{ width: `${(simulatedAdds / simulatedViews) * 100}%` }}></div>
@@ -542,7 +542,7 @@ export default function SuperAdminDashboard() {
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
                   <span className="font-semibold text-gray-500">3. Pedido Generado</span>
-                  <span className="font-bold text-white font-mono">{totalOrders} ({((totalOrders / simulatedAdds) * 100).toFixed(0)}%)</span>
+                  <span className="font-bold text-gray-900 font-mono">{totalOrders} ({((totalOrders / simulatedAdds) * 100).toFixed(0)}%)</span>
                 </div>
                 <div className="h-2.5 bg-slate-50/60 rounded-full overflow-hidden border border-gray-200">
                   <div className="h-full bg-gradient-to-r from-cyan-500 to-amber-500 rounded-full" style={{ width: `${(totalOrders / simulatedAdds) * 100}%` }}></div>
@@ -569,9 +569,9 @@ export default function SuperAdminDashboard() {
         <div className="space-y-8 flex flex-col justify-between">
           
           {/* Top 5 Restaurantes */}
-          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white tracking-tight">Top 5 Restaurantes</h3>
+              <h3 className="text-lg font-bold text-gray-900 tracking-tight">Top 5 Restaurantes</h3>
               <p className="text-xs text-gray-400">Establecimientos con mayor facturación total procesada</p>
             </div>
 
@@ -606,9 +606,9 @@ export default function SuperAdminDashboard() {
           </div>
 
           {/* Monitor de Infraestructura y Estabilidad */}
-          <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
+          <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 md:p-8 shadow-lg backdrop-blur-xl flex-1 flex flex-col justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white tracking-tight">Monitor del Sistema</h3>
+              <h3 className="text-lg font-bold text-gray-900 tracking-tight">Monitor del Sistema</h3>
               <p className="text-xs text-gray-400">Estadísticas de red y concurrencia global en tiempo real</p>
             </div>
 
@@ -621,7 +621,7 @@ export default function SuperAdminDashboard() {
                   <Database className="w-4 h-4 text-orange-500" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-white font-mono">{dbLatency} ms</p>
+                  <p className="text-xl font-bold text-gray-900 font-mono">{dbLatency} ms</p>
                   <span className="text-[9px] text-gray-600 font-semibold block">Conexión Supabase</span>
                 </div>
               </div>
@@ -633,7 +633,7 @@ export default function SuperAdminDashboard() {
                   <Users className="w-4 h-4 text-orange-500 animate-pulse" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-white font-mono">{liveSessions}</p>
+                  <p className="text-xl font-bold text-gray-900 font-mono">{liveSessions}</p>
                   <span className="text-[9px] text-gray-600 font-semibold block">Dispositivos en línea</span>
                 </div>
               </div>
@@ -645,7 +645,7 @@ export default function SuperAdminDashboard() {
                   <ShieldAlert className="w-4 h-4 text-red-500" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-white font-mono">0.05%</p>
+                  <p className="text-xl font-bold text-gray-900 font-mono">0.05%</p>
                   <span className="text-[9px] text-gray-600 font-semibold block">Fallas en webhooks</span>
                 </div>
               </div>
@@ -657,7 +657,7 @@ export default function SuperAdminDashboard() {
                   <Zap className="w-4 h-4 text-cyan-400" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-white font-mono">100%</p>
+                  <p className="text-xl font-bold text-gray-900 font-mono">100%</p>
                   <span className="text-[9px] text-gray-600 font-semibold block">Pasarelas en línea</span>
                 </div>
               </div>
@@ -670,9 +670,9 @@ export default function SuperAdminDashboard() {
       </div>
 
       {/* ── FILA 3: RECENT TENANTS TABLE (MEJORADA) ── */}
-      <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
+      <div className="bg-white shadow-md border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
         <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-          <h3 className="text-lg font-bold text-white tracking-tight">Últimos Restaurantes Afiliados</h3>
+          <h3 className="text-lg font-bold text-gray-900 tracking-tight">Últimos Restaurantes Afiliados</h3>
           <span className="text-xs bg-orange-500/10 text-orange-500 border border-orange-500/20 px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
             Total: {restaurants.length}
           </span>
@@ -689,12 +689,12 @@ export default function SuperAdminDashboard() {
                 <th className="px-6 py-4 font-bold text-center">Fecha de Alta</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-gray-800">
+            <tbody className="divide-y divide-gray-200 text-gray-800">
               {restaurants.map((tenant) => {
                 const stats = getRestaurantStats(tenant.id);
                 return (
-                  <tr key={tenant.id} className="hover:bg-white/[0.01] transition-colors">
-                    <td className="px-6 py-4 font-semibold text-white flex items-center gap-3">
+                  <tr key={tenant.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
                       {tenant.logo_url ? (
                         <img src={tenant.logo_url} alt={tenant.name} className="w-8 h-8 rounded-lg object-cover" />
                       ) : (
@@ -718,7 +718,7 @@ export default function SuperAdminDashboard() {
                         <span className="text-gray-600">-</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-right font-mono font-bold text-white">
+                    <td className="px-6 py-4 text-right font-mono font-bold text-gray-900">
                       ${stats.totalGmv.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td className="px-6 py-4 text-center">

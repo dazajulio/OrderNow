@@ -138,9 +138,9 @@ export default function TenantsPage() {
     <div className="space-y-6 font-sans relative">
       
       {/* Search and Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-sm/25 p-6 border border-gray-200 rounded-3xl backdrop-blur-xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white shadow-md p-6 border border-gray-200 rounded-3xl backdrop-blur-xl">
         <div className="space-y-1">
-          <h2 className="text-xl font-bold text-white">Tenants Registrados (Locales)</h2>
+          <h2 className="text-xl font-bold text-gray-900">Tenants Registrados (Locales)</h2>
           <p className="text-xs text-gray-400">Administra la afiliación, licencias y parámetros de los restaurantes</p>
         </div>
         <div className="relative w-full sm:w-72">
@@ -159,7 +159,7 @@ export default function TenantsPage() {
       <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-stretch">
         
         {/* Table List of Restaurants */}
-        <div className="bg-white shadow-sm/40 border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
+        <div className="bg-white shadow-md border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
           {isLoading ? (
             <div className="p-12 text-center">
               <div className="w-8 h-8 border-3 border-gray-200 border-t-purple-500 rounded-full animate-spin mx-auto mb-4" />
@@ -178,7 +178,7 @@ export default function TenantsPage() {
                     <th className="px-6 py-4 text-right">Acción</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 text-gray-800">
+                <tbody className="divide-y divide-gray-200 text-gray-800">
                   {filteredTenants.map((tenant) => {
                     const stats = getTenantStats(tenant.id);
                     const isSelected = selectedTenant?.id === tenant.id;
@@ -187,11 +187,11 @@ export default function TenantsPage() {
                       <tr 
                         key={tenant.id} 
                         onClick={() => setSelectedTenant(tenant)}
-                        className={`hover:bg-white/[0.01] cursor-pointer transition-colors ${
+                        className={`hover:bg-slate-50/80 cursor-pointer transition-colors ${
                           isSelected ? 'bg-orange-500/5' : ''
                         }`}
                       >
-                        <td className="px-6 py-4 font-semibold text-white flex items-center gap-3">
+                        <td className="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
                           {tenant.logo_url ? (
                             <img src={tenant.logo_url} alt={tenant.name} className="w-8 h-8 rounded-lg object-cover" />
                           ) : (
@@ -282,7 +282,7 @@ export default function TenantsPage() {
               {/* Active status switcher */}
               <div className="flex justify-between items-center bg-slate-50/40 p-4 rounded-2xl border border-gray-200">
                 <div>
-                  <span className="block text-xs font-bold text-white uppercase tracking-wider">Estatus Afiliación</span>
+                  <span className="block text-xs font-bold text-gray-900 uppercase tracking-wider">Estatus Afiliación</span>
                   <span className="text-[10px] text-gray-400">Activa o suspende el restaurante</span>
                 </div>
                 <button
@@ -301,14 +301,14 @@ export default function TenantsPage() {
               {/* License management */}
               <div className="bg-slate-50/40 p-4 rounded-2xl border border-gray-200 space-y-3">
                 <div>
-                  <span className="block text-xs font-bold text-white uppercase tracking-wider">Licencia de Ecosistema</span>
+                  <span className="block text-xs font-bold text-gray-900 uppercase tracking-wider">Licencia de Ecosistema</span>
                   <span className="text-[10px] text-gray-400">Código único de control</span>
                 </div>
                 
                 {selectedTenant.license_code ? (
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="font-mono text-sm font-bold text-white bg-white shadow-sm border border-gray-200 px-2.5 py-1 rounded">
+                      <span className="font-mono text-sm font-bold text-gray-900 bg-white shadow-sm border border-gray-200 px-2.5 py-1 rounded">
                         {selectedTenant.license_code}
                       </span>
                       <span className="text-[10px] text-green-400 font-bold uppercase tracking-wider flex items-center gap-1">
@@ -348,7 +348,7 @@ export default function TenantsPage() {
                 </div>
                 <div className="bg-slate-50/20 border border-gray-200 p-3 rounded-2xl">
                   <span className="text-gray-400 text-[9px] font-bold uppercase block">Órdenes Hoy</span>
-                  <span className="text-sm font-black text-white font-mono">
+                  <span className="text-sm font-black text-gray-900 font-mono">
                     {getTenantStats(selectedTenant.id).ordersToday}
                   </span>
                 </div>
