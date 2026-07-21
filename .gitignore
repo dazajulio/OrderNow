@@ -42,3 +42,7 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# Scripts de desarrollo y debug (pueden contener credenciales)
+/scratch/
+scratch/

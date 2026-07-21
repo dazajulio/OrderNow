@@ -1,12 +1,12 @@
 {
-  "name": "Mtriq Kitchen KDS",
-  "short_name": "Mtriq KDS",
-  "description": "Kitchen Display System de la plataforma Mtriq",
-  "start_url": "/gerente/kitchen",
+  "name": "Mtriq Dashboard",
+  "short_name": "Mtriq",
+  "description": "Panel de gestión del restaurante - Mtriq",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#09090b",
+  "background_color": "#f8fafc",
   "theme_color": "#FF6B00",
-  "orientation": "any",
+  "orientation": "landscape",
   "icons": [
     {
       "src": "/logo-mtriq.png",

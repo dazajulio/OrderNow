@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, use } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain } from 'lucide-react';
+import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain, Download } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
 import { OnboardingModal } from '@/components/shared/OnboardingModal';
 
@@ -21,6 +21,7 @@ export default function GerenteLayout({
   const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
   const [restaurantId, setRestaurantId] = useState<string>('');
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
     async function fetchRestaurant() {
@@ -54,7 +55,22 @@ export default function GerenteLayout({
         .then((reg) => console.log('Service Worker registrado con éxito:', reg.scope))
         .catch((err) => console.error('Error al registrar Service Worker:', err));
     }
+
+    // Capture PWA install prompt
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   }, [slug]);
+
+  const handleInstallPWA = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') setDeferredPrompt(null);
+  };
 
   const links = [
     { href: `/${slug}/cocina`, label: 'Cocina', icon: ChefHat },
@@ -78,7 +94,7 @@ export default function GerenteLayout({
             )}
           </div>
           <div className="min-w-0">
-            <h1 className="font-bold text-white text-lg leading-tight truncate">{restaurantName}</h1>
+            <h1 className="font-bold text-gray-900 text-lg leading-tight truncate">{restaurantName}</h1>
             <span className="text-xs text-gray-400 truncate block">Dashboard</span>
           </div>
         </div>
@@ -103,6 +119,17 @@ export default function GerenteLayout({
             );
           })}
         </nav>
+
+        {/* PWA Install Button — bottom of sidebar */}
+        {deferredPrompt && (
+          <button
+            onClick={handleInstallPWA}
+            className="mt-4 w-full flex items-center gap-2 px-4 py-3 rounded-xl border border-orange-200 bg-orange-50 text-orange-600 hover:bg-orange-100 transition-all text-sm font-semibold"
+          >
+            <Download className="w-4 h-4 shrink-0" />
+            <span>Instalar App</span>
+          </button>
+        )}
       </aside>
 
       {/* Main Content */}
