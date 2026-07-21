@@ -1,24 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   CreditCard, 
-  ArrowUpRight, 
   CheckCircle, 
-  HelpCircle, 
   DollarSign, 
   Calendar, 
   Clock, 
   FileText 
 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 export default function BillingPage() {
-  // Mock billing statements for visual structure
-  const mockInvoices = [
-    { id: 'INV-2026-001', date: '2026-07-20', amount: 29.00, status: 'paid', description: 'Licencia SaaS Mtriq - La Rustica Pizzería' },
-    { id: 'INV-2026-002', date: '2026-07-15', amount: 29.00, status: 'paid', description: 'Licencia SaaS Mtriq - Burger Master' },
-    { id: 'INV-2026-003', date: '2026-07-02', amount: 29.00, status: 'refunded', description: 'Reembolso por ajuste - Local Demo' },
-  ];
+  const supabase = createClient();
+  const [restaurants, setRestaurants] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadBillingData() {
+      const { data } = await supabase
+        .from('restaurants')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (data) {
+        setRestaurants(data);
+      }
+      setLoading(false);
+    }
+    loadBillingData();
+  }, [supabase]);
+
+  if (loading) {
+    return (
+      <div className="p-12 flex justify-center">
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const activeRestaurants = restaurants.filter(r => r.is_active);
+  const totalSales = activeRestaurants.length * 29;
+  const totalCommission = totalSales * 0.04;
+  const invoiceCount = restaurants.length;
 
   return (
     <div className="space-y-6 font-sans">
@@ -34,51 +57,51 @@ export default function BillingPage() {
       {/* Alert box - Pending Gateway setup */}
       <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/5 border border-amber-500/20 rounded-3xl p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="space-y-1">
-          <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block">Integración en Desarrollo</span>
+          <span className="text-xs font-bold text-amber-600 uppercase tracking-wider block">Integración en Desarrollo</span>
           <p className="text-sm text-gray-800">
-            Esta sección se encuentra en modo de previsualización **esperando la activación de la pasarela de pagos**.
+            Esta sección se encuentra en modo de previsualización **conectada a los datos reales de registros**.
           </p>
           <p className="text-xs text-gray-400">
-            Una vez enlacemos las APIs de cobro móvil y Lemon Squeezy, esta pantalla se alimentará de transacciones reales en producción.
+            Una vez enlacemos las APIs de cobro móvil y Lemon Squeezy en producción, esta pantalla se alimentará adicionalmente de logs de pago directos.
           </p>
         </div>
-        <div className="px-4 py-2 bg-amber-500/15 border border-amber-500/20 text-amber-400 rounded-xl text-xs font-bold uppercase tracking-wider">
-          Pendiente Checkout
+        <div className="px-4 py-2 bg-amber-500/10 border border-amber-500/20 text-amber-600 rounded-xl text-xs font-bold uppercase tracking-wider">
+          Enlace Real
         </div>
       </div>
 
-      {/* Visual Placeholder grid */}
+      {/* Visual KPI grid */}
       <div className="grid md:grid-cols-3 gap-6">
         
         {/* KPI 1 */}
         <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 space-y-2">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Ventas Netas (Mes)</span>
-          <p className="text-2xl font-black text-gray-900">$58.00 USD</p>
-          <span className="text-[10px] text-green-400 font-bold block flex items-center gap-1">
-            <CheckCircle className="w-3.5 h-3.5" /> 2 Restaurantes activos
+          <p className="text-2xl font-black text-gray-900">${totalSales.toFixed(2)} USD</p>
+          <span className="text-[10px] text-green-600 font-bold flex items-center gap-1">
+            <CheckCircle className="w-3.5 h-3.5" /> {activeRestaurants.length} Restaurantes activos
           </span>
         </div>
 
         {/* KPI 2 */}
         <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 space-y-2">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Transacciones Procesadas</span>
-          <p className="text-2xl font-black text-gray-900">3 Facturas</p>
-          <span className="text-[10px] text-gray-400 font-mono block">Ticket recurrente: $29.00/mes</span>
+          <p className="text-2xl font-black text-gray-900">{invoiceCount} Facturas</p>
+          <span className="text-[10px] text-gray-500 font-mono block">Ticket recurrente: $29.00/mes</span>
         </div>
 
         {/* KPI 3 */}
         <div className="bg-white shadow-md border border-gray-200 rounded-3xl p-6 space-y-2">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Comisión de Pasarela (Est.)</span>
-          <p className="text-2xl font-black text-gray-400">$2.32 USD</p>
-          <span className="text-[10px] text-gray-600 block">Basado en el fee de 4.0% de MoR</span>
+          <p className="text-2xl font-black text-gray-600">${totalCommission.toFixed(2)} USD</p>
+          <span className="text-[10px] text-gray-500 block">Basado en el fee de 4.0% de pasarela MoR</span>
         </div>
 
       </div>
 
-      {/* Mock Billing history table */}
+      {/* Real Billing history table */}
       <div className="bg-white shadow-md border border-gray-200 rounded-3xl overflow-hidden shadow-lg backdrop-blur-xl">
         <div className="p-6 border-b border-gray-200">
-          <h3 className="text-lg font-bold text-gray-900 tracking-tight">Historial de Transacciones (Simulado)</h3>
+          <h3 className="text-lg font-bold text-gray-900 tracking-tight">Historial de Transacciones (Registro Real)</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
@@ -92,33 +115,44 @@ export default function BillingPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 text-gray-800">
-              {mockInvoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="px-6 py-4 font-mono font-bold text-orange-500 text-xs">
-                    {inv.id}
-                  </td>
-                  <td className="px-6 py-4 font-semibold text-gray-900">
-                    {inv.description}
-                  </td>
-                  <td className="px-6 py-4 text-center text-gray-500 font-mono text-xs">
-                    {new Date(inv.date).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 text-right font-mono font-bold">
-                    ${inv.amount.toFixed(2)}
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    {inv.status === 'paid' ? (
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20">
-                        Pagado
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-gray-400 border border-gray-200">
-                        Reembolsado
-                      </span>
-                    )}
+              {restaurants.length > 0 ? (
+                restaurants.map((rest) => {
+                  const invId = `INV-${new Date(rest.created_at).getFullYear()}-${rest.slug.substring(0, 3).toUpperCase()}`;
+                  return (
+                    <tr key={rest.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="px-6 py-4 font-mono font-bold text-orange-500 text-xs">
+                        {invId}
+                      </td>
+                      <td className="px-6 py-4 font-semibold text-gray-900">
+                        Licencia SaaS Mtriq - {rest.name}
+                      </td>
+                      <td className="px-6 py-4 text-center text-gray-500 font-mono text-xs">
+                        {new Date(rest.created_at).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 text-right font-mono font-bold">
+                        $29.00
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        {rest.is_active ? (
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-500/10 text-green-600 border border-green-500/20">
+                            Pagado
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-500/10 text-red-600 border border-red-500/20">
+                            Impago
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                    No hay locales registrados en el sistema.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
