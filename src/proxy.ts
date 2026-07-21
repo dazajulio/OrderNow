@@ -50,7 +50,7 @@ export async function proxy(request: NextRequest) {
     await supabase.auth.getUser();
 
     // Protect admin (super-admin) and gerente (manager) routes
-    if (pathname.startsWith('/admin') || pathname.startsWith('/gerente')) {
+    if (pathname.startsWith('/admin') || pathname.includes('/gerente')) {
       const {
         data: { user },
       } = await supabase.auth.getUser();
