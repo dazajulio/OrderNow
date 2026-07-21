@@ -2,13 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
 import { OnboardingModal } from '@/components/shared/OnboardingModal';
 
-export default function GerenteLayout({ children }: { children: React.ReactNode }) {
+export default function GerenteLayout({ 
+  children,
+  params
+}: { 
+  children: React.ReactNode;
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = use(params);
   const pathname = usePathname();
   const [restaurantName, setRestaurantName] = useState('Cargando...');
   const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
@@ -18,16 +25,16 @@ export default function GerenteLayout({ children }: { children: React.ReactNode 
   useEffect(() => {
     async function fetchRestaurant() {
       const supabase = createClient();
-      const targetId = localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || 'a12bc706-ffc2-4959-ba03-58ebecada86a';
-      setRestaurantId(targetId);
       
       const { data } = await supabase
         .from('restaurants')
         .select('id, name, logo_url, is_first_login')
-        .eq('id', targetId)
+        .eq('slug', slug)
         .single();
       
       if (data) {
+        setRestaurantId(data.id);
+        localStorage.setItem('active_restaurant_id', data.id);
         setRestaurantName(data.name);
         setRestaurantLogo(data.logo_url);
         if (data.is_first_login) {
@@ -37,7 +44,9 @@ export default function GerenteLayout({ children }: { children: React.ReactNode 
         setRestaurantName('Dashboard');
       }
     }
-    fetchRestaurant();
+    if (slug) {
+      fetchRestaurant();
+    }
 
     // Register Service Worker for PWA
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
@@ -45,15 +54,15 @@ export default function GerenteLayout({ children }: { children: React.ReactNode 
         .then((reg) => console.log('Service Worker registrado con éxito:', reg.scope))
         .catch((err) => console.error('Error al registrar Service Worker:', err));
     }
-  }, []);
+  }, [slug]);
 
   const links = [
-    { href: '/gerente/kitchen', label: 'Cocina', icon: ChefHat },
-    { href: '/gerente/menu', label: 'Menú', icon: UtensilsCrossed },
-    { href: '/gerente/history', label: 'Registro', icon: ClipboardList },
-    { href: '/gerente/settings', label: 'Administrador', icon: BarChart3 },
-    { href: '/gerente/qr', label: 'Códigos QR', icon: QrCode },
-    { href: '/gerente/ai', label: 'Agente IA', icon: Brain },
+    { href: `/${slug}/cocina`, label: 'Cocina', icon: ChefHat },
+    { href: `/${slug}/gerente/menu`, label: 'Menú', icon: UtensilsCrossed },
+    { href: `/${slug}/gerente/history`, label: 'Registro', icon: ClipboardList },
+    { href: `/${slug}/gerente/settings`, label: 'Administrador', icon: BarChart3 },
+    { href: `/${slug}/gerente/qr`, label: 'Códigos QR', icon: QrCode },
+    { href: `/${slug}/gerente/ai`, label: 'Agente IA', icon: Brain },
   ];
 
   return (
@@ -127,6 +136,7 @@ export default function GerenteLayout({ children }: { children: React.ReactNode 
         isOpen={showOnboarding}
         restaurantId={restaurantId}
         restaurantName={restaurantName}
+        slug={slug}
         onComplete={() => setShowOnboarding(false)}
       />
     </div>

@@ -611,7 +611,7 @@ export default function RegisterPage() {
                 <div className="pt-4">
                   <button 
                     onClick={() => {
-                      router.push('/gerente/kitchen');
+                      router.push(`/${registeredSlug}/gerente/settings`);
                     }}
                     className="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99] flex items-center justify-center gap-2 mx-auto"
                   >

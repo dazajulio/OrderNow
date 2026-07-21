@@ -9,10 +9,11 @@ interface OnboardingModalProps {
   isOpen: boolean;
   restaurantId: string;
   restaurantName: string;
+  slug: string;
   onComplete: () => void;
 }
 
-export function OnboardingModal({ isOpen, restaurantId, restaurantName, onComplete }: OnboardingModalProps) {
+export function OnboardingModal({ isOpen, restaurantId, restaurantName, slug, onComplete }: OnboardingModalProps) {
   const router = useRouter();
   const supabase = createClient();
   const [step, setStep] = useState(1);
@@ -109,7 +110,7 @@ export function OnboardingModal({ isOpen, restaurantId, restaurantName, onComple
       alert('Error al finalizar el asistente: ' + error.message);
     } else {
       onComplete();
-      router.push('/gerente/menu');
+      router.push(`/${slug}/gerente/menu`);
     }
   };
 

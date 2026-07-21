@@ -25,7 +25,8 @@ export async function sendWelcomeEmail({
 
   // URL del kiosco/menú
   const kioskUrl = `https://mtriq.app/${slug}`;
-  const dashboardUrl = `https://mtriq.app/gerente/kitchen`;
+  const dashboardUrl = `https://mtriq.app/${slug}/gerente`;
+  const kdsUrl = `https://mtriq.app/${slug}/cocina`;
 
   // HTML Plantilla Premium (Diseño corporativo Mtriq - Naranja / Oscuro)
   const emailHtml = `
@@ -178,6 +179,10 @@ export async function sendWelcomeEmail({
             <div class="detail-row">
               <span class="detail-label">Dirección de tu Kiosko (QR/Web):</span>
               <span class="detail-value"><a href="${kioskUrl}" style="color: #ff6b00; text-decoration: none;">mtriq.app/${slug}</a></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Monitor de Cocina (KDS):</span>
+              <span class="detail-value"><a href="${kdsUrl}" style="color: #ff6b00; text-decoration: none;">mtriq.app/${slug}/cocina</a></span>
             </div>
           </div>
 

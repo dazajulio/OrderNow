@@ -21,7 +21,7 @@ import {
 } from '@/modules/kds/components/ShiftStartButton';
 import type { OrderWithItems, OrderStatus } from '@/types/database';
 import { useKdsStore } from '@/modules/kds/stores/kds-store';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 // ----------------------------------------------------------------------------
 // Types
@@ -82,6 +82,7 @@ const COLUMNS: ColumnConfig[] = [
 export function KDSBoard({ restaurantId }: KDSBoardProps) {
   const shiftButtonRef = useRef<ShiftStartButtonHandle>(null);
   const router = useRouter();
+  const { slug } = useParams();
   const { isUnlocked } = useKdsStore();
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -121,7 +122,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
       alert('Atención: Tienes un turno activo. Debes desactivar el turno antes de salir.');
       return;
     }
-    router.push('/gerente/settings');
+    router.push(`/${slug}/gerente/settings`);
   };
 
   // Refs for auto-scrolling columns
