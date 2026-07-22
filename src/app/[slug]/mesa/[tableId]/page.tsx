@@ -15,6 +15,7 @@ import { useCartStore } from '@/modules/kiosk/stores/cart-store';
 import { ShoppingBag, ChevronLeft, Home, MessageCircle } from 'lucide-react';
 import { t } from '@/lib/i18n';
 import { formatPrice } from '@/lib/utils';
+import Link from 'next/link';
 
 type FlowStep = 'browse' | 'customer' | 'upsell' | 'checkout' | 'success' | 'order_status';
 
@@ -154,7 +155,13 @@ export default function KioskPage({ params }: KioskPageProps) {
         .order('order_index');
         
       if (prods) {
-        setProducts(prods as ProductWithModifiers[]);
+        // Sort products to prioritize ones with images
+        const sortedProds = [...prods].sort((a, b) => {
+          if (a.image_url && !b.image_url) return -1;
+          if (!a.image_url && b.image_url) return 1;
+          return 0;
+        });
+        setProducts(sortedProds as ProductWithModifiers[]);
         
         // Find upsell products based on restaurant settings, fallback to featured
         const upsells = prods.filter(p => 

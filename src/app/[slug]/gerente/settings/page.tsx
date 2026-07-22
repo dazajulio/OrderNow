@@ -23,6 +23,7 @@ export default function SettingsAdminPage() {
   // --- Editable Business Data ---
   const [name, setName] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
+  const [coverImageUrl, setCoverImageUrl] = useState('');
   const [uploadMode, setUploadMode] = useState<'url' | 'file'>('url');
   const [taxId, setTaxId] = useState('');
   const [phone, setPhone] = useState('');
@@ -65,6 +66,7 @@ export default function SettingsAdminPage() {
         setUpsell2(restData.upsell_item_2_id || '');
         setName(restData.name || '');
         setLogoUrl(restData.logo_url || '');
+        setCoverImageUrl(restData.cover_image_url || '');
         setTaxId(restData.tax_id || '');
         setPhone(restData.phone || '');
         setAddress(restData.address || '');
@@ -112,6 +114,7 @@ export default function SettingsAdminPage() {
         upsell_item_2_id: upsell2 || null,
         name,
         logo_url: logoUrl,
+        cover_image_url: coverImageUrl,
         tax_id: taxId,
         phone,
         address,
@@ -427,6 +430,19 @@ export default function SettingsAdminPage() {
                   </select>
                 </div>
               )}
+
+              {/* Cover Image URL for Glubbi Feed */}
+              <div>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Foto de Portada (Glubbi Feed)</label>
+                <input 
+                  type="url"
+                  value={coverImageUrl} 
+                  onChange={(e) => setCoverImageUrl(e.target.value)}
+                  placeholder="https://ejemplo.com/portada.jpg"
+                  className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                />
+                <p className="text-xs text-gray-400 mt-1">Esta es la foto grande que atrae clientes en la aplicación principal.</p>
+              </div>
 
               <button 
                 onClick={saveSettings}
