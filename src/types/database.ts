@@ -45,6 +45,7 @@ export interface Database {
           is_active: boolean;
           is_glubbi_active: boolean;
           cover_image_url: string | null;
+          glubbi_type: string | null;
           glubbi_category: string | null;
           rating: number;
           estimated_time: string;

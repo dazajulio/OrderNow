@@ -3,10 +3,24 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { Restaurant } from '@/types/database';
-import { Search, MapPin, Clock, Star, ChevronRight, Menu, Bell } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import BottomNav from '@/modules/glubbi/components/BottomNav';
+import HorizontalRestaurantScroll from '@/modules/glubbi/components/HorizontalRestaurantScroll';
 import { useGlubbiStore } from '@/modules/glubbi/stores/glubbi-store';
+import { 
+  Search, 
+  MapPin, 
+  ChevronRight, 
+  Bell, 
+  Star,
+  Clock,
+  Heart,
+  TrendingUp,
+  Sparkles,
+  Bike,
+  Award
+} from 'lucide-react';
 
 export default function GlubbiMarketplace() {
   const router = useRouter();
@@ -56,18 +70,13 @@ export default function GlubbiMarketplace() {
       {/* App Header */}
       <div className="bg-white px-4 pt-6 pb-4 sticky top-0 z-50 shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Menu className="w-6 h-6 text-gray-700" />
-            <div className="flex flex-col ml-2">
-              <div className="w-10 h-10 rounded-full overflow-hidden bg-white shadow-sm border border-gray-100 flex items-center justify-center -ml-1">
-                <img src="/logo-glubbi.png" alt="Glubbi" className="w-full h-full object-cover" />
-              </div>
-              <div className="flex items-center text-xs font-semibold text-slate-500 mt-1">
-                <MapPin className="w-3 h-3 mr-1 text-slate-400" />
-                <span>Mi Ubicación Actual</span>
-                <ChevronRight className="w-3 h-3 ml-0.5" />
-              </div>
+          <div className="flex flex-col">
+            <div className="flex items-center text-sm font-bold text-slate-800">
+              <MapPin className="w-4 h-4 mr-1 text-orange-500" />
+              <span>Mi Ubicación Actual</span>
+              <ChevronRight className="w-4 h-4 ml-0.5 text-slate-400" />
             </div>
+            <p className="text-xs text-slate-500 ml-5">Toca para actualizar</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center relative">
             <Bell className="w-5 h-5 text-gray-600" />
@@ -136,10 +145,48 @@ export default function GlubbiMarketplace() {
         </div>
       </div>
 
-      {/* Restaurants List */}
-      <div className="px-4">
-        <h2 className="text-lg font-bold text-slate-900 mb-4">
-          {activeCategory === 'Todos' ? 'Restaurantes Destacados' : `Restaurantes de ${activeCategory}`}
+      {/* Envío Gratis */}
+      <HorizontalRestaurantScroll 
+        title="Envío Gratis" 
+        subtitle="Ahorra en tu domicilio"
+        icon={<Bike className="w-5 h-5 text-emerald-500" />}
+        restaurants={filteredRestaurants.slice(0, 4)}
+        tagText="ENVÍO $0"
+        tagColor="bg-emerald-500 text-white"
+      />
+
+      {/* Mejores Ofertas */}
+      <HorizontalRestaurantScroll 
+        title="Mejores Ofertas" 
+        subtitle="Descuentos que no puedes dejar pasar"
+        icon={<Sparkles className="w-5 h-5 text-purple-500" />}
+        restaurants={filteredRestaurants.slice().reverse().slice(0, 4)}
+        tagText="HASTA 50% OFF"
+        tagColor="bg-purple-500 text-white"
+      />
+
+      {/* Los más amados */}
+      <HorizontalRestaurantScroll 
+        title="Los más amados" 
+        subtitle="Favoritos de la comunidad"
+        icon={<Heart className="w-5 h-5 text-rose-500 fill-rose-500" />}
+        restaurants={filteredRestaurants.filter(r => (r.rating || 0) >= 4.8).slice(0, 4)}
+        tagText="TOP RATED"
+        tagColor="bg-rose-500 text-white"
+      />
+
+      {/* Populares */}
+      <HorizontalRestaurantScroll 
+        title="Populares cerca de ti" 
+        icon={<TrendingUp className="w-5 h-5 text-blue-500" />}
+        restaurants={filteredRestaurants.slice(1, 5)}
+      />
+
+      {/* Restaurants List (Vertical Feed) */}
+      <div className="px-4 mt-8">
+        <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <Award className="w-5 h-5 text-orange-500" />
+          {activeCategory === 'Todos' ? 'Todos los Restaurantes' : `Restaurantes de ${activeCategory}`}
         </h2>
         
         {isLoading ? (

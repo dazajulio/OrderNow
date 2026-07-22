@@ -28,6 +28,8 @@ export async function POST(request: Request) {
       instagram,
       facebook,
       tiktok,
+      glubbi_type,
+      glubbi_category,
     } = body;
 
     // Validation
@@ -131,6 +133,8 @@ export async function POST(request: Request) {
           brand_color_primary: '#FF6B00',
           brand_color_secondary: '#1A1A2E',
           is_active: false, // Se activa tras confirmar pago via webhook de Lemon Squeezy
+          glubbi_type: glubbi_type || 'Restaurantes',
+          glubbi_category: glubbi_category || 'Comida',
         } as any)
         .select()
         .single() as any;

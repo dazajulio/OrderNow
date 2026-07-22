@@ -22,7 +22,8 @@ import {
   Layers,
   Printer,
   ShieldCheck,
-  ExternalLink
+  ExternalLink,
+  Store
 } from 'lucide-react';
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -59,6 +60,8 @@ export default function RegisterPage() {
     instagram: '',
     facebook: '',
     tiktok: '',
+    glubbi_type: 'Restaurantes',
+    glubbi_category: 'Otras',
   });
 
 
@@ -399,6 +402,54 @@ export default function RegisterPage() {
                     </div>
                   </div>
                 </div>
+
+                <div className="pt-4 border-t border-gray-100">
+                    <h3 className="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
+                      <Store className="w-4 h-4" /> Categorización en Glubbi
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Tipo de Negocio</label>
+                        <select
+                          name="glubbi_type"
+                          value={formData.glubbi_type}
+                          onChange={handleFormChange}
+                          className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all text-slate-800"
+                        >
+                          <option value="Restaurantes">Restaurante / Comida</option>
+                          <option value="Mercado">Mercado / Tienda</option>
+                          <option value="Farmacia">Farmacia</option>
+                        </select>
+                      </div>
+
+                      {formData.glubbi_type === 'Restaurantes' && (
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wider">Especialidad</label>
+                          <select
+                            name="glubbi_category"
+                            value={formData.glubbi_category}
+                            onChange={handleFormChange}
+                            className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition-all text-slate-800"
+                          >
+                            <option value="Sushi">Sushi</option>
+                            <option value="Hamburguesas">Hamburguesas</option>
+                            <option value="Pizzas">Pizzas</option>
+                            <option value="Pollo">Pollo</option>
+                            <option value="Chino">Chino</option>
+                            <option value="Asiático">Asiático</option>
+                            <option value="Saludable">Saludable</option>
+                            <option value="Empanadas">Empanadas</option>
+                            <option value="Panadería">Panadería / Postres</option>
+                            <option value="Árabe">Árabe</option>
+                            <option value="Desayunos">Desayunos</option>
+                            <option value="Mexicana">Mexicana</option>
+                            <option value="Peruana">Peruana</option>
+                            <option value="Otras">Otras</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
                 <button 
                   type="submit"
