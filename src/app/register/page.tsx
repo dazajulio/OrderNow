@@ -10,11 +10,9 @@ import {
   User, 
   Phone, 
   MapPin, 
-  CreditCard, 
   Lock, 
   Mail, 
   Globe, 
-  Check,
   Sparkles,
   ChevronRight,
   TrendingUp,
@@ -22,7 +20,9 @@ import {
   ChefHat,
   Bell,
   Layers,
-  Printer
+  Printer,
+  ShieldCheck,
+  ExternalLink
 } from 'lucide-react';
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -42,10 +42,11 @@ const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
 export default function RegisterPage() {
   const router = useRouter();
   
-  // Registration Flow Step: 'details' | 'payment' | 'success'
-  const [step, setStep] = useState<'details' | 'payment' | 'success'>('details');
+  // Registration Flow Step: 'details' | 'redirecting'
+  const [step, setStep] = useState<'details' | 'redirecting'>('details');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [checkoutUrl, setCheckoutUrl] = useState('');
 
   // Form State
   const [formData, setFormData] = useState({
@@ -60,15 +61,8 @@ export default function RegisterPage() {
     tiktok: '',
   });
 
-  // Credit Card Simulation State
-  const [cardData, setCardData] = useState({
-    number: '',
-    name: '',
-    expiry: '',
-    cvc: '',
-  });
 
-  // Unique generated details to show at the end
+  // Unique generated slug to show at the end
   const [registeredSlug, setRegisteredSlug] = useState('');
 
   // Form handlers
@@ -79,28 +73,7 @@ export default function RegisterPage() {
     });
   };
 
-  const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
-    if (e.target.name === 'number') {
-      // Format card number: xxxx xxxx xxxx xxxx
-      val = val.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim().substring(0, 19);
-    } else if (e.target.name === 'expiry') {
-      // Format expiry: MM/YY
-      val = val.replace(/\s?/g, '').replace(/\/+/, '');
-      if (val.length > 2) {
-        val = val.substring(0, 2) + '/' + val.substring(2, 4);
-      }
-      val = val.substring(0, 5);
-    } else if (e.target.name === 'cvc') {
-      val = val.replace(/\D/g, '').substring(0, 4);
-    }
-    setCardData({
-      ...cardData,
-      [e.target.name]: val
-    });
-  };
-
-  const handleNextStep = (e: React.FormEvent) => {
+  const handleSubmitDetails = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
     
@@ -122,20 +95,8 @@ export default function RegisterPage() {
       return;
     }
 
-    setStep('payment');
-  };
-
-  const handleProcessRegistration = async (e: React.FormEvent) => {
-    e.preventDefault();
     setIsLoading(true);
-    setErrorMsg('');
-
-    // Card validation
-    if (!cardData.number || !cardData.name || !cardData.expiry || !cardData.cvc) {
-      setIsLoading(false);
-      setErrorMsg('Por favor introduce todos los datos de tu tarjeta de crédito.');
-      return;
-    }
+    setStep('redirecting');
 
     try {
       const response = await fetch('/api/register', {
@@ -150,14 +111,16 @@ export default function RegisterPage() {
         throw new Error(result.error || 'Hubo un error al registrar el restaurante.');
       }
 
-      // Save the registered restaurant ID in localStorage so the dashboard acts as this restaurant
-      localStorage.setItem('active_restaurant_id', result.restaurantId);
       setRegisteredSlug(result.slug);
-      setStep('success');
+      setCheckoutUrl(result.checkoutUrl);
+
+      // Redirigir automáticamente a Lemon Squeezy para pagar
+      window.location.href = result.checkoutUrl;
+
     } catch (err: any) {
       console.error(err);
       setErrorMsg(err.message || 'Ocurrió un error inesperado. Inténtalo de nuevo.');
-    } finally {
+      setStep('details');
       setIsLoading(false);
     }
   };
@@ -242,18 +205,14 @@ export default function RegisterPage() {
             </span>
             <ChevronRight className="w-4 h-4 text-slate-300" />
             <span className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
-              step === 'payment' 
+              step === 'redirecting' 
                 ? 'bg-orange-500/10 text-orange-600 border-orange-500/20' 
                 : 'bg-slate-100 text-slate-400 border-slate-200'
             }`}>
-              2. Pasarela de pago
+              2. Pago seguro
             </span>
             <ChevronRight className="w-4 h-4 text-slate-300" />
-            <span className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
-              step === 'success' 
-                ? 'bg-orange-500/10 text-orange-600 border-orange-500/20' 
-                : 'bg-slate-100 text-slate-400 border-slate-200'
-            }`}>
+            <span className="text-xs font-bold px-3 py-1 rounded-full border bg-slate-100 text-slate-400 border-slate-200">
               3. Activación
             </span>
           </div>
@@ -272,11 +231,11 @@ export default function RegisterPage() {
               </div>
               <div className="space-y-1 border-x border-orange-100/50">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto text-xs font-bold transition-all ${
-                  step === 'payment' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-100 text-slate-400 border border-slate-200/80'
+                  step === 'redirecting' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'bg-slate-100 text-slate-400 border border-slate-200/80'
                 }`}>
                   💳
                 </div>
-                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'payment' ? 'text-slate-800' : 'text-slate-400'}`}>2. Activa</span>
+                <span className={`block text-[10px] font-bold uppercase tracking-wider ${step === 'redirecting' ? 'text-slate-800' : 'text-slate-400'}`}>2. Activa</span>
                 <span className="block text-[8.5px] text-slate-400 leading-tight">$29/mes cancelable</span>
               </div>
               <div className="space-y-1">
@@ -294,10 +253,10 @@ export default function RegisterPage() {
             
             {/* STEP 1: Details */}
             {step === 'details' && (
-              <form onSubmit={handleNextStep} className="space-y-5">
+              <form onSubmit={handleSubmitDetails} className="space-y-5">
                 <div className="space-y-2">
                   <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Crea tu cuenta de Restaurante</h1>
-                  <p className="text-slate-400 text-sm">Completa el formulario para inicializar tu ecosistema de autoservicio.</p>
+                  <p className="text-slate-400 text-sm">Completa el formulario. Te redirigimos al pago seguro en segundos.</p>
                 </div>
 
                 {errorMsg && (
@@ -438,188 +397,51 @@ export default function RegisterPage() {
 
                 <button 
                   type="submit"
-                  className="w-full mt-4 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99]"
-                >
-                  Continuar al Pago <ChevronRight className="w-5 h-5" />
-                </button>
-              </form>
-            )}
-
-            {/* STEP 2: Payment Simulation */}
-            {step === 'payment' && (
-              <form onSubmit={handleProcessRegistration} className="space-y-6">
-                <div className="space-y-2">
-                  <button 
-                    type="button" 
-                    onClick={() => setStep('details')}
-                    className="text-xs text-slate-400 hover:text-slate-700 transition-colors"
-                  >
-                    &larr; Volver a los datos
-                  </button>
-                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Pasarela de Pago Segura</h1>
-                  <p className="text-slate-500 text-sm">Suscripción única sin contratos forzosos. Cancela cuando desees.</p>
-                </div>
-
-                {errorMsg && (
-                  <div className="bg-red-55 border border-red-200 rounded-xl p-3 text-red-600 text-xs font-semibold">
-                    {errorMsg}
-                  </div>
-                )}
-
-                {/* Premium Credit Card Visualizer */}
-                <div className="relative w-full h-44 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 p-6 flex flex-col justify-between text-white shadow-xl shadow-orange-500/20 overflow-hidden select-none border border-white/10 animate-fade-in">
-                  <div className="absolute top-0 right-0 p-8 opacity-10 text-white"><Sparkles className="w-32 h-32" /></div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-black tracking-wider">PREMIUM CARD</span>
-                    <span className="text-xl font-black italic">VISA</span>
-                  </div>
-                  
-                  {/* Chip */}
-                  <div className="w-10 h-7 rounded bg-amber-400/80 border border-amber-300 flex items-center justify-center overflow-hidden">
-                    <div className="w-6 h-5 border-r border-b border-amber-600/30" />
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-lg font-mono tracking-widest block h-7">
-                      {cardData.number || '•••• •••• •••• ••••'}
-                    </span>
-                    <div className="flex justify-between text-[10px] uppercase font-semibold text-white/70">
-                      <span>{cardData.name || 'TITULAR DE LA TARJETA'}</span>
-                      <span className="font-mono">{cardData.expiry || 'MM/YY'}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card Inputs */}
-                <div className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                      <CreditCard className="w-3.5 h-3.5 text-orange-500" /> Número de tarjeta
-                    </label>
-                    <input 
-                      name="number" 
-                      value={cardData.number}
-                      onChange={handleCardChange}
-                      maxLength={19}
-                      placeholder="4000 1234 5678 9010" 
-                      required
-                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">Titular de la tarjeta</label>
-                    <input 
-                      name="name" 
-                      value={cardData.name}
-                      onChange={e => setCardData({...cardData, name: e.target.value.toUpperCase()})}
-                      placeholder="TU NOMBRE COMPLETO" 
-                      required
-                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm uppercase"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-700">Fecha de vencimiento</label>
-                      <input 
-                        name="expiry" 
-                        value={cardData.expiry}
-                        onChange={handleCardChange}
-                        placeholder="MM/YY" 
-                        required
-                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-700">Código de seguridad (CVC)</label>
-                      <input 
-                        name="cvc" 
-                        type="password"
-                        value={cardData.cvc}
-                        onChange={handleCardChange}
-                        placeholder="123" 
-                        required
-                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm font-mono"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Price Box */}
-                <div className="bg-orange-50/40 border border-orange-100/80 rounded-2xl p-4 flex justify-between items-center text-sm shadow-sm">
-                  <div>
-                    <span className="block font-bold text-slate-900">Suscripción Mensual</span>
-                    <span className="text-xs text-slate-500">Cancela cuando desees.</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-2xl font-black text-orange-500">$29<span className="text-xs font-normal text-slate-500">/mes</span></span>
-                  </div>
-                </div>
-
-                <button 
-                  type="submit"
                   disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-600 hover:brightness-110 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_30px_-5px_rgba(249,115,22,0.4)] active:scale-[0.99] disabled:opacity-60"
+                  className="w-full mt-4 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99] disabled:opacity-60"
                 >
                   {isLoading ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" /> Procesando pago...
-                    </>
+                    <><Loader2 className="w-5 h-5 animate-spin" /> Creando cuenta...</>
                   ) : (
-                    <>
-                      Pagar $29/mes y Activar Ecosistema
-                    </>
+                    <>Continuar al pago seguro <ChevronRight className="w-5 h-5" /></>
                   )}
                 </button>
               </form>
             )}
 
-            {/* STEP 3: Onboarding Success */}
-            {step === 'success' && (
-              <div className="text-center space-y-6 py-6 animate-fade-in">
-                <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto text-emerald-500">
-                  <CheckCircle2 className="w-12 h-12" />
+            {/* STEP 2: Redirecting to Lemon Squeezy */}
+            {step === 'redirecting' && (
+              <div className="text-center space-y-8 py-8 animate-fade-in">
+                <div className="w-20 h-20 bg-orange-500/10 border border-orange-500/20 rounded-full flex items-center justify-center mx-auto">
+                  <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
                 </div>
 
                 <div className="space-y-2">
-                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">¡Activación Exitosa!</h1>
-                  <p className="text-slate-600 text-sm max-w-sm mx-auto">
-                    Tu restaurante **{formData.restaurantName}** se ha registrado y activado en el ecosistema Mtriq.
+                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Redirigiendo al pago seguro...</h1>
+                  <p className="text-slate-500 text-sm max-w-xs mx-auto">
+                    Tu cuenta ha sido creada. Te llevamos a Lemon Squeezy para completar tu suscripción de $29/mes.
                   </p>
                 </div>
 
-                <div className="bg-emerald-50/40 border border-emerald-100/80 rounded-2xl p-6 space-y-3 text-left max-w-md mx-auto text-xs shadow-sm">
-                  <div className="flex justify-between border-b border-emerald-100/50 pb-2">
-                    <span className="text-slate-500">Dirección Web Kiosko:</span>
-                    <a href={`/${registeredSlug}`} target="_blank" className="font-bold text-orange-600 hover:underline">
-                      mtriq.app/{registeredSlug}
-                    </a>
+                <div className="bg-orange-50/60 border border-orange-100 rounded-2xl p-4 text-left space-y-2 text-xs text-slate-600 max-w-sm mx-auto">
+                  <div className="flex items-center gap-2 font-semibold text-slate-800">
+                    <ShieldCheck className="w-4 h-4 text-orange-500" /> Pago 100% seguro
                   </div>
-                  <div className="flex justify-between border-b border-emerald-100/50 pb-2">
-                    <span className="text-slate-500">Usuario de Acceso:</span>
-                    <span className="font-bold text-slate-900">{formData.email}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">Licencia Mensual:</span>
-                    <span className="font-bold text-emerald-600 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Activa ($29/mes)
-                    </span>
-                  </div>
+                  <p>Procesado por <strong>Lemon Squeezy</strong>. Mtriq nunca almacena datos de tu tarjeta.</p>
                 </div>
 
-                <div className="pt-4">
-                  <button 
-                    onClick={() => {
-                      router.push(`/${registeredSlug}/gerente/settings`);
-                    }}
-                    className="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99] flex items-center justify-center gap-2 mx-auto"
+                {checkoutUrl && (
+                  <a
+                    href={checkoutUrl}
+                    className="inline-flex items-center gap-2 text-sm text-orange-600 hover:text-orange-700 font-semibold underline underline-offset-2"
                   >
-                    Entrar al Dashboard de Configuración <ChevronRight className="w-5 h-5" />
-                  </button>
-                </div>
+                    <ExternalLink className="w-4 h-4" /> Haz clic aquí si no fuiste redirigido
+                  </a>
+                )}
               </div>
             )}
+
+            {/* STEP 3: Handled by /success page after payment */}
 
           </div>
 

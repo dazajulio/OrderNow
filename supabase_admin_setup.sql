@@ -12,6 +12,20 @@ ALTER TABLE public.restaurants ADD COLUMN IF NOT EXISTS license_code TEXT UNIQUE
 ALTER TABLE public.restaurants ADD COLUMN IF NOT EXISTS license_valid_until TIMESTAMPTZ;
 
 -- ----------------------------------------------------------------------------
+-- LEMON SQUEEZY: Columnas de suscripción
+-- Ejecutar para habilitar el tracking de pagos recurrentes
+-- ----------------------------------------------------------------------------
+ALTER TABLE public.restaurants ADD COLUMN IF NOT EXISTS subscription_id TEXT;
+ALTER TABLE public.restaurants ADD COLUMN IF NOT EXISTS subscription_status TEXT DEFAULT 'inactive';
+ALTER TABLE public.restaurants ADD COLUMN IF NOT EXISTS subscription_renews_at TIMESTAMPTZ;
+
+-- Índice para que el webhook pueda buscar por subscription_id eficientemente
+CREATE INDEX IF NOT EXISTS idx_restaurants_subscription_id
+  ON public.restaurants (subscription_id)
+  WHERE subscription_id IS NOT NULL;
+
+
+-- ----------------------------------------------------------------------------
 -- 2. FUNCIÓN Y TRIGGER: Auto-generar Código de Licencia al registrar restaurante
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.generate_license_code()

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { sendWelcomeEmail } from '@/lib/mail';
+import { buildCheckoutUrl } from '@/lib/lemonsqueezy';
 
 function slugify(text: string): string {
   return text
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
                           authError.message?.toLowerCase().includes('email address is already');
       const friendlyError = isDuplicate
         ? 'Este correo electrónico ya está registrado. Intenta iniciar sesión o usa otro correo.'
-        : 'No se pudo crear la cuenta. Por favor verifica los datos e intenta de nuevo.';
+        : `Error de Supabase Auth: ${authError.message}`; // Temporal para debug
       return NextResponse.json(
         { success: false, error: friendlyError },
         { status: 400 }
@@ -130,7 +130,7 @@ export async function POST(request: Request) {
           tiktok: tiktok || null,
           brand_color_primary: '#FF6B00',
           brand_color_secondary: '#1A1A2E',
-          is_active: true,
+          is_active: false, // Se activa tras confirmar pago via webhook de Lemon Squeezy
         } as any)
         .select()
         .single() as any;
@@ -166,7 +166,7 @@ export async function POST(request: Request) {
           tax_id: null, // Avoid injecting fallback contact details object here
           brand_color_primary: '#FF6B00',
           brand_color_secondary: '#1A1A2E',
-          is_active: true,
+          is_active: false, // Se activa tras confirmar pago via webhook de Lemon Squeezy
         } as any)
         .select()
         .single() as any;
@@ -204,27 +204,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // 5. Send Welcome Email via Resend (awaited to ensure delivery)
-    try {
-      const emailSent = await sendWelcomeEmail({
-        toEmail: email,
-        restaurantName,
-        contactName,
-        slug,
-      });
-      if (!emailSent) {
-        console.warn('El correo de bienvenida no pudo enviarse, pero el registro fue exitoso.');
-      }
-    } catch (e) {
-      console.error('Error al enviar el correo de bienvenida:', e);
-    }
+    // 5. Construir URL de checkout de Lemon Squeezy con datos del restaurante
+    // El email de bienvenida se envía desde el webhook DESPUÉS de que el pago se confirme.
+    const checkoutUrl = buildCheckoutUrl({
+      email,
+      restaurantId: newRestaurantId,
+      slug,
+    });
 
-    // Success! Return restaurant ID and slug
+    // Success! Devolver la URL de checkout para redirigir al usuario a pagar
     return NextResponse.json({
       success: true,
       restaurantId: newRestaurantId,
       slug,
       userId,
+      checkoutUrl,
     });
 
   } catch (error: any) {
