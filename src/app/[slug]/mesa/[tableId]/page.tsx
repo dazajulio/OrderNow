@@ -230,9 +230,6 @@ export default function KioskPage({ params }: KioskPageProps) {
     setCustomizingProduct(null);
     setEditingCartItemId(null);
     setEditingInitialSelections([]);
-    
-    // Automatically open cart drawer for immediate visual feedback
-    setIsCartOpen(true);
   };
 
   const ElegantHeader = () => (
