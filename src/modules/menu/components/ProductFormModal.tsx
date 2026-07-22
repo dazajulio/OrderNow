@@ -136,7 +136,7 @@ export function ProductFormModal({
         const { data: productData, error: productError } = await supabase
           .from('products')
           .insert({
-            restaurant_id: MTRIQ_ID,
+            restaurant_id: restaurantId,
             category_id: categoryId,
             name,
             description,
@@ -157,7 +157,7 @@ export function ProductFormModal({
         const { data: groupData, error: groupError } = await supabase
           .from('modifier_groups')
           .insert({
-            restaurant_id: MTRIQ_ID,
+            restaurant_id: restaurantId,
             product_id: productId,
             name: group.name,
             is_required: group.is_required,
@@ -232,7 +232,7 @@ export function ProductFormModal({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-gray-500 mb-1">Precio Base ($) *</label>
-                <input required type="number" step="0.01" min="0" value={price} onChange={e => setPrice(parseFloat(e.target.value))} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
+                <input required type="number" step="0.01" min="0" value={price} onChange={e => setPrice(parseFloat(e.target.value) || 0)} className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-primary outline-none" />
               </div>
               <div className="flex flex-col">
                 <label className="block text-sm text-gray-500 mb-1">Imagen del Plato (Opcional)</label>
@@ -322,15 +322,15 @@ export function ProductFormModal({
                     <div className="flex items-center space-x-2">
                       <label className="text-xs text-gray-500">Min. Selecciones</label>
                       <input type="number" min="0" value={group.min_selections} onChange={e => {
-                        const newGroups = [...groups]; newGroups[groupIdx].min_selections = parseInt(e.target.value); 
-                        newGroups[groupIdx].is_required = parseInt(e.target.value) > 0;
+                        const newGroups = [...groups]; newGroups[groupIdx].min_selections = parseInt(e.target.value) || 0; 
+                        newGroups[groupIdx].is_required = (parseInt(e.target.value) || 0) > 0;
                         setGroups(newGroups);
                       }} className="w-16 bg-white shadow-sm border border-gray-200 rounded-lg px-2 py-1 text-white text-center" />
                     </div>
                     <div className="flex items-center space-x-2">
                       <label className="text-xs text-gray-500">Max. Selecciones</label>
                       <input type="number" min="1" value={group.max_selections} onChange={e => {
-                        const newGroups = [...groups]; newGroups[groupIdx].max_selections = parseInt(e.target.value); setGroups(newGroups);
+                        const newGroups = [...groups]; newGroups[groupIdx].max_selections = parseInt(e.target.value) || 1; setGroups(newGroups);
                       }} className="w-16 bg-white shadow-sm border border-gray-200 rounded-lg px-2 py-1 text-white text-center" />
                     </div>
                   </div>
@@ -349,7 +349,7 @@ export function ProductFormModal({
                       <div className="flex items-center">
                         <span className="text-gray-400 mr-2 text-sm">+$</span>
                         <input type="number" step="0.01" min="0" value={mod.extra_price} onChange={e => {
-                          const newGroups = [...groups]; newGroups[groupIdx].modifiers[modIdx].extra_price = parseFloat(e.target.value); setGroups(newGroups);
+                          const newGroups = [...groups]; newGroups[groupIdx].modifiers[modIdx].extra_price = parseFloat(e.target.value) || 0; setGroups(newGroups);
                         }} className="w-20 bg-white shadow-sm border border-gray-200 rounded-lg px-2 py-2 text-white text-sm text-center" />
                       </div>
                       
