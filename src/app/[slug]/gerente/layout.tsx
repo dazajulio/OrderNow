@@ -6,7 +6,7 @@ import { useEffect, useState, use } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain, Download, LogOut } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
-import { OnboardingModal } from '@/components/shared/OnboardingModal';
+import { GerentePinGuard } from '@/components/shared/GerentePinGuard';
 
 export default function GerenteLayout({ 
   children,
@@ -20,7 +20,6 @@ export default function GerenteLayout({
   const [restaurantName, setRestaurantName] = useState('Cargando...');
   const [restaurantLogo, setRestaurantLogo] = useState<string | null>(null);
   const [restaurantId, setRestaurantId] = useState<string>('');
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
@@ -38,9 +37,6 @@ export default function GerenteLayout({
         localStorage.setItem('active_restaurant_id', data.id);
         setRestaurantName(data.name);
         setRestaurantLogo(data.logo_url);
-        if (data.is_first_login) {
-          setShowOnboarding(true);
-        }
       } else {
         setRestaurantName('Dashboard');
       }
@@ -135,9 +131,8 @@ export default function GerenteLayout({
           {/* Logout Button */}
           <button
             onClick={async () => {
-              const supabase = createClient();
-              await supabase.auth.signOut();
-              window.location.href = '/';
+              sessionStorage.removeItem(`gerente_auth_${restaurantId}`);
+              window.location.href = `/${slug}/welcome`;
             }}
             className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-100 text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200 border border-transparent transition-all text-sm font-semibold"
           >
@@ -150,7 +145,9 @@ export default function GerenteLayout({
       {/* Main Content */}
       <main className="flex-1 bg-white shadow-sm min-h-screen overflow-y-auto pb-20 md:pb-0 relative">
         <WaiterNotificationBell />
-        {children}
+        <GerentePinGuard restaurantId={restaurantId}>
+          {children}
+        </GerentePinGuard>
       </main>
 
       {/* Bottom Nav (Mobile) */}
@@ -174,13 +171,6 @@ export default function GerenteLayout({
           })}
         </nav>
       </div>
-      <OnboardingModal 
-        isOpen={showOnboarding}
-        restaurantId={restaurantId}
-        restaurantName={restaurantName}
-        slug={slug}
-        onComplete={() => setShowOnboarding(false)}
-      />
     </div>
   );
 }

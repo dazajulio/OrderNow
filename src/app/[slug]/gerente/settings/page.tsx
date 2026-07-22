@@ -20,6 +20,13 @@ export default function SettingsAdminPage() {
   const [upsell1, setUpsell1] = useState('');
   const [upsell2, setUpsell2] = useState('');
 
+  // --- Editable Business Data ---
+  const [name, setName] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
+  const [taxId, setTaxId] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+
   // --- Admin Password State ---
   const [newAdminPassword, setNewAdminPassword] = useState('');
   const [confirmAdminPassword, setConfirmAdminPassword] = useState('');
@@ -53,6 +60,11 @@ export default function SettingsAdminPage() {
         setRestaurant(restData);
         setUpsell1(restData.upsell_item_1_id || '');
         setUpsell2(restData.upsell_item_2_id || '');
+        setName(restData.name || '');
+        setLogoUrl(restData.logo_url || '');
+        setTaxId(restData.tax_id || '');
+        setPhone(restData.phone || '');
+        setAddress(restData.address || '');
       }
       
       // Products for upsell selection
@@ -92,7 +104,12 @@ export default function SettingsAdminPage() {
       .from('restaurants')
       .update({
         upsell_item_1_id: upsell1 || null,
-        upsell_item_2_id: upsell2 || null
+        upsell_item_2_id: upsell2 || null,
+        name,
+        logo_url: logoUrl,
+        tax_id: taxId,
+        phone,
+        address
       } as any)
       .eq('id', restaurantId);
       
@@ -367,7 +384,7 @@ export default function SettingsAdminPage() {
               <Lock className="w-5 h-5 text-orange-500" /> Seguridad de la Plataforma
             </h2>
             <p className="text-gray-500 text-sm mb-6">
-              Modifica la contraseña del Super-Admin para el acceso a la ruta de administración global (/admin).
+              Mantén tu clave segura. Puedes cambiarla cuando quieras desde aquí.
             </p>
             
             <div className="space-y-4">
@@ -404,59 +421,96 @@ export default function SettingsAdminPage() {
             </div>
           </div>
 
-          {/* Datos del Negocio (Solo Lectura) */}
-          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
-            <div className="absolute top-4 right-4 bg-slate-100 text-gray-500 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-              <Lock className="w-3 h-3" /> Solo lectura
-            </div>
-            
-            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          {/* Datos del Negocio (Editables) */}
+          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 shadow-xl relative overflow-hidden group h-fit">
+            <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
               <Building2 className="w-5 h-5 text-orange-500" /> Datos del Negocio
             </h2>
             
             <div className="space-y-4 relative z-10">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-white rounded-xl overflow-hidden flex items-center justify-center">
-                  <img src={restaurant?.logo_url || '/logo.svg'} alt="Logo" className="w-full h-full object-contain p-1" />
+              
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
+                <div className="w-16 h-16 bg-slate-100 border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
+                  <img src={logoUrl || '/logo.svg'} alt="Logo" className="w-full h-full object-contain p-1" />
+                </div>
+                <div className="flex-1 w-full">
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">URL del Logo</label>
+                  <input 
+                    type="text"
+                    value={logoUrl}
+                    onChange={(e) => setLogoUrl(e.target.value)}
+                    placeholder="https://ejemplo.com/mi-logo.png"
+                    className="w-full bg-slate-50 border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Nombre de la Empresa</label>
+                <input 
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-slate-50 border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Identificación Fiscal</label>
+                  <input 
+                    type="text"
+                    value={taxId}
+                    onChange={(e) => setTaxId(e.target.value)}
+                    className="w-full bg-slate-50 border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Nombre de la Empresa</p>
-                  <p className="text-lg font-bold text-white">{restaurant?.name || 'Cargando...'}</p>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Teléfono</label>
+                  <input 
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full bg-slate-50 border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  />
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-slate-50 p-4 rounded-xl">
-                  <p className="text-xs text-gray-400 mb-1">Identificación Fiscal</p>
-                  <p className="text-sm font-medium text-white">{restaurant?.tax_id || 'No registrada'}</p>
-                </div>
-                <div className="bg-slate-50 p-4 rounded-xl">
-                  <p className="text-xs text-gray-400 mb-1">Teléfono</p>
-                  <p className="text-sm font-medium text-white">{restaurant?.phone || 'No registrado'}</p>
-                </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Dirección</label>
+                <input 
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="w-full bg-slate-50 border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
               </div>
-              
-              <div className="bg-slate-50 p-4 rounded-xl">
-                <p className="text-xs text-gray-400 mb-1">Dirección</p>
-                <p className="text-sm font-medium text-white">{restaurant?.address || 'No registrada'}</p>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-slate-50 p-4 rounded-xl">
-                  <p className="text-xs text-gray-400 mb-1">Licencia de Uso</p>
-                  <p className="text-sm font-mono text-orange-400 truncate" title={restaurant?.license_code}>
+
+              <div className="mt-6 pt-4 border-t border-gray-100 grid grid-cols-2 gap-4">
+                <div className="bg-slate-50 p-3 rounded-xl border border-gray-100">
+                  <p className="text-[10px] uppercase font-bold text-gray-400 mb-1 flex items-center gap-1"><Lock className="w-3 h-3"/> Licencia</p>
+                  <p className="text-xs font-mono text-orange-500 truncate" title={restaurant?.license_code}>
                     {restaurant?.license_code || 'No registrada'}
                   </p>
                 </div>
-                <div className="bg-slate-50 p-4 rounded-xl">
-                  <p className="text-xs text-gray-400 mb-1">Fecha de Corte</p>
-                  <p className="text-sm font-medium text-white">
+                <div className="bg-slate-50 p-3 rounded-xl border border-gray-100">
+                  <p className="text-[10px] uppercase font-bold text-gray-400 mb-1 flex items-center gap-1"><Lock className="w-3 h-3"/> Corte</p>
+                  <p className="text-xs font-medium text-slate-700">
                     {restaurant?.license_valid_until 
                       ? new Date(restaurant.license_valid_until).toLocaleDateString() 
                       : 'No registrada'}
                   </p>
                 </div>
               </div>
+              
+              <button 
+                onClick={saveSettings}
+                disabled={isSaving}
+                className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <Save className="w-5 h-5" />
+                {isSaving ? 'Guardando...' : 'Guardar Datos'}
+              </button>
             </div>
           </div>
         </div>

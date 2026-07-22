@@ -122,7 +122,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
       alert('Atención: Tienes un turno activo. Debes desactivar el turno antes de salir.');
       return;
     }
-    router.push(`/${slug}/gerente/settings`);
+    router.push(`/${slug}/welcome`);
   };
 
   // Refs for auto-scrolling columns

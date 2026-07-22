@@ -71,10 +71,6 @@ export default async function WelcomePage({ params }: WelcomePageProps) {
             {/* Glowing orb behind the card */}
             <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-orange-500/20 rounded-full blur-[80px] -translate-y-1/2 pointer-events-none group-hover:bg-orange-500/30 transition-colors" />
             
-            <div className="absolute top-6 right-6 bg-orange-500/10 text-orange-400 border border-orange-500/20 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest animate-pulse">
-              Paso 1 Recomendado
-            </div>
-            
             <div className="flex flex-col md:flex-row items-start md:items-center gap-8 relative z-10">
               <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/25">
                 <Settings className="w-10 h-10 text-white" />
