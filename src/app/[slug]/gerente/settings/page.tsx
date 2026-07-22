@@ -25,6 +25,7 @@ export default function SettingsAdminPage() {
   const [logoUrl, setLogoUrl] = useState('');
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [uploadMode, setUploadMode] = useState<'url' | 'file'>('url');
+  const [coverUploadMode, setCoverUploadMode] = useState<'url' | 'file'>('url');
   const [taxId, setTaxId] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
@@ -434,14 +435,56 @@ export default function SettingsAdminPage() {
               {/* Cover Image URL for Glubbi Feed */}
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-2">Foto de Portada (Glubbi Feed)</label>
-                <input 
-                  type="url"
-                  value={coverImageUrl} 
-                  onChange={(e) => setCoverImageUrl(e.target.value)}
-                  placeholder="https://ejemplo.com/portada.jpg"
-                  className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
-                />
+                
+                <div className="flex gap-2 mb-2">
+                  <button 
+                    type="button" 
+                    onClick={() => setCoverUploadMode('url')} 
+                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${coverUploadMode === 'url' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-slate-100 shadow-sm border border-gray-200 text-gray-500 hover:bg-slate-200'}`}
+                  >
+                    Enlace (URL)
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={() => setCoverUploadMode('file')} 
+                    className={`px-3 py-1.5 text-xs rounded-md transition-colors ${coverUploadMode === 'file' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-slate-100 shadow-sm border border-gray-200 text-gray-500 hover:bg-slate-200'}`}
+                  >
+                    Subir Archivo
+                  </button>
+                </div>
+
+                {coverUploadMode === 'url' ? (
+                  <input 
+                    type="url"
+                    value={coverImageUrl} 
+                    onChange={(e) => setCoverImageUrl(e.target.value)}
+                    placeholder="https://ejemplo.com/portada.jpg"
+                    className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                  />
+                ) : (
+                  <input 
+                    type="file" 
+                    accept="image/png, image/jpeg, image/webp" 
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (file.size > 5 * 1024 * 1024) {
+                        alert("La imagen es demasiado grande. El límite es 5MB.");
+                        return;
+                      }
+                      const reader = new FileReader();
+                      reader.onloadend = () => setCoverImageUrl(reader.result as string);
+                      reader.readAsDataURL(file);
+                    }} 
+                    className="w-full bg-slate-100 border border-gray-200 rounded-xl py-2 px-3 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-orange-100 file:text-orange-700 hover:file:bg-orange-200 cursor-pointer" 
+                  />
+                )}
                 <p className="text-xs text-gray-400 mt-1">Esta es la foto grande que atrae clientes en la aplicación principal.</p>
+                {coverImageUrl && (
+                  <div className="mt-3 w-full h-32 rounded-xl border border-gray-200 overflow-hidden bg-slate-50">
+                    <img src={coverImageUrl} alt="Portada Preview" className="w-full h-full object-cover" />
+                  </div>
+                )}
               </div>
 
               <button 
