@@ -234,14 +234,7 @@ export function KDSBoard({ restaurantId }: KDSBoardProps) {
 
           <ShiftStartButton ref={shiftButtonRef} />
           
-          {deferredPrompt && (
-            <button
-              onClick={handleInstallClick}
-              className="rounded-xl px-5 py-3.5 text-sm font-bold bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/10 active:scale-[0.98] transition-all flex items-center gap-1.5"
-            >
-              Descargar KDS
-            </button>
-          )}
+          {/* PWA Button removed from here and moved to Gerente Layout */}
           
           <button
             onClick={handleLogout}

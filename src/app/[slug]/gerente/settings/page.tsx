@@ -12,67 +12,11 @@ export default function SettingsAdminPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  // --- Auth ---
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showPinModal, setShowPinModal] = useState(true);
-  const [expectedPin, setExpectedPin] = useState('1234');
-  const [showDefaultPinWarning, setShowDefaultPinWarning] = useState(false);
-
-  // --- Settings State ---
-  const [restaurant, setRestaurant] = useState<any>(null);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [upsell1, setUpsell1] = useState('');
-  const [upsell2, setUpsell2] = useState('');
-
-  // --- Admin Password State ---
-  const [newAdminPassword, setNewAdminPassword] = useState('');
-  const [confirmAdminPassword, setConfirmAdminPassword] = useState('');
-  const [isSavingPassword, setIsSavingPassword] = useState(false);
-  
-  // --- Reports State ---
-  const [orders, setOrders] = useState<OrderWithItems[]>([]);
-  const [customers, setCustomers] = useState<Customer[]>([]);
-
-  const [restaurantId, setRestaurantId] = useState('');
-
-  useEffect(() => {
-    setRestaurantId(localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
-  }, []);
-
-  // Load PIN from DB
-  useEffect(() => {
-    if (!restaurantId) return;
-    async function loadPin() {
-      const { data } = await supabase
-        .from('restaurants')
-        .select('admin_pin, super_admin_password')
-        .eq('id', restaurantId)
-        .single();
-      if (data) {
-        setExpectedPin(data.admin_pin || data.super_admin_password || '1234');
-      }
-    }
-    loadPin();
-  }, [restaurantId]);
-
-  // --- Auth Handlers ---
-  const handleAuthSuccess = () => {
-    setShowPinModal(false);
-    setIsAuthenticated(true);
-    if (expectedPin === '1234') {
-      setShowDefaultPinWarning(true);
-    }
-  };
-
-  const handleAuthClose = () => {
-    router.push('/gerente/kitchen');
-  };
+  // --- Auth Handlers (Removed) ---
 
   // --- Load Data ---
   useEffect(() => {
-    if (!isAuthenticated || !restaurantId) return;
+    if (!restaurantId) return;
 
     async function loadAll() {
       setIsLoading(true);
@@ -118,7 +62,7 @@ export default function SettingsAdminPage() {
     }
     
     loadAll();
-  }, [isAuthenticated, restaurantId]);
+  }, [restaurantId]);
 
   const saveSettings = async () => {
     setIsSaving(true);
@@ -176,114 +120,7 @@ export default function SettingsAdminPage() {
     }
   };
 
-  // --- PIN Auth Screen ---
-  if (!isAuthenticated) {
-    return (
-      <PinAuthModal 
-        isOpen={showPinModal} 
-        onClose={handleAuthClose} 
-        onSuccess={handleAuthSuccess}
-        title="Acceso de Administrador" 
-        expectedPin={expectedPin}
-      />
-    );
-  }
-
-  // --- Default PIN Blocking Warning Modal ---
-  if (showDefaultPinWarning) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-50/90 backdrop-blur-md">
-        <div className="w-full max-w-sm bg-white shadow-sm border border-gray-200 rounded-3xl p-6 shadow-2xl space-y-6 animate-scale-in text-center">
-          <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto text-red-500">
-            <Lock className="w-6 h-6" />
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-xl font-bold text-white">PIN por Defecto Detectado</h3>
-            <p className="text-sm text-gray-500">
-              Estás utilizando la clave de acceso por defecto. Por seguridad, debes actualizarla inmediatamente para poder acceder al panel de administración.
-            </p>
-          </div>
-
-          <div className="space-y-4 text-left">
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nuevo PIN (4 dígitos)</label>
-              <input 
-                type="password"
-                maxLength={4}
-                value={newAdminPassword}
-                onChange={(e) => setNewAdminPassword(e.target.value.replace(/\D/g, ''))}
-                placeholder="Ej: 5678"
-                className="w-full bg-slate-100 border border-gray-200 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Confirmar PIN</label>
-              <input 
-                type="password"
-                maxLength={4}
-                value={confirmAdminPassword}
-                onChange={(e) => setConfirmAdminPassword(e.target.value.replace(/\D/g, ''))}
-                placeholder="Ej: 5678"
-                className="w-full bg-slate-100 border border-gray-200 rounded-xl py-3 px-4 text-white text-center font-mono text-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-            </div>
-
-            <button 
-              onClick={async () => {
-                if (newAdminPassword.length !== 4) {
-                  alert('El PIN debe tener exactamente 4 dígitos.');
-                  return;
-                }
-                if (newAdminPassword === '1234') {
-                  alert('El nuevo PIN no puede ser el PIN por defecto "1234".');
-                  return;
-                }
-                if (newAdminPassword !== confirmAdminPassword) {
-                  alert('Los PIN introducidos no coinciden.');
-                  return;
-                }
-                setIsSavingPassword(true);
-                let { error } = await supabase
-                  .from('restaurants')
-                  .update({
-                    admin_pin: newAdminPassword,
-                    super_admin_password: newAdminPassword
-                  } as any)
-                  .eq('id', restaurantId);
-
-                if (error && error.message && error.message.includes('admin_pin')) {
-                  console.warn('admin_pin column not found in schema. Falling back to super_admin_password only...');
-                  const fallback = await supabase
-                    .from('restaurants')
-                    .update({
-                      super_admin_password: newAdminPassword
-                    } as any)
-                    .eq('id', restaurantId);
-                  error = fallback.error;
-                }
-
-                setIsSavingPassword(false);
-                if (error) {
-                  alert('Error al guardar el nuevo PIN: ' + error.message);
-                } else {
-                  alert('PIN de Administrador actualizado con éxito.');
-                  setExpectedPin(newAdminPassword);
-                  setShowDefaultPinWarning(false);
-                  setNewAdminPassword('');
-                  setConfirmAdminPassword('');
-                }
-              }}
-              disabled={isSavingPassword || newAdminPassword.length !== 4 || newAdminPassword !== confirmAdminPassword}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20"
-            >
-              {isSavingPassword ? 'Guardando...' : 'Actualizar PIN e Ingresar'}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // --- PIN Auth Removed ---
 
   if (isLoading) {
     return <div className="p-12 flex justify-center"><div className="w-8 h-8 border-4 border-gray-200 border-t-orange-500 rounded-full animate-spin"/></div>;

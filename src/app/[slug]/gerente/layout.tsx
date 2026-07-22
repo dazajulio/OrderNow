@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, use } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain, Download } from 'lucide-react';
+import { ChefHat, UtensilsCrossed, QrCode, ClipboardList, BarChart3, Brain, Download, LogOut } from 'lucide-react';
 import { WaiterNotificationBell } from './components/WaiterNotificationBell';
 import { OnboardingModal } from '@/components/shared/OnboardingModal';
 
@@ -120,16 +120,31 @@ export default function GerenteLayout({
           })}
         </nav>
 
-        {/* PWA Install Button — bottom of sidebar */}
-        {deferredPrompt && (
+        <div className="mt-auto pt-4 space-y-2">
+          {/* PWA Install Button — bottom of sidebar */}
+          {deferredPrompt && (
+            <button
+              onClick={handleInstallPWA}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-orange-200 bg-orange-50 text-orange-600 hover:bg-orange-100 transition-all text-sm font-semibold shadow-sm"
+            >
+              <Download className="w-4 h-4 shrink-0" />
+              <span>Descargar KDS</span>
+            </button>
+          )}
+
+          {/* Logout Button */}
           <button
-            onClick={handleInstallPWA}
-            className="mt-4 w-full flex items-center gap-2 px-4 py-3 rounded-xl border border-orange-200 bg-orange-50 text-orange-600 hover:bg-orange-100 transition-all text-sm font-semibold"
+            onClick={async () => {
+              const supabase = createClient();
+              await supabase.auth.signOut();
+              window.location.href = '/';
+            }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-100 text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200 border border-transparent transition-all text-sm font-semibold"
           >
-            <Download className="w-4 h-4 shrink-0" />
-            <span>Instalar App</span>
+            <LogOut className="w-4 h-4 shrink-0" />
+            <span>Cerrar Sesión</span>
           </button>
-        )}
+        </div>
       </aside>
 
       {/* Main Content */}
