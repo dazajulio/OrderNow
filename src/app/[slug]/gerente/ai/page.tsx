@@ -20,8 +20,11 @@ export default function AIAgentPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  // Removed Auth state and PIN handling as requested by the user
+  const [restaurantId, setRestaurantId] = useState('');
 
+  useEffect(() => {
+    setRestaurantId(localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
+  }, []);
   const [messages, setMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string; time: string }>>([
     { sender: 'ai', text: '¡Hola! Soy tu Agente IA de Crecimiento de Mtriq. Analizo las compras, tiempos de servicio y comportamiento de tus clientes en tiempo real. ¿En qué campaña o sugerencia de marketing te gustaría trabajar hoy?', time: 'Ahora' }
   ]);
