@@ -349,7 +349,7 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
         {/* Order number */}
         <div className="flex items-center gap-2">
           <Hash className="h-4 w-4 text-gray-400" />
-          <span className="text-2xl font-bold tracking-tight text-white">
+          <span className="text-2xl font-bold tracking-tight text-slate-900">
             {order.order_number}
           </span>
         </div>
@@ -406,7 +406,7 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
         {order.order_items.map((item) => (
           <div key={item.id} className="py-1">
             <div className="flex items-start gap-2.5">
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 text-sm font-extrabold text-white">
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-200 text-sm font-extrabold text-slate-800">
                 {item.quantity}
               </span>
               <div className="flex-1 min-w-0">
@@ -446,7 +446,7 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
             {delivery.phone && (
               <div className="flex items-center gap-2 text-gray-800">
                 <span className="text-gray-400 font-medium">Teléfono:</span>
-                <span className="font-semibold text-white">{delivery.phone}</span>
+                <span className="font-semibold text-gray-900">{delivery.phone}</span>
               </div>
             )}
             
@@ -475,9 +475,9 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
 
       {/* ── Notes ───────────────────────────────────────────────── */}
       {cleanNotes && (
-        <div className="mx-4 mb-3 flex items-start gap-2 rounded-lg bg-slate-50 px-3 py-2">
-          <StickyNote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500/70" />
-          <p className="text-xs text-amber-200/80 leading-snug">{cleanNotes}</p>
+        <div className="mx-4 mb-3 flex items-start gap-2 rounded-lg bg-amber-50 px-3 py-2">
+          <StickyNote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
+          <p className="text-xs text-amber-800 leading-snug">{cleanNotes}</p>
         </div>
       )}
 
