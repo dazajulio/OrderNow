@@ -16,19 +16,21 @@ export const useCartStore = create<CartState>()(
 
       setContext: (restaurantId: string, tableId: string) => {
         const current = get();
-        // Si cambia de restaurante, limpiar carrito
-        if (current.restaurantId && current.restaurantId !== restaurantId) {
-          set({ items: [], restaurantId, tableId });
-        } else {
+        // Solo establecer el contexto si el carrito está vacío o no tiene restaurante asignado
+        if (!current.restaurantId || current.items.length === 0) {
           set({ restaurantId, tableId });
         }
+        // Si ya tiene un restaurante distinto y artículos, NO lo sobreescribimos aquí.
+        // La validación se hará al intentar agregar un nuevo producto.
       },
 
-      addItem: (item: Omit<CartItem, 'id' | 'subtotal'>) => {
+      addItem: (item: Omit<CartItem, 'id' | 'subtotal'>, newRestaurantId?: string, newTableId?: string) => {
         const id = generateCartItemId();
         const subtotal = item.unitPrice * item.quantity;
         set((state) => ({
           items: [...state.items, { ...item, id, subtotal }],
+          ...(newRestaurantId ? { restaurantId: newRestaurantId } : {}),
+          ...(newTableId ? { tableId: newTableId } : {})
         }));
       },
 

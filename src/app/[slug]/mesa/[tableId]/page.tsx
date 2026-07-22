@@ -58,6 +58,7 @@ export default function KioskPage({ params }: KioskPageProps) {
   const [lastOrderId, setLastOrderId] = useState<string | null>(null);
   const [upsellProducts, setUpsellProducts] = useState<ProductWithModifiers[]>([]);
   const [isCallingWaiter, setIsCallingWaiter] = useState(false);
+  const [isFromGlubbi, setIsFromGlubbi] = useState(false);
   
   const { addItem, getItemCount, getTotal, setContext, items, clearCart, restaurantId, updateItemModifiers } = useCartStore();
   
@@ -104,6 +105,9 @@ export default function KioskPage({ params }: KioskPageProps) {
       }
       if (searchParams.get('type') === 'delivery') {
         setIsDelivery(true);
+      }
+      if (searchParams.get('glubbi') === 'true') {
+        setIsFromGlubbi(true);
       }
     }
   }, []);
@@ -217,6 +221,15 @@ export default function KioskPage({ params }: KioskPageProps) {
   };
 
   const handleModalAddToCart = (product: ProductWithModifiers, selectedModifiers: any[], unitPrice: number) => {
+    // Validar si el carrito tiene productos de otro restaurante
+    if (restaurantId && restaurantId !== product.restaurant_id && items.length > 0) {
+      if (window.confirm("Tienes productos de otro restaurante en tu carrito. ¿Deseas vaciar tu carrito actual para empezar un pedido aquí?")) {
+        clearCart();
+      } else {
+        return; // El usuario canceló la acción
+      }
+    }
+
     if (editingCartItemId) {
       updateItemModifiers(editingCartItemId, selectedModifiers, unitPrice);
     } else {
@@ -225,7 +238,7 @@ export default function KioskPage({ params }: KioskPageProps) {
         quantity: 1,
         selectedModifiers,
         unitPrice
-      });
+      }, product.restaurant_id, tableId);
     }
     setCustomizingProduct(null);
     setEditingCartItemId(null);
@@ -239,15 +252,22 @@ export default function KioskPage({ params }: KioskPageProps) {
         <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-500 to-transparent blur-2xl rounded-full transform -rotate-12" />
       </div>
       
-      {/* Top Left: Home Button */}
-      {step !== 'browse' && (
+      {/* Top Left: Home Button or Glubbi Return */}
+      {step !== 'browse' ? (
         <button 
           onClick={() => { setPaymentMethod(null); changeStep('browse'); window.scrollTo(0,0); }} 
           className="absolute top-4 left-4 z-20 w-10 h-10 bg-white hover:bg-slate-50 rounded-full flex items-center justify-center shadow-md transition-colors text-slate-700 border border-gray-100"
         >
           <Home className="w-5 h-5" />
         </button>
-      )}
+      ) : isFromGlubbi ? (
+        <Link 
+          href="/glubbi"
+          className="absolute top-4 left-4 z-20 w-10 h-10 bg-white hover:bg-slate-50 rounded-full flex items-center justify-center shadow-md transition-colors text-slate-700 border border-gray-100"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </Link>
+      ) : null}
       
       {/* Top Right: WhatsApp Button */}
       <a 

@@ -27,6 +27,11 @@ export interface Database {
           currency: string;
           timezone: string;
           is_active: boolean;
+          is_glubbi_active: boolean;
+          cover_image_url: string | null;
+          glubbi_category: string | null;
+          rating: number;
+          estimated_time: string;
           created_at: string;
           updated_at: string;
         };
