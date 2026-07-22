@@ -152,7 +152,6 @@ export default function SettingsAdminPage() {
       alert('Error al actualizar la contraseña: ' + error.message);
     } else {
       alert('Contraseña de Administrador actualizada correctamente.');
-      setExpectedPin(newAdminPassword);
       setNewAdminPassword('');
       setConfirmAdminPassword('');
     }
