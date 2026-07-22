@@ -1,8 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChefHat, QrCode, Settings, ArrowRight, Store, Image as ImageIcon } from 'lucide-react';
-import { HeaderLogo } from '@/components/shared/HeaderLogo'; // If available, or create locally.
+import { ChefHat, QrCode, Settings, ArrowRight, Image as ImageIcon } from 'lucide-react';
 
 interface WelcomePageProps {
   params: Promise<{ slug: string }>;
@@ -26,63 +25,72 @@ export default async function WelcomePage({ params }: WelcomePageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* Background Blobs for elegance */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 relative overflow-hidden text-slate-200">
+      
+      {/* High Impact Dark Hero Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Deep dark mesh gradient effect */}
+        <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-orange-600/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[20%] right-[20%] w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px]" />
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5" />
+      </div>
 
-      <div className="w-full max-w-4xl relative z-10 space-y-12 animate-fade-in">
+      <div className="w-full max-w-4xl relative z-10 space-y-12 animate-fade-in pt-8 pb-12">
         
         {/* Header Section */}
         <div className="text-center space-y-6 flex flex-col items-center">
-          <div className="w-24 h-24 rounded-3xl bg-white border border-gray-100 shadow-xl shadow-gray-200/50 flex items-center justify-center overflow-hidden">
+          <div className="w-28 h-28 rounded-[2rem] bg-slate-900 border border-slate-800 shadow-2xl flex items-center justify-center overflow-hidden ring-4 ring-slate-900/50">
             {restaurant.logo_url ? (
               <img src={restaurant.logo_url} alt="Logo" className="w-full h-full object-contain p-2" />
             ) : (
-              <div className="flex flex-col items-center justify-center text-gray-300">
-                <ImageIcon className="w-8 h-8 mb-1" />
-                <span className="text-[10px] font-medium uppercase tracking-widest text-center leading-tight">Tu Logo<br/>Aquí</span>
+              <div className="flex flex-col items-center justify-center text-slate-500">
+                <ImageIcon className="w-10 h-10 mb-1" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-center leading-tight">Tu Logo<br/>Aquí</span>
               </div>
             )}
           </div>
           
-          <div className="space-y-2">
-            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-              ¡Bienvenido a <span className="text-orange-500">{restaurant.name}</span>!
+          <div className="space-y-3">
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white">
+              Bienvenido a <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">{restaurant.name}</span>
             </h1>
-            <p className="text-gray-500 text-lg max-w-xl mx-auto">
-              Tu ecosistema gastronómico está listo. Hemos preparado tu portal maestro para que tengas el control total de tu operación.
+            <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-light">
+              Tu ecosistema operativo ha sido desplegado. Este es tu portal maestro para gestionar y operar tu restaurante al máximo nivel.
             </p>
           </div>
         </div>
 
         {/* Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           
           {/* Main Action (Gerente) - Span full width on md */}
           <Link 
-            href={`/${slug}/gerente/settings`}
-            className="md:col-span-2 group relative bg-white border border-orange-200 rounded-3xl p-8 shadow-2xl shadow-orange-500/10 hover:shadow-orange-500/20 transition-all duration-300 overflow-hidden transform hover:-translate-y-1"
+            href={`/${slug}/gerente`}
+            className="md:col-span-2 group relative bg-slate-900/50 backdrop-blur-xl border border-orange-500/30 rounded-[2rem] p-8 shadow-2xl hover:bg-slate-900/80 transition-all duration-500 overflow-hidden transform hover:-translate-y-1"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-bl-full transition-all group-hover:bg-orange-500/10" />
-            <div className="absolute top-4 right-4 bg-orange-100 text-orange-600 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider animate-pulse">
+            {/* Glowing orb behind the card */}
+            <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-orange-500/20 rounded-full blur-[80px] -translate-y-1/2 pointer-events-none group-hover:bg-orange-500/30 transition-colors" />
+            
+            <div className="absolute top-6 right-6 bg-orange-500/10 text-orange-400 border border-orange-500/20 font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest animate-pulse">
               Paso 1 Recomendado
             </div>
             
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 relative z-10">
-              <div className="w-16 h-16 rounded-2xl bg-orange-500 flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/30">
-                <Settings className="w-8 h-8 text-white" />
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-8 relative z-10">
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shrink-0 shadow-lg shadow-orange-500/25">
+                <Settings className="w-10 h-10 text-white" />
               </div>
               
-              <div className="flex-1 space-y-2">
-                <h2 className="text-2xl font-bold text-slate-900">Panel de Configuración</h2>
-                <p className="text-gray-500">
-                  Entra aquí primero. Sube tu menú, configura tus mesas, ajusta tus datos financieros y prepara todo para recibir a tus clientes.
+              <div className="flex-1 space-y-3 pr-8">
+                <h2 className="text-3xl font-bold text-white tracking-tight">Panel de Gerente</h2>
+                <p className="text-slate-400 text-base leading-relaxed">
+                  Configura la base de tu negocio. Sube tu menú, ajusta tus finanzas, crea los códigos QR de tus mesas y visualiza tus reportes de ventas.
                 </p>
               </div>
               
-              <div className="flex items-center gap-2 text-orange-500 font-bold bg-orange-50 px-5 py-3 rounded-xl group-hover:bg-orange-500 group-hover:text-white transition-colors">
-                Entrar al Panel <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <div className="mt-4 md:mt-0 flex items-center gap-2 text-white font-bold bg-white/10 hover:bg-white/20 px-6 py-4 rounded-xl backdrop-blur-sm transition-colors border border-white/5">
+                Entrar a Configurar <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
           </Link>
@@ -90,16 +98,18 @@ export default async function WelcomePage({ params }: WelcomePageProps) {
           {/* Secondary Action 1 (KDS) */}
           <Link 
             href={`/${slug}/cocina`}
-            className="group bg-white border border-gray-200 rounded-3xl p-8 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300"
+            className="group relative bg-slate-900/40 backdrop-blur-md border border-slate-800/60 rounded-[2rem] p-8 hover:bg-slate-900/60 hover:border-slate-700 transition-all duration-300 overflow-hidden"
           >
-            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <ChefHat className="w-6 h-6 text-blue-500" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full transition-all group-hover:bg-blue-500/10 pointer-events-none" />
+            
+            <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <ChefHat className="w-7 h-7 text-blue-400" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">Monitor de Cocina (KDS)</h3>
-            <p className="text-gray-500 text-sm mb-6">
-              Pantalla para recibir comandas en tiempo real. Ábrela en una tableta en tu cocina.
+            <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">Monitor de Cocina</h3>
+            <p className="text-slate-400 text-sm mb-8 leading-relaxed">
+              El corazón operativo (KDS). Visualiza y gestiona las comandas entrantes en tiempo real desde la cocina.
             </p>
-            <span className="text-blue-500 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+            <span className="text-blue-400 font-semibold text-sm flex items-center gap-1.5 group-hover:gap-2 transition-all">
               Abrir Monitor <ArrowRight className="w-4 h-4" />
             </span>
           </Link>
@@ -107,25 +117,28 @@ export default async function WelcomePage({ params }: WelcomePageProps) {
           {/* Secondary Action 2 (Kiosko) */}
           <Link 
             href={`/${slug}`}
-            className="group bg-white border border-gray-200 rounded-3xl p-8 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300"
+            className="group relative bg-slate-900/40 backdrop-blur-md border border-slate-800/60 rounded-[2rem] p-8 hover:bg-slate-900/60 hover:border-slate-700 transition-all duration-300 overflow-hidden"
           >
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <QrCode className="w-6 h-6 text-emerald-500" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full transition-all group-hover:bg-emerald-500/10 pointer-events-none" />
+            
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <QrCode className="w-7 h-7 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">Kiosko Digital / Menú</h3>
-            <p className="text-gray-500 text-sm mb-6">
-              El portal de tus clientes. Donde escanearán el código QR y realizarán sus pedidos.
+            <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">Kiosko Digital</h3>
+            <p className="text-slate-400 text-sm mb-8 leading-relaxed">
+              El menú inteligente. La interfaz que verán tus clientes al escanear el QR para realizar sus pedidos y pagos.
             </p>
-            <span className="text-emerald-500 font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-              Ver Menú <ArrowRight className="w-4 h-4" />
+            <span className="text-emerald-400 font-semibold text-sm flex items-center gap-1.5 group-hover:gap-2 transition-all">
+              Ver Menú Público <ArrowRight className="w-4 h-4" />
             </span>
           </Link>
         </div>
         
         {/* Footer info */}
-        <div className="text-center pt-8">
-          <p className="text-xs text-gray-400">
-            Puedes regresar a este portal en cualquier momento ingresando a <span className="font-mono text-gray-600 bg-gray-100 px-1 py-0.5 rounded">mtriq.app/{slug}/welcome</span>
+        <div className="text-center pt-10">
+          <p className="text-sm text-slate-500 font-light">
+            Guarda este portal maestro en tus favoritos: <br/>
+            <span className="font-mono text-slate-300 font-medium mt-2 inline-block">mtriq.app/{slug}/welcome</span>
           </p>
         </div>
 
