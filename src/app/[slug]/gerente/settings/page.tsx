@@ -23,6 +23,7 @@ export default function SettingsAdminPage() {
   // --- Editable Business Data ---
   const [name, setName] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
+  const [uploadMode, setUploadMode] = useState<'url' | 'file'>('url');
   const [taxId, setTaxId] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
@@ -433,14 +434,49 @@ export default function SettingsAdminPage() {
                   <img src={logoUrl || '/logo.svg'} alt="Logo" className="w-full h-full object-contain p-1" />
                 </div>
                 <div className="flex-1 w-full">
-                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">URL del Logo</label>
-                  <input 
-                    type="text"
-                    value={logoUrl}
-                    onChange={(e) => setLogoUrl(e.target.value)}
-                    placeholder="https://ejemplo.com/mi-logo.png"
-                    className="w-full bg-slate-50 border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
+                  <div className="flex gap-2 mb-2">
+                    <button 
+                      type="button" 
+                      onClick={() => setUploadMode('url')} 
+                      className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'url' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-white shadow-sm border border-gray-200 text-gray-500 hover:bg-slate-100'}`}
+                    >
+                      Enlace (URL)
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => setUploadMode('file')} 
+                      className={`px-3 py-1.5 text-xs rounded-md transition-colors ${uploadMode === 'file' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-white shadow-sm border border-gray-200 text-gray-500 hover:bg-slate-100'}`}
+                    >
+                      Subir Archivo
+                    </button>
+                  </div>
+                  
+                  {uploadMode === 'url' ? (
+                    <input 
+                      type="text"
+                      value={logoUrl}
+                      onChange={(e) => setLogoUrl(e.target.value)}
+                      placeholder="https://ejemplo.com/mi-logo.png"
+                      className="w-full bg-slate-50 border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  ) : (
+                    <input 
+                      type="file" 
+                      accept="image/png, image/jpeg, image/webp, image/svg+xml" 
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        if (file.size > 2 * 1024 * 1024) {
+                          alert("La imagen es demasiado grande. El límite es 2MB.");
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onloadend = () => setLogoUrl(reader.result as string);
+                        reader.readAsDataURL(file);
+                      }} 
+                      className="w-full bg-slate-50 border border-gray-200 rounded-lg py-1.5 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-gray-700 hover:file:bg-slate-300 cursor-pointer" 
+                    />
+                  )}
                 </div>
               </div>
               
