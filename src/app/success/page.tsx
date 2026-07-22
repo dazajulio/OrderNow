@@ -46,7 +46,7 @@ function SuccessContent() {
 
     // Fase 2: Countdown de 5 segundos antes del redirect automático
     if (countdown <= 0) {
-      router.push(`/${slug}/gerente/settings`);
+      router.push(`/${slug}/welcome`);
       return;
     }
 
@@ -129,7 +129,7 @@ function SuccessContent() {
               </div>
 
               <button
-                onClick={() => router.push(`/${slug}/gerente/settings`)}
+                onClick={() => router.push(`/${slug}/welcome`)}
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-12 text-sm transition-all shadow-[0_4px_20px_rgba(249,115,22,0.25)] active:scale-[0.99]"
               >
                 Ir a mi Dashboard ahora →
