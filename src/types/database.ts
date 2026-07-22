@@ -23,6 +23,7 @@ export interface Database {
           last_name: string;
           email: string;
           phone: string;
+          pin: string | null;
           created_at: string;
         };
         Insert: Omit<Database['public']['Tables']['glubbi_customers']['Row'], 'id' | 'created_at'> & {
