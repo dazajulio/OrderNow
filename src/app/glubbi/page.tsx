@@ -5,16 +5,31 @@ import { createClient } from '@/lib/supabase/client';
 import type { Restaurant } from '@/types/database';
 import { Search, MapPin, Clock, Star, ChevronRight, Menu, Bell } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useGlubbiStore } from '@/modules/glubbi/stores/glubbi-store';
 
 export default function GlubbiMarketplace() {
+  const router = useRouter();
+  const { customer } = useGlubbiStore();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('Todos');
 
-  const categories = ['Todos', 'Burgers', 'Sushi', 'Pizza', 'Saludable', 'Postres', 'Bebidas'];
+  const categories = [
+    { name: 'Restaurantes', emoji: '🍔', bg: 'bg-red-50' },
+    { name: 'Turbo', emoji: '⚡', bg: 'bg-green-50' },
+    { name: 'Mercado', emoji: '🛒', bg: 'bg-orange-50' },
+    { name: 'Farmacia', emoji: '💊', bg: 'bg-blue-50' },
+    { name: 'Sushi', emoji: '🍣', bg: 'bg-rose-50' },
+    { name: 'Postres', emoji: '🍩', bg: 'bg-purple-50' }
+  ];
 
   useEffect(() => {
+    if (!customer) {
+      router.replace('/glubbi/login');
+      return;
+    }
     async function loadRestaurants() {
       const supabase = createClient();
       const { data } = await supabase
@@ -43,12 +58,12 @@ export default function GlubbiMarketplace() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Menu className="w-6 h-6 text-gray-700" />
-            <div className="flex flex-col ml-1">
-              <span className="text-xs text-orange-500 font-bold uppercase tracking-wider">Entregar en</span>
-              <div className="flex items-center text-sm font-semibold text-slate-800">
-                <MapPin className="w-4 h-4 mr-1 text-slate-400" />
+            <div className="flex flex-col ml-2">
+              <img src="/logo-glubbi.png" alt="Glubbi" className="h-6 object-contain" />
+              <div className="flex items-center text-xs font-semibold text-slate-500 mt-0.5">
+                <MapPin className="w-3 h-3 mr-1 text-slate-400" />
                 <span>Mi Ubicación Actual</span>
-                <ChevronRight className="w-4 h-4 ml-0.5" />
+                <ChevronRight className="w-3 h-3 ml-0.5" />
               </div>
             </div>
           </div>
@@ -73,20 +88,33 @@ export default function GlubbiMarketplace() {
         </div>
       </div>
 
-      {/* Categories Horizontal Scroll */}
-      <div className="px-4 py-4 overflow-x-auto whitespace-nowrap custom-scrollbar">
-        <div className="flex gap-2">
+      {/* Categories Grid (Rappi Style) */}
+      <div className="px-4 py-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <button
+            onClick={() => setActiveCategory('Todos')}
+            className={`flex flex-col items-center justify-center p-4 rounded-3xl transition-all ${
+              activeCategory === 'Todos' 
+                ? 'bg-slate-800 text-white shadow-md' 
+                : 'bg-white text-slate-800 border border-gray-100 hover:bg-slate-50 shadow-sm'
+            }`}
+          >
+            <span className="text-3xl mb-2">🍽️</span>
+            <span className="text-sm font-bold">Todos</span>
+          </button>
+          
           {categories.map(cat => (
             <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
-                activeCategory === cat 
-                  ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20' 
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-slate-50'
+              key={cat.name}
+              onClick={() => setActiveCategory(cat.name)}
+              className={`flex flex-col items-center justify-center p-4 rounded-3xl transition-all ${
+                activeCategory === cat.name 
+                  ? 'bg-slate-800 text-white shadow-md' 
+                  : `${cat.bg} text-slate-800 border border-gray-50 hover:opacity-90 shadow-sm`
               }`}
             >
-              {cat}
+              <span className="text-3xl mb-2">{cat.emoji}</span>
+              <span className="text-sm font-bold">{cat.name}</span>
             </button>
           ))}
         </div>
@@ -131,50 +159,41 @@ export default function GlubbiMarketplace() {
                 href={`/${restaurant.slug}/mesa/delivery?glubbi=true`}
                 key={restaurant.id}
               >
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer active:scale-[0.98] transition-transform">
-                  <div className="relative h-40 w-full bg-slate-100">
+                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer active:scale-[0.98] transition-transform">
+                  <div className="relative h-48 w-full bg-slate-100">
                     {restaurant.cover_image_url ? (
                       <img src={restaurant.cover_image_url} alt={restaurant.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-tr from-slate-200 to-slate-100 flex items-center justify-center">
-                        <span className="text-slate-400 font-medium">Sin portada</span>
+                        <span className="text-slate-400 font-medium text-lg">{restaurant.name}</span>
                       </div>
                     )}
                     
-                    {/* Time Badge */}
-                    <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-slate-700" />
-                      <span className="text-xs font-bold text-slate-800">{restaurant.estimated_time || '30-45 min'}</span>
+                    {/* Top Left Badges (Rappi Style) */}
+                    <div className="absolute top-3 left-3 flex flex-col gap-2">
+                      <div className="bg-green-600/95 backdrop-blur-sm px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1 w-fit">
+                        <span className="text-[10px] font-black text-white uppercase tracking-wider">⚡ Turbo</span>
+                      </div>
                     </div>
                   </div>
                   
-                  <div className="p-4 relative">
-                    {/* Logo superpuesto */}
-                    <div className="absolute -top-10 left-4 w-16 h-16 bg-white rounded-full p-1 shadow-md">
-                      {restaurant.logo_url ? (
-                        <img src={restaurant.logo_url} alt="logo" className="w-full h-full rounded-full object-cover" />
-                      ) : (
-                        <div 
-                          className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl"
-                          style={{ backgroundColor: restaurant.brand_color_primary }}
-                        >
-                          {restaurant.name.charAt(0).toUpperCase()}
-                        </div>
-                      )}
+                  <div className="p-4 pt-3 relative">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="font-bold text-lg text-slate-900 truncate pr-4">{restaurant.name}</h3>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Star className="w-3.5 h-3.5 text-slate-800 fill-slate-800" />
+                        <span className="text-sm font-bold text-slate-800">{restaurant.rating || '4.9'}</span>
+                      </div>
                     </div>
                     
-                    <div className="mt-6">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-bold text-lg text-slate-900">{restaurant.name}</h3>
-                          <p className="text-sm text-gray-500 mt-0.5 flex items-center gap-1.5">
-                            {restaurant.glubbi_category || 'Comida'} • Envío $0
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-lg">
-                          <Star className="w-3.5 h-3.5 text-orange-500 fill-orange-500" />
-                          <span className="text-sm font-bold text-orange-600">{restaurant.rating || '5.0'}</span>
-                        </div>
+                    <div className="flex items-center text-xs text-gray-500 font-medium gap-3">
+                      <div className="flex items-center gap-1 text-green-700">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>{restaurant.estimated_time || '15 min'}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-gray-400">•</span>
+                        <span>🏍️ Envío $3.500</span>
                       </div>
                     </div>
                   </div>

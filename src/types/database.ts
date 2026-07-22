@@ -16,6 +16,21 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      glubbi_customers: {
+        Row: {
+          id: string;
+          first_name: string;
+          last_name: string;
+          email: string;
+          phone: string;
+          created_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['glubbi_customers']['Row'], 'id' | 'created_at'> & {
+          id?: string;
+          created_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['glubbi_customers']['Insert']>;
+      };
       restaurants: {
         Row: {
           id: string;
