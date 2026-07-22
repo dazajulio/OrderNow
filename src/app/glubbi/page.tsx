@@ -59,11 +59,18 @@ export default function GlubbiMarketplace() {
     loadRestaurants();
   }, []);
 
-  const filteredRestaurants = restaurants.filter(r => {
-    const matchesSearch = r.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = activeCategory === 'Todos' || r.glubbi_category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredRestaurants = restaurants
+    .filter(r => {
+      const matchesSearch = r.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = activeCategory === 'Todos' || r.glubbi_category === activeCategory;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      // Priorizar los que tienen imagen de portada
+      if (a.cover_image_url && !b.cover_image_url) return -1;
+      if (!a.cover_image_url && b.cover_image_url) return 1;
+      return 0;
+    });
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 font-sans">
@@ -99,37 +106,12 @@ export default function GlubbiMarketplace() {
         </div>
       </div>
 
-      {/* Categories Grid (Rappi Style) */}
+      {/* Categories Grid (Rappi Style) - Hidden for now to give impact to feed */}
+      {/* 
       <div className="px-4 py-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <button
-            onClick={() => setActiveCategory('Todos')}
-            className={`flex flex-col items-center justify-center p-4 rounded-3xl transition-all ${
-              activeCategory === 'Todos' 
-                ? 'bg-slate-800 text-white shadow-md' 
-                : 'bg-white text-slate-800 border border-gray-100 hover:bg-slate-50 shadow-sm'
-            }`}
-          >
-            <span className="text-3xl mb-2">🍽️</span>
-            <span className="text-sm font-bold">Todos</span>
-          </button>
-          
-          {categories.map(cat => (
-            <button
-              key={cat.name}
-              onClick={() => setActiveCategory(cat.name)}
-              className={`flex flex-col items-center justify-center p-4 rounded-3xl transition-all ${
-                activeCategory === cat.name 
-                  ? 'bg-slate-800 text-white shadow-md' 
-                  : `${cat.bg} text-slate-800 border border-gray-50 hover:opacity-90 shadow-sm`
-              }`}
-            >
-              <span className="text-3xl mb-2">{cat.emoji}</span>
-              <span className="text-sm font-bold">{cat.name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+        ...
+      </div> 
+      */}
 
       {/* Promotional Banner */}
       <div className="px-4 mb-6">

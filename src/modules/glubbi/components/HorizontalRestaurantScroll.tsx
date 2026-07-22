@@ -48,7 +48,7 @@ export default function HorizontalRestaurantScroll({
       <div className="flex overflow-x-auto hide-scrollbar gap-4 px-4 pb-4 snap-x">
         {restaurants.map((rest) => (
           <Link 
-            href={`/glubbi/${rest.slug}`} 
+            href={`/${rest.slug}/mesa/delivery?glubbi=true`} 
             key={rest.id}
             className="snap-start shrink-0 w-[240px] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden block active:scale-[0.98] transition-transform relative"
           >

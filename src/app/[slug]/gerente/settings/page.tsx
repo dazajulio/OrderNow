@@ -27,6 +27,8 @@ export default function SettingsAdminPage() {
   const [taxId, setTaxId] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [glubbiType, setGlubbiType] = useState('Restaurantes');
+  const [glubbiCategory, setGlubbiCategory] = useState('');
 
   // --- Admin Password State ---
   const [newAdminPassword, setNewAdminPassword] = useState('');
@@ -66,6 +68,8 @@ export default function SettingsAdminPage() {
         setTaxId(restData.tax_id || '');
         setPhone(restData.phone || '');
         setAddress(restData.address || '');
+        setGlubbiType(restData.glubbi_type || 'Restaurantes');
+        setGlubbiCategory(restData.glubbi_category || '');
       }
       
       // Products for upsell selection
@@ -110,7 +114,9 @@ export default function SettingsAdminPage() {
         logo_url: logoUrl,
         tax_id: taxId,
         phone,
-        address
+        address,
+        glubbi_type: glubbiType,
+        glubbi_category: glubbiCategory
       } as any)
       .eq('id', restaurantId);
       
@@ -374,6 +380,61 @@ export default function SettingsAdminPage() {
               >
                 <Save className="w-5 h-5" />
                 {isSaving ? 'Guardando...' : 'Guardar Configuración'}
+              </button>
+            </div>
+          </div>
+
+          {/* Configuración de Glubbi Marketplace */}
+          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 shadow-xl h-fit">
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <span className="text-orange-500">🛒</span> Presencia en Glubbi
+            </h2>
+            <p className="text-gray-500 text-sm mb-6">
+              Asegúrate de clasificar correctamente tu negocio para aparecer en las búsquedas del marketplace de Glubbi.
+            </p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-500 mb-2">Tipo de Negocio</label>
+                <select 
+                  value={glubbiType} 
+                  onChange={(e) => setGlubbiType(e.target.value)}
+                  className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  <option value="Restaurantes">Restaurantes</option>
+                  <option value="Mercado">Mercado</option>
+                  <option value="Farmacia">Farmacia</option>
+                </select>
+              </div>
+
+              {glubbiType === 'Restaurantes' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-2">Especialidad (Filtro)</label>
+                  <select 
+                    value={glubbiCategory} 
+                    onChange={(e) => setGlubbiCategory(e.target.value)}
+                    className="w-full bg-slate-100 border border-gray-200 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  >
+                    <option value="">Seleccione una especialidad</option>
+                    <option value="Hamburguesas">Hamburguesas 🍔</option>
+                    <option value="Pizzas">Pizzas 🍕</option>
+                    <option value="Sushi">Sushi 🍣</option>
+                    <option value="Saludable">Saludable 🥗</option>
+                    <option value="Postres">Postres 🍦</option>
+                    <option value="Mexicana">Mexicana 🌮</option>
+                    <option value="Cafeteria">Cafetería ☕</option>
+                    <option value="Pollo">Pollo 🍗</option>
+                  </select>
+                </div>
+              )}
+
+              <button 
+                onClick={saveSettings}
+                disabled={isSaving}
+                className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <Save className="w-5 h-5" />
+                {isSaving ? 'Guardando...' : 'Guardar Glubbi'}
               </button>
             </div>
           </div>
