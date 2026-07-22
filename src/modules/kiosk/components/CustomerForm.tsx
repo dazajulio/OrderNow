@@ -75,7 +75,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                 setName(e.target.value);
                 if (errors.name) setErrors({...errors, name: undefined});
               }}
-              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-slate-900 placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
                 errors.name ? 'border-red-500' : 'border-gray-200'
               }`}
               placeholder="Ej. Tu Nombre Completo"
@@ -101,7 +101,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                 setEmail(e.target.value);
                 if (errors.email) setErrors({...errors, email: undefined});
               }}
-              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-slate-900 placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
                 errors.email ? 'border-red-500' : 'border-gray-200'
               }`}
               placeholder="tu@correo.com"
@@ -134,7 +134,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                 setPhone(e.target.value);
                 if (errors.phone) setErrors({...errors, phone: undefined});
               }}
-              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+              className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-slate-900 placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
                 errors.phone ? 'border-red-500' : 'border-gray-200'
               }`}
               placeholder="Ej. +58 412 123 4567"
@@ -166,7 +166,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                     setAddress(e.target.value);
                     if (errors.address) setErrors({...errors, address: undefined});
                   }}
-                  className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all min-h-[80px] ${
+                  className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-slate-900 placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all min-h-[80px] ${
                     errors.address ? 'border-red-500' : 'border-gray-200'
                   }`}
                   placeholder="Ej. Calle 3, Casa #15-A, Sector Las Tapias"
@@ -191,7 +191,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
                     setReference(e.target.value);
                     if (errors.reference) setErrors({...errors, reference: undefined});
                   }}
-                  className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-white placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
+                  className={`block w-full pl-11 pr-4 py-3.5 bg-white shadow-sm border rounded-xl text-slate-900 placeholder-zinc-500 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all ${
                     errors.reference ? 'border-red-500' : 'border-gray-200'
                   }`}
                   placeholder="Ej. A 50 metros del Centro Comercial Rodeo Plaza"
@@ -207,7 +207,7 @@ export function CustomerForm({ onSubmit, isLoading, isDelivery = false }: Custom
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full mt-6 brand-bg hover:brightness-110 text-gray-900 font-bold text-lg py-4 rounded-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+        className="w-full mt-6 brand-bg hover:brightness-110 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
       >
         {isLoading ? (
           <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

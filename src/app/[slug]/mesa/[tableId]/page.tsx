@@ -361,16 +361,22 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
-          {restaurantLogo ? (
-            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-          ) : (
-            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-            </div>
-          )}
-          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
+          <div className="absolute inset-0 z-0 opacity-[0.04]">
+            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
+            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
+          </div>
+          <div className="relative z-10 flex flex-col items-center">
+            {restaurantLogo ? (
+              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+            ) : (
+              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+              </div>
+            )}
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
+            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          </div>
         </div>
 
         <button onClick={() => changeStep('browse')} className="flex items-center text-gray-500 mb-8">
@@ -390,16 +396,22 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in flex flex-col items-center justify-center min-h-[60vh] text-center">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
-          {restaurantLogo ? (
-            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-          ) : (
-            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-            </div>
-          )}
-          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
+          <div className="absolute inset-0 z-0 opacity-[0.04]">
+            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
+            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
+          </div>
+          <div className="relative z-10 flex flex-col items-center">
+            {restaurantLogo ? (
+              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+            ) : (
+              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+              </div>
+            )}
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
+            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          </div>
         </div>
 
         <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
@@ -435,7 +447,7 @@ export default function KioskPage({ params }: KioskPageProps) {
               changeStep('browse');
               window.scrollTo(0, 0);
             }}
-            className="w-full bg-slate-100 text-white font-bold py-4 rounded-xl hover:bg-zinc-700 transition-all"
+            className="w-full bg-slate-100 text-slate-900 hover:text-white font-bold py-4 rounded-xl hover:bg-zinc-700 transition-all"
           >
             Hacer un nuevo pedido
           </button>
@@ -448,16 +460,22 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
-          {restaurantLogo ? (
-            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-          ) : (
-            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-            </div>
-          )}
-          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
+          <div className="absolute inset-0 z-0 opacity-[0.04]">
+            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
+            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
+          </div>
+          <div className="relative z-10 flex flex-col items-center">
+            {restaurantLogo ? (
+              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+            ) : (
+              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+              </div>
+            )}
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
+            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          </div>
         </div>
 
         <button onClick={() => changeStep('success')} className="flex items-center text-gray-500 mb-8 hover:text-white transition-colors">
@@ -473,16 +491,22 @@ export default function KioskPage({ params }: KioskPageProps) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
         {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-slate-50 mb-8">
-          {restaurantLogo ? (
-            <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-          ) : (
-            <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-              <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-            </div>
-          )}
-          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-          <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
+          <div className="absolute inset-0 z-0 opacity-[0.04]">
+            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
+            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
+          </div>
+          <div className="relative z-10 flex flex-col items-center">
+            {restaurantLogo ? (
+              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+            ) : (
+              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+              </div>
+            )}
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
+            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
+          </div>
         </div>
 
         <button 
@@ -558,18 +582,24 @@ export default function KioskPage({ params }: KioskPageProps) {
       <div className="pb-8">
         <div className="sticky top-0 bg-slate-50/95 backdrop-blur-md z-50 border-b border-gray-200/60 shadow-md">
           {/* Elegant Header */}
-          <div className="w-full flex flex-col items-center justify-center py-4 bg-slate-50">
-            {restaurantLogo ? (
-              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-            ) : (
-              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-                <span className="text-lg font-bold text-white">
-                  {restaurantName.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            )}
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">POWERED BY MTRIQ.APP</p>
+          <div className="w-full flex flex-col items-center justify-center py-4 bg-white relative overflow-hidden shadow-sm">
+            <div className="absolute inset-0 z-0 opacity-[0.04]">
+              <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
+              <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
+            </div>
+            <div className="relative z-10 flex flex-col items-center">
+              {restaurantLogo ? (
+                <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
+              ) : (
+                <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
+                  <span className="text-lg font-bold text-white">
+                    {restaurantName.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+              <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
+              <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">POWERED BY MTRIQ.APP</p>
+            </div>
           </div>
 
           {isWaiter && (

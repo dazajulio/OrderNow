@@ -34,7 +34,7 @@ export function ProductCustomizationModal({
   if (!isOpen || !product) return null;
 
   // Check if current selections satisfy all group rules
-  const isValid = product.modifier_groups.every(group => {
+  const isValid = (product.modifier_groups || []).every(group => {
     const selectedCount = (selections[group.id] || []).length;
     return selectedCount >= group.min_selections && selectedCount <= group.max_selections;
   });
@@ -80,7 +80,7 @@ export function ProductCustomizationModal({
     // Build modifier snapshot
     const snapshots: ModifierSnapshot[] = [];
     
-    product.modifier_groups.forEach(group => {
+    (product.modifier_groups || []).forEach(group => {
       const selected = selections[group.id];
       if (selected && selected.length > 0) {
         snapshots.push({
@@ -133,10 +133,10 @@ export function ProductCustomizationModal({
 
         {/* Modifiers List */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-8 custom-scrollbar">
-          {product.modifier_groups.length === 0 ? (
+          {(product.modifier_groups || []).length === 0 ? (
             <p className="text-gray-500 text-center py-8">Este producto no tiene opciones adicionales.</p>
           ) : (
-            product.modifier_groups.map(group => {
+            (product.modifier_groups || []).map(group => {
               const selectedCount = (selections[group.id] || []).length;
               const isGroupValid = selectedCount >= group.min_selections && selectedCount <= group.max_selections;
               
@@ -182,7 +182,7 @@ export function ProductCustomizationModal({
                             }`}>
                               {isSelected && <Check className="w-3.5 h-3.5" />}
                             </div>
-                            <span className={`font-medium ${isSelected ? 'text-white' : 'text-gray-800'}`}>
+                            <span className={`${isSelected ? 'text-brand-primary font-bold' : 'font-medium text-gray-800'}`}>
                               {modifier.name}
                             </span>
                           </div>

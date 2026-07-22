@@ -96,7 +96,7 @@ export function OrderStatus({ orderId, restaurantId }: OrderStatusProps) {
     <div className="bg-white shadow-sm border border-gray-200 rounded-3xl p-6 md:p-8 animate-fade-in w-full max-w-md mx-auto shadow-2xl shadow-black">
       <div className="text-center mb-10">
         <p className="text-gray-400 text-sm uppercase tracking-widest font-bold mb-1">Orden #</p>
-        <h2 className="text-5xl font-black text-white">{order.order_number}</h2>
+        <h2 className="text-5xl font-black text-slate-900">{order.order_number}</h2>
       </div>
 
       <div className="relative">
@@ -127,7 +127,7 @@ export function OrderStatus({ orderId, restaurantId }: OrderStatusProps) {
                   )}
                 </div>
                 <div className="pt-2">
-                  <h3 className={`text-xl font-bold ${step.isActive ? 'text-white' : step.isCompleted ? 'text-gray-800' : 'text-gray-600'}`}>
+                  <h3 className={`text-xl font-bold ${step.isActive ? 'text-brand-primary' : step.isCompleted ? 'text-gray-800' : 'text-gray-600'}`}>
                     {step.label}
                   </h3>
                   <p className="text-gray-400 text-sm mt-1">{step.description}</p>
