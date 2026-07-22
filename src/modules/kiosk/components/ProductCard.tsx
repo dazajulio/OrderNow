@@ -18,7 +18,10 @@ export function ProductCard({ product, onAdd, currency }: ProductCardProps) {
   return (
     <div className="group flex flex-col bg-white shadow-sm/40 border border-gray-200/50 rounded-2xl overflow-hidden card-hover">
       {/* Product Image Area */}
-      <div className="relative aspect-[4/3] w-full bg-white shadow-sm overflow-hidden">
+      <div 
+        className="relative aspect-[4/3] w-full bg-white shadow-sm overflow-hidden cursor-pointer"
+        onClick={() => onAdd(product)}
+      >
         {product.is_featured && (
           <div className="absolute top-3 left-3 z-10 brand-bg text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">
             Popular
@@ -31,12 +34,12 @@ export function ProductCard({ product, onAdd, currency }: ProductCardProps) {
             alt={product.name}
             loading="lazy"
             onLoad={() => setImgLoaded(true)}
-            className={`w-full h-full object-cover transition-all duration-500 ${
+            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
               imgLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
             }`}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-slate-50 text-gray-600">
+          <div className="w-full h-full flex items-center justify-center bg-slate-50 text-gray-500">
             <span className="text-sm">Sin imagen</span>
           </div>
         )}

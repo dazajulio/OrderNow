@@ -52,6 +52,21 @@ export const useCartStore = create<CartState>()(
         }));
       },
 
+      updateItemModifiers: (id: string, selectedModifiers: ModifierSnapshot[], unitPrice: number) => {
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.id === id
+              ? { 
+                  ...item, 
+                  selectedModifiers, 
+                  unitPrice, 
+                  subtotal: unitPrice * item.quantity 
+                }
+              : item
+          ),
+        }));
+      },
+
       clearCart: () => {
         set({ items: [] });
       },

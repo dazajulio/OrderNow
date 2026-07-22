@@ -12,7 +12,7 @@ import { CheckoutForm } from '@/modules/kiosk/components/CheckoutForm';
 import { OrderStatus } from '@/modules/kiosk/components/OrderStatus';
 import { ProductCustomizationModal } from '@/modules/kiosk/components/ProductCustomizationModal';
 import { useCartStore } from '@/modules/kiosk/stores/cart-store';
-import { ShoppingBag, ChevronLeft } from 'lucide-react';
+import { ShoppingBag, ChevronLeft, Home, MessageCircle } from 'lucide-react';
 import { t } from '@/lib/i18n';
 import { formatPrice } from '@/lib/utils';
 
@@ -52,12 +52,14 @@ export default function KioskPage({ params }: KioskPageProps) {
   const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'cash' | 'terminal' | null>(null);
   const [customerId, setCustomerId] = useState<string | null>(null);
   const [customizingProduct, setCustomizingProduct] = useState<ProductWithModifiers | null>(null);
+  const [editingCartItemId, setEditingCartItemId] = useState<string | null>(null);
+  const [editingInitialSelections, setEditingInitialSelections] = useState<any[]>([]);
   const [lastTotal, setLastTotal] = useState(0);
   const [lastOrderId, setLastOrderId] = useState<string | null>(null);
   const [upsellProducts, setUpsellProducts] = useState<ProductWithModifiers[]>([]);
   const [isCallingWaiter, setIsCallingWaiter] = useState(false);
   
-  const { addItem, getItemCount, getTotal, setContext, items, clearCart, restaurantId } = useCartStore();
+  const { addItem, getItemCount, getTotal, setContext, items, clearCart, restaurantId, updateItemModifiers } = useCartStore();
   
   // Currency from restaurant (hardcoded USD for now, could be fetched)
   const currency = 'USD';
@@ -211,14 +213,73 @@ export default function KioskPage({ params }: KioskPageProps) {
     }
   };
 
-  const handleModalAddToCart = (product: ProductWithModifiers, selectedModifiers: any[], unitPrice: number) => {
-    addItem({
-      product: product as Product,
-      quantity: 1,
-      selectedModifiers,
-      unitPrice
-    });
+  const handleEditCartItem = (item: any) => {
+    // Find full product including modifiers
+    const product = products.find(p => p.id === item.product.id);
+    if (product) {
+      setEditingCartItemId(item.id);
+      setEditingInitialSelections(item.selectedModifiers || []);
+      setCustomizingProduct(product);
+      setIsCartOpen(false);
+    }
   };
+
+  const handleModalAddToCart = (product: ProductWithModifiers, selectedModifiers: any[], unitPrice: number) => {
+    if (editingCartItemId) {
+      updateItemModifiers(editingCartItemId, selectedModifiers, unitPrice);
+    } else {
+      addItem({
+        product: product as Product,
+        quantity: 1,
+        selectedModifiers,
+        unitPrice
+      });
+    }
+    setCustomizingProduct(null);
+    setEditingCartItemId(null);
+    setEditingInitialSelections([]);
+  };
+
+  const ElegantHeader = () => (
+    <div className="w-full flex flex-col items-center justify-center py-5 border-b border-gray-200 bg-white relative overflow-hidden mb-6 shadow-sm">
+      <div className="absolute inset-0 z-0 opacity-30">
+        <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-500 to-transparent blur-2xl rounded-full transform rotate-12" />
+        <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-500 to-transparent blur-2xl rounded-full transform -rotate-12" />
+      </div>
+      
+      {/* Top Left: Home Button */}
+      {step !== 'browse' && (
+        <button 
+          onClick={() => { setPaymentMethod(null); changeStep('browse'); window.scrollTo(0,0); }} 
+          className="absolute top-4 left-4 z-20 w-10 h-10 bg-white hover:bg-slate-50 rounded-full flex items-center justify-center shadow-md transition-colors text-slate-700 border border-gray-100"
+        >
+          <Home className="w-5 h-5" />
+        </button>
+      )}
+      
+      {/* Top Right: WhatsApp Button */}
+      <a 
+        href="https://wa.me/" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="absolute top-4 right-4 z-20 w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-md transition-colors text-white"
+      >
+        <MessageCircle className="w-5 h-5" />
+      </a>
+
+      <div className="relative z-10 flex flex-col items-center mt-2">
+        {restaurantLogo ? (
+          <img src={restaurantLogo} alt={restaurantName} className="w-14 h-14 rounded-full object-cover shadow-md mb-2 border border-gray-100 bg-white p-0.5" />
+        ) : (
+          <div className="w-14 h-14 rounded-full brand-bg flex items-center justify-center mb-2 shadow-lg shadow-orange-500/20">
+            <span className="text-xl font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
+          </div>
+        )}
+        <h1 className="text-xl font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
+        <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5 font-medium">POWERED BY MTRIQ.APP</p>
+      </div>
+    </div>
+  );
 
   const handleCheckoutClick = () => {
     setIsCartOpen(false);
@@ -360,24 +421,7 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'customer') {
     return (
       <div className="p-6 pb-32 animate-fade-in">
-        {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
-          <div className="absolute inset-0 z-0 opacity-[0.04]">
-            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
-            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
-          </div>
-          <div className="relative z-10 flex flex-col items-center">
-            {restaurantLogo ? (
-              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-            ) : (
-              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-              </div>
-            )}
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
-          </div>
-        </div>
+        <ElegantHeader />
 
         <button onClick={() => changeStep('browse')} className="flex items-center text-gray-500 mb-8">
           <ChevronLeft className="w-5 h-5 mr-1" />
@@ -395,24 +439,7 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'success') {
     return (
       <div className="p-6 pb-32 animate-fade-in flex flex-col items-center justify-center min-h-[60vh] text-center">
-        {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
-          <div className="absolute inset-0 z-0 opacity-[0.04]">
-            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
-            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
-          </div>
-          <div className="relative z-10 flex flex-col items-center">
-            {restaurantLogo ? (
-              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-            ) : (
-              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-              </div>
-            )}
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
-          </div>
-        </div>
+        <ElegantHeader />
 
         <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
           <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
@@ -459,24 +486,7 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'order_status' && lastOrderId) {
     return (
       <div className="p-6 pb-32 animate-fade-in">
-        {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
-          <div className="absolute inset-0 z-0 opacity-[0.04]">
-            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
-            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
-          </div>
-          <div className="relative z-10 flex flex-col items-center">
-            {restaurantLogo ? (
-              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-            ) : (
-              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-              </div>
-            )}
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
-          </div>
-        </div>
+        <ElegantHeader />
 
         <button onClick={() => changeStep('success')} className="flex items-center text-gray-500 mb-8 hover:text-white transition-colors">
           <ChevronLeft className="w-5 h-5 mr-1" />
@@ -490,24 +500,7 @@ export default function KioskPage({ params }: KioskPageProps) {
   if (step === 'checkout') {
     return (
       <div className="p-6 pb-32 animate-fade-in">
-        {/* Elegant Header */}
-        <div className="w-full flex flex-col items-center justify-center py-6 border-b border-gray-200 bg-white relative overflow-hidden mb-8">
-          <div className="absolute inset-0 z-0 opacity-[0.04]">
-            <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
-            <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
-          </div>
-          <div className="relative z-10 flex flex-col items-center">
-            {restaurantLogo ? (
-              <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-            ) : (
-              <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-                <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
-              </div>
-            )}
-            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-            <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
-          </div>
-        </div>
+        <ElegantHeader />
 
         <button 
           onClick={() => {
@@ -581,26 +574,7 @@ export default function KioskPage({ params }: KioskPageProps) {
 
       <div className="pb-8">
         <div className="sticky top-0 bg-slate-50/95 backdrop-blur-md z-50 border-b border-gray-200/60 shadow-md">
-          {/* Elegant Header */}
-          <div className="w-full flex flex-col items-center justify-center py-4 bg-white relative overflow-hidden shadow-sm">
-            <div className="absolute inset-0 z-0 opacity-[0.04]">
-              <div className="absolute top-[-50%] left-[-10%] w-1/2 h-[200%] bg-gradient-to-r from-orange-600 to-transparent blur-3xl rounded-full transform rotate-12" />
-              <div className="absolute bottom-[-50%] right-[-10%] w-1/2 h-[200%] bg-gradient-to-l from-orange-600 to-transparent blur-3xl rounded-full transform -rotate-12" />
-            </div>
-            <div className="relative z-10 flex flex-col items-center">
-              {restaurantLogo ? (
-                <img src={restaurantLogo} alt={restaurantName} className="h-10 object-contain mb-1.5" />
-              ) : (
-                <div className="w-10 h-10 rounded-full brand-bg flex items-center justify-center mb-1.5 shadow-lg shadow-orange-500/20">
-                  <span className="text-lg font-bold text-white">
-                    {restaurantName.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              )}
-              <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-              <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">POWERED BY MTRIQ.APP</p>
-            </div>
-          </div>
+          <ElegantHeader />
 
           {isWaiter && (
             <div className="bg-indigo-600 text-white text-xs font-bold text-center py-2.5 px-4 flex items-center justify-center gap-2">
@@ -674,6 +648,7 @@ export default function KioskPage({ params }: KioskPageProps) {
         onClose={() => setIsCartOpen(false)} 
         onCheckout={handleCheckoutClick}
         currency={currency}
+        onEditItem={handleEditCartItem}
       />
 
       <UpsellModal 
@@ -687,9 +662,15 @@ export default function KioskPage({ params }: KioskPageProps) {
       <ProductCustomizationModal 
         isOpen={!!customizingProduct}
         product={customizingProduct}
-        onClose={() => setCustomizingProduct(null)}
+        onClose={() => {
+          setCustomizingProduct(null);
+          setEditingCartItemId(null);
+          setEditingInitialSelections([]);
+        }}
         onAddToCart={handleModalAddToCart}
         currency={currency}
+        initialSelections={editingInitialSelections}
+        isEditing={!!editingCartItemId}
       />
     </>
   );

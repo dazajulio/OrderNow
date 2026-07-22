@@ -11,6 +11,8 @@ interface ProductCustomizationModalProps {
   onClose: () => void;
   onAddToCart: (product: ProductWithModifiers, selectedModifiers: ModifierSnapshot[], unitPrice: number) => void;
   currency: string;
+  initialSelections?: ModifierSnapshot[];
+  isEditing?: boolean;
 }
 
 export function ProductCustomizationModal({
@@ -18,7 +20,9 @@ export function ProductCustomizationModal({
   isOpen,
   onClose,
   onAddToCart,
-  currency
+  currency,
+  initialSelections,
+  isEditing
 }: ProductCustomizationModalProps) {
   // Use a map to store selected modifiers by group ID: Record<string, Modifier[]>
   const [selections, setSelections] = useState<Record<string, Modifier[]>>({});
@@ -26,10 +30,28 @@ export function ProductCustomizationModal({
   // Reset state when product changes
   useEffect(() => {
     if (product) {
-      setSelections({});
-      // We could pre-select default modifiers here if we wanted to
+      if (initialSelections && initialSelections.length > 0) {
+        const prefilled: Record<string, Modifier[]> = {};
+        
+        // Match snapshots back to actual modifiers
+        (product.modifier_groups || []).forEach(group => {
+          const snapshotGroup = initialSelections.find(s => s.group === group.name);
+          if (snapshotGroup) {
+            const selectedMods = group.modifiers.filter(m => 
+              snapshotGroup.items.some(item => item.name === m.name)
+            );
+            if (selectedMods.length > 0) {
+              prefilled[group.id] = selectedMods;
+            }
+          }
+        });
+        
+        setSelections(prefilled);
+      } else {
+        setSelections({});
+      }
     }
-  }, [product]);
+  }, [product, initialSelections]);
 
   if (!isOpen || !product) return null;
 
@@ -104,7 +126,7 @@ export function ProductCustomizationModal({
         onClick={e => e.stopPropagation()}
       >
         {/* Header with image */}
-        <div className="relative h-48 sm:h-64 bg-slate-100">
+        <div className="relative h-48 sm:h-64 bg-slate-100 shrink-0">
           {product.image_url ? (
             <img 
               src={product.image_url} 
@@ -118,21 +140,22 @@ export function ProductCustomizationModal({
           )}
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 bg-white/50 hover:bg-white/70 text-white rounded-full backdrop-blur-md transition-colors"
+            className="absolute top-4 right-4 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full backdrop-blur-md transition-colors z-10"
           >
             <X className="w-6 h-6" />
           </button>
-          
-          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-zinc-900 to-transparent">
-            <h2 className="text-2xl font-bold text-gray-900 shadow-sm">{product.name}</h2>
-            {product.description && (
-              <p className="text-gray-800 text-sm mt-1 line-clamp-2">{product.description}</p>
-            )}
-          </div>
+        </div>
+
+        {/* Product Title and Description (Moved below image) */}
+        <div className="p-4 sm:p-6 bg-white border-b border-gray-100 shrink-0">
+          <h2 className="text-2xl font-black text-slate-900">{product.name}</h2>
+          {product.description && (
+            <p className="text-gray-500 text-sm mt-2">{product.description}</p>
+          )}
         </div>
 
         {/* Modifiers List */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-8 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-8 custom-scrollbar bg-slate-50">
           {(product.modifier_groups || []).length === 0 ? (
             <p className="text-gray-500 text-center py-8">Este producto no tiene opciones adicionales.</p>
           ) : (
@@ -168,21 +191,21 @@ export function ProductCustomizationModal({
                           onClick={() => toggleModifier(group, modifier)}
                           className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${
                             isSelected 
-                              ? 'border-brand-primary bg-brand-primary/10' 
-                              : 'border-gray-200 bg-slate-50 hover:bg-slate-100/80'
+                              ? 'border-green-500 bg-green-50' 
+                              : 'border-gray-200 bg-white hover:bg-slate-50'
                           } ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                           <div className="flex items-center space-x-3">
-                            <div className={`w-5 h-5 rounded-sm flex items-center justify-center border ${
+                            <div className={`w-5 h-5 flex items-center justify-center border ${
                               group.max_selections === 1 ? 'rounded-full' : 'rounded-md'
                             } ${
                               isSelected 
-                                ? 'bg-brand-primary border-brand-primary text-white' 
-                                : 'border-zinc-600 bg-transparent'
+                                ? 'bg-green-500 border-green-500 text-white' 
+                                : 'border-zinc-400 bg-white'
                             }`}>
                               {isSelected && <Check className="w-3.5 h-3.5" />}
                             </div>
-                            <span className={`${isSelected ? 'text-brand-primary font-bold' : 'font-medium text-gray-800'}`}>
+                            <span className={`${isSelected ? 'text-green-700 font-bold' : 'font-medium text-gray-800'}`}>
                               {modifier.name}
                             </span>
                           </div>
@@ -213,7 +236,7 @@ export function ProductCustomizationModal({
                 : 'bg-slate-100 text-gray-400 cursor-not-allowed'
             }`}
           >
-            <span>Agregar al carrito</span>
+            <span>{isEditing ? 'Actualizar Pedido' : 'Agregar al carrito'}</span>
             <span>{formatPrice(totalPrice, currency)}</span>
           </button>
         </div>

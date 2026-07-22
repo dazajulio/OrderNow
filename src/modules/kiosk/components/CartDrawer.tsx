@@ -11,9 +11,10 @@ interface CartDrawerProps {
   onClose: () => void;
   onCheckout: () => void;
   currency: string;
+  onEditItem?: (item: any) => void;
 }
 
-export function CartDrawer({ isOpen, onClose, onCheckout, currency }: CartDrawerProps) {
+export function CartDrawer({ isOpen, onClose, onCheckout, currency, onEditItem }: CartDrawerProps) {
   const { items, removeItem, updateQuantity, getTotal, getItemCount } = useCartStore();
   const [mounted, setMounted] = useState(false);
 
@@ -99,8 +100,11 @@ export function CartDrawer({ isOpen, onClose, onCheckout, currency }: CartDrawer
                     </button>
                   </div>
                   
-                  {/* Item Details */}
-                  <div className="flex-1 flex flex-col">
+                  {/* Item Details (Clickable for editing) */}
+                  <div 
+                    className="flex-1 flex flex-col cursor-pointer hover:bg-slate-100/50 rounded-xl p-2 -m-2 transition-colors"
+                    onClick={() => onEditItem?.(item)}
+                  >
                     <div className="flex justify-between items-start mb-1">
                       <h4 className="font-bold text-slate-900 text-base leading-tight">
                         {item.product.name}

@@ -297,6 +297,7 @@ export interface CartState {
   addItem: (item: Omit<CartItem, 'id' | 'subtotal'>) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
+  updateItemModifiers: (id: string, selectedModifiers: ModifierSnapshot[], unitPrice: number) => void;
   clearCart: () => void;
   setContext: (restaurantId: string, tableId: string) => void;
   getTotal: () => number;

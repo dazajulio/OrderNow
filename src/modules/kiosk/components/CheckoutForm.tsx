@@ -101,7 +101,7 @@ export function CheckoutForm({
           <select 
             value={selectedTableId}
             onChange={(e) => onTableChange?.(e.target.value)}
-            className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3 px-4 text-white font-bold text-base focus:ring-2 focus:ring-orange-500/50 outline-none"
+            className="w-full bg-slate-50 border border-gray-200 rounded-xl py-3 px-4 text-slate-900 font-bold text-base focus:ring-2 focus:ring-orange-500/50 outline-none"
           >
             {tables.map((t: any) => {
               const cleanLabel = t.label?.startsWith('Mesero:') || t.label?.startsWith('Delivery:') ? null : t.label;
@@ -115,8 +115,8 @@ export function CheckoutForm({
         </div>
       )}
 
-      <div className="p-6 bg-slate-500 rounded-2xl border border-gray-200/50 flex justify-between items-center">
-        <span className="text-gray-500 text-lg">Total del Pedido</span>
+      <div className="p-6 bg-slate-50 rounded-2xl border border-gray-200/50 flex justify-between items-center">
+        <span className="text-gray-600 text-lg">Total del Pedido</span>
         <span className="text-2xl font-bold text-gray-900">{formatPrice(total, currency)}</span>
       </div>
 
