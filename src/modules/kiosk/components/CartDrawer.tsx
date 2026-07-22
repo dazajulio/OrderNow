@@ -54,13 +54,13 @@ export function CartDrawer({ isOpen, onClose, onCheckout, currency }: CartDrawer
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 pb-4 border-b border-gray-200/50">
-          <h2 className="text-xl font-bold flex items-center gap-2 text-white">
+          <h2 className="text-xl font-bold flex items-center gap-2 text-slate-900">
             <ShoppingBag className="w-5 h-5 brand-text" />
             {t('cart')} <span className="text-gray-400 text-base font-normal">({getItemCount()})</span>
           </h2>
           <button
             onClick={onClose}
-            className="p-2 -mr-2 text-gray-500 hover:text-white rounded-full bg-slate-500"
+            className="p-2 -mr-2 text-gray-500 hover:text-slate-900 rounded-full hover:bg-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -86,14 +86,14 @@ export function CartDrawer({ isOpen, onClose, onCheckout, currency }: CartDrawer
                   <div className="flex flex-col items-center justify-between bg-white shadow-sm rounded-full py-1 w-10">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-8 h-8 flex items-center justify-center text-gray-800 hover:text-white active:scale-95"
+                      className="w-8 h-8 flex items-center justify-center text-gray-800 hover:bg-slate-100 rounded-full active:scale-95 transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                     </button>
                     <span className="font-semibold text-sm">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="w-8 h-8 flex items-center justify-center text-gray-800 hover:text-white active:scale-95"
+                      className="w-8 h-8 flex items-center justify-center text-gray-800 hover:bg-slate-100 rounded-full active:scale-95 transition-colors"
                     >
                       {item.quantity <= 1 ? <Trash2 className="w-4 h-4 text-red-400" /> : <Minus className="w-4 h-4" />}
                     </button>
@@ -102,10 +102,10 @@ export function CartDrawer({ isOpen, onClose, onCheckout, currency }: CartDrawer
                   {/* Item Details */}
                   <div className="flex-1 flex flex-col">
                     <div className="flex justify-between items-start mb-1">
-                      <h4 className="font-bold text-white text-base leading-tight">
+                      <h4 className="font-bold text-slate-900 text-base leading-tight">
                         {item.product.name}
                       </h4>
-                      <span className="font-semibold text-white whitespace-nowrap ml-4">
+                      <span className="font-semibold text-slate-900 whitespace-nowrap ml-4">
                         {formatPrice(item.subtotal, currency)}
                       </span>
                     </div>

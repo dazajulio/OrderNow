@@ -44,7 +44,7 @@ export function ProductCard({ product, onAdd, currency }: ProductCardProps) {
 
       {/* Product Info */}
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-bold text-lg text-white mb-1">{product.name}</h3>
+        <h3 className="font-bold text-lg text-slate-900 mb-1">{product.name}</h3>
         {product.description && (
           <p className="text-sm text-gray-500 mb-4 line-clamp-2">
             {product.description}
@@ -52,7 +52,7 @@ export function ProductCard({ product, onAdd, currency }: ProductCardProps) {
         )}
         
         <div className="mt-auto flex items-center justify-between">
-          <span className="font-semibold text-white">
+          <span className="font-semibold text-slate-900">
             {formatPrice(product.base_price, currency)}
           </span>
           <button

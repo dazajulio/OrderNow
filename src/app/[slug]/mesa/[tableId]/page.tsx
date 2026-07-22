@@ -369,7 +369,7 @@ export default function KioskPage({ params }: KioskPageProps) {
               <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
             </div>
           )}
-          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
           <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
@@ -398,7 +398,7 @@ export default function KioskPage({ params }: KioskPageProps) {
               <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
             </div>
           )}
-          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
           <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
@@ -456,7 +456,7 @@ export default function KioskPage({ params }: KioskPageProps) {
               <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
             </div>
           )}
-          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
           <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
@@ -481,7 +481,7 @@ export default function KioskPage({ params }: KioskPageProps) {
               <span className="text-lg font-bold text-white">{restaurantName.charAt(0).toUpperCase()}</span>
             </div>
           )}
-          <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+          <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
           <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-1">POWERED BY MTRIQ.APP</p>
         </div>
 
@@ -568,7 +568,7 @@ export default function KioskPage({ params }: KioskPageProps) {
                 </span>
               </div>
             )}
-            <h1 className="text-lg font-bold text-white tracking-tight">{restaurantName}</h1>
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
             <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5">POWERED BY MTRIQ.APP</p>
           </div>
 
@@ -590,7 +590,7 @@ export default function KioskPage({ params }: KioskPageProps) {
         {categories.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center px-4 bg-white shadow-sm/40 rounded-3xl border border-gray-200">
             <span className="text-4xl mb-4">🍽️</span>
-            <h3 className="text-xl font-bold text-white mb-2">Menú en preparación</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">Menú en preparación</h3>
             <p className="text-sm text-gray-500 max-w-sm">
               El restaurante está configurando su menú en este momento. Por favor, vuelve a cargar la página en unos minutos.
             </p>
