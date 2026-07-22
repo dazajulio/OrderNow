@@ -8,7 +8,24 @@ import { Suspense } from 'react';
 function SuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const slug = searchParams.get('slug');
+  
+  const [slug, setSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Intentar obtener de URL primero
+    const urlSlug = searchParams.get('slug');
+    if (urlSlug) {
+      setSlug(urlSlug);
+      localStorage.removeItem('mtriq_pending_slug');
+    } else {
+      // Fallback: buscar en localStorage
+      const localSlug = localStorage.getItem('mtriq_pending_slug');
+      if (localSlug) {
+        setSlug(localSlug);
+        localStorage.removeItem('mtriq_pending_slug');
+      }
+    }
+  }, [searchParams]);
 
   const [phase, setPhase] = useState<'activating' | 'ready'>('activating');
   const [countdown, setCountdown] = useState(5);

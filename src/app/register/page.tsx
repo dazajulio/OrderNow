@@ -114,6 +114,11 @@ export default function RegisterPage() {
       setRegisteredSlug(result.slug);
       setCheckoutUrl(result.checkoutUrl);
 
+      // Guardamos el slug en localStorage. 
+      // A veces el modal de Lemon Squeezy corta los parámetros de la URL, 
+      // esto asegura que la página de éxito sepa a dónde redirigir.
+      localStorage.setItem('mtriq_pending_slug', result.slug);
+
       // Redirigir automáticamente a Lemon Squeezy para pagar
       window.location.href = result.checkoutUrl;
 
