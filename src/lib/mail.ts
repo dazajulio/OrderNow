@@ -170,18 +170,22 @@ export async function sendWelcomeEmail({
           <p>Tu cuenta para <strong>${restaurantName}</strong> ha sido desplegada con éxito. Tu nuevo Kiosko inteligente y tu monitor de cocina (KDS) ya están sincronizados y listos para llevar la digitalización de tu restaurante al siguiente nivel.</p>
 
           <div class="card">
-            <div class="card-title">Datos de tu cuenta</div>
+            <div class="card-title">Tus Links de Acceso Directo</div>
             <div class="detail-row">
               <span class="detail-label">Usuario / Email:</span>
               <span class="detail-value">${toEmail}</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Dirección de tu Kiosko (QR/Web):</span>
-              <span class="detail-value"><a href="${kioskUrl}" style="color: #ff6b00; text-decoration: none;">mtriq.app/${slug}</a></span>
+            <div class="detail-row" style="margin-top: 12px;">
+              <span class="detail-label">1. Panel de Gerente (Dashboard):</span><br>
+              <span class="detail-value"><a href="${dashboardUrl}" style="color: #ff6b00; text-decoration: none;">mtriq.app/${slug}/gerente</a></span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Monitor de Cocina (KDS):</span>
+            <div class="detail-row" style="margin-top: 12px;">
+              <span class="detail-label">2. Monitor de Cocina (KDS):</span><br>
               <span class="detail-value"><a href="${kdsUrl}" style="color: #ff6b00; text-decoration: none;">mtriq.app/${slug}/cocina</a></span>
+            </div>
+            <div class="detail-row" style="margin-top: 12px;">
+              <span class="detail-label">3. Kiosko / Menú Digital (QR):</span><br>
+              <span class="detail-value"><a href="${kioskUrl}" style="color: #ff6b00; text-decoration: none;">mtriq.app/${slug}</a></span>
             </div>
           </div>
 
