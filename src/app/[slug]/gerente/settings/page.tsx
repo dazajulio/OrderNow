@@ -12,7 +12,28 @@ export default function SettingsAdminPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  // --- Auth Handlers (Removed) ---
+  // --- Settings State ---
+  const [restaurant, setRestaurant] = useState<any>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [upsell1, setUpsell1] = useState('');
+  const [upsell2, setUpsell2] = useState('');
+
+  // --- Admin Password State ---
+  const [newAdminPassword, setNewAdminPassword] = useState('');
+  const [confirmAdminPassword, setConfirmAdminPassword] = useState('');
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
+  
+  // --- Reports State ---
+  const [orders, setOrders] = useState<OrderWithItems[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+
+  const [restaurantId, setRestaurantId] = useState('');
+
+  useEffect(() => {
+    setRestaurantId(localStorage.getItem('active_restaurant_id') || process.env.NEXT_PUBLIC_RESTAURANT_ID || '');
+  }, []);
 
   // --- Load Data ---
   useEffect(() => {

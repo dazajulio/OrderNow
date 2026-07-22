@@ -33,8 +33,6 @@ export default async function WelcomePage({ params }: WelcomePageProps) {
         <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-orange-600/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px]" />
         <div className="absolute top-[20%] right-[20%] w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px]" />
-        {/* Subtle grid pattern overlay */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5" />
       </div>
 
       <div className="w-full max-w-4xl relative z-10 space-y-12 animate-fade-in pt-8 pb-12">
