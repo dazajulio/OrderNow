@@ -201,16 +201,8 @@ export default function KioskPage({ params }: KioskPageProps) {
   };
 
   const handleAddToCart = (product: ProductWithModifiers) => {
-    if (product.modifier_groups && product.modifier_groups.length > 0) {
-      setCustomizingProduct(product);
-    } else {
-      addItem({
-        product: product as Product,
-        quantity: 1,
-        selectedModifiers: [],
-        unitPrice: product.base_price
-      });
-    }
+    // Always open modal to show description, even if no modifiers
+    setCustomizingProduct(product);
   };
 
   const handleEditCartItem = (item: any) => {
@@ -238,6 +230,9 @@ export default function KioskPage({ params }: KioskPageProps) {
     setCustomizingProduct(null);
     setEditingCartItemId(null);
     setEditingInitialSelections([]);
+    
+    // Automatically open cart drawer for immediate visual feedback
+    setIsCartOpen(true);
   };
 
   const ElegantHeader = () => (
