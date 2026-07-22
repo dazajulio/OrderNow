@@ -59,7 +59,9 @@ export default function GlubbiMarketplace() {
           <div className="flex items-center gap-2">
             <Menu className="w-6 h-6 text-gray-700" />
             <div className="flex flex-col ml-2">
-              <img src="/logo-glubbi.png" alt="Glubbi" className="h-10 object-contain -ml-1" />
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-white shadow-sm border border-gray-100 flex items-center justify-center -ml-1">
+                <img src="/logo-glubbi.png" alt="Glubbi" className="w-full h-full object-cover" />
+              </div>
               <div className="flex items-center text-xs font-semibold text-slate-500 mt-1">
                 <MapPin className="w-3 h-3 mr-1 text-slate-400" />
                 <span>Mi Ubicación Actual</span>

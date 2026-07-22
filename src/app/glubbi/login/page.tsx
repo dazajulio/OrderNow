@@ -112,7 +112,9 @@ export default function GlubbiLogin() {
 
       <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
-          <img src="/logo-glubbi.png" alt="Glubbi" className="h-16 mx-auto mb-4 object-contain" />
+          <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden bg-white shadow-lg border-4 border-white flex items-center justify-center">
+            <img src="/logo-glubbi.png" alt="Glubbi" className="w-full h-full object-cover" />
+          </div>
           <h1 className="text-3xl font-black text-slate-800 tracking-tight">Bienvenido a <br/>GLUBBI</h1>
           <p className="text-gray-500 mt-2 text-sm">Los mejores restaurantes cerca de ti.</p>
         </div>
