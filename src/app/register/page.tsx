@@ -535,7 +535,7 @@ export default function RegisterPage() {
                     className="w-full bg-white border-2 border-slate-200 hover:border-orange-500 rounded-2xl p-6 text-left transition-all active:scale-[0.99] group relative overflow-hidden flex items-center justify-between"
                   >
                     <div>
-                      <h3 className="font-black text-slate-800 text-lg group-hover:text-orange-600 transition-colors">Tarjeta Internacional (Lemon Squeezy)</h3>
+                      <h3 className="font-black text-slate-800 text-lg group-hover:text-orange-600 transition-colors">Con Cualquier Tarjeta (Lemon Squeezy)</h3>
                       <p className="text-slate-500 text-sm mt-1">La forma inteligente de pagar. Tan simple como un clic.</p>
                     </div>
                     <ChevronRight className="w-6 h-6 text-slate-300 group-hover:text-orange-500 transition-colors" />

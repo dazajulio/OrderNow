@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { buildCheckoutUrl } from '@/lib/lemonsqueezy';
+import { resend } from '@/lib/resend';
 
 function slugify(text: string): string {
   return text
@@ -137,8 +138,11 @@ export async function POST(request: Request) {
           is_active: manualPayment ? true : false,
           glubbi_type: glubbi_type || 'Restaurantes',
           glubbi_category: glubbi_category || 'Comida',
-          // Optionally you can store paymentReference in a notes field if it exists,
-          // but for now we just activate the account directly.
+          payment_methods: manualPayment && paymentReference ? [{
+            id: 'manual-pm-registro',
+            type: 'pago_movil',
+            reference: paymentReference
+          }] : null
         } as any)
         .select()
         .single() as any;
@@ -175,6 +179,11 @@ export async function POST(request: Request) {
           brand_color_primary: '#FF6B00',
           brand_color_secondary: '#1A1A2E',
           is_active: manualPayment ? true : false,
+          payment_methods: manualPayment && paymentReference ? [{
+            id: 'manual-pm-registro',
+            type: 'pago_movil',
+            reference: paymentReference
+          }] : null
         } as any)
         .select()
         .single() as any;
@@ -213,24 +222,57 @@ export async function POST(request: Request) {
     }
 
     // 5. Construir URL de checkout de Lemon Squeezy con datos del restaurante
-    // El email de bienvenida se envía desde el webhook DESPUÉS de que el pago se confirme.
-    let checkoutUrl = null;
-    
     if (!manualPayment) {
-      checkoutUrl = buildCheckoutUrl({
-        email,
-        restaurantId: newRestaurantId,
+      // Create Lemon Squeezy checkout URL for $29/mo plan
+      const variantId = process.env.LEMON_SQUEEZY_VARIANT_ID;
+      let checkoutUrl = '';
+
+      if (variantId) {
+        checkoutUrl = await buildCheckoutUrl(variantId, {
+          userId,
+          restaurantId: newRestaurantId,
+          email,
+          name: contactName,
+        });
+      }
+
+      // 6. Send Internal Admin Email (Lemon Squeezy)
+      try {
+        await resend.emails.send({
+          from: 'MTRIQ <onboarding@mtriq.app>',
+          to: 'soporte@mtriq.app',
+          subject: `🚀 Nuevo Registro SaaS (Lemon) - ${restaurantName}`,
+          html: `<p><strong>Local:</strong> ${restaurantName}</p><p><strong>Cliente:</strong> ${contactName}</p><p><strong>Email:</strong> ${email}</p><p><strong>Teléfono:</strong> ${phone}</p><p><strong>Método de Pago:</strong> Tarjeta (Lemon Squeezy)</p>`
+        });
+      } catch (emailErr) {
+        console.error('Error sending internal notification email:', emailErr);
+      }
+
+      return NextResponse.json({
+        success: true,
         slug,
+        checkoutUrl,
+        restaurantId: newRestaurantId
       });
     }
 
-    // Success! Devolver la URL de checkout para redirigir al usuario a pagar (o null si fue manual)
+    // 6. Send Internal Admin Email (Pago Movil)
+    try {
+      await resend.emails.send({
+        from: 'MTRIQ <onboarding@mtriq.app>',
+        to: 'soporte@mtriq.app',
+        subject: `💰 Nuevo Registro SaaS (Pago Móvil) - ${restaurantName}`,
+        html: `<p><strong>Local:</strong> ${restaurantName}</p><p><strong>Cliente:</strong> ${contactName}</p><p><strong>Email:</strong> ${email}</p><p><strong>Teléfono:</strong> ${phone}</p><p><strong>Método de Pago:</strong> Pago Móvil (Validar manual)</p><p><strong>Detalles Pago:</strong> ${paymentReference}</p>`
+      });
+    } catch (emailErr) {
+      console.error('Error sending internal notification email:', emailErr);
+    }
+
+    // Manual payment => return success immediately without checkout URL
     return NextResponse.json({
       success: true,
-      restaurantId: newRestaurantId,
       slug,
-      userId,
-      checkoutUrl,
+      restaurantId: newRestaurantId
     });
 
   } catch (error: any) {

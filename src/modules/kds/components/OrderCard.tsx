@@ -149,7 +149,29 @@ export function getDeliveryDetails(notes: string | null): { address?: string; ph
     phone: phoneMatch ? phoneMatch[1].trim() : undefined,
     reference: referenceMatch ? referenceMatch[1].trim() : undefined
   };
-}// ----------------------------------------------------------------------------
+}
+
+export function getValidationDetails(notes: string | null): { ref?: string; monto?: string; fecha?: string; banco?: string; ci?: string; raw?: string } | null {
+  if (!notes || !notes.includes('Validación:')) return null;
+  
+  const refMatch = notes.match(/Ref:\s*([^|]+)/);
+  const montoMatch = notes.match(/Monto:\s*([^|]+)/);
+  const fechaMatch = notes.match(/Fecha:\s*([^|]+)/);
+  const bancoMatch = notes.match(/Banco:\s*([^|]+)/);
+  const ciMatch = notes.match(/CI\/RIF:\s*([^|]+)/);
+  const rawMatch = notes.match(/(Validación:.*?)(?:\n|$)/);
+
+  return {
+    ref: refMatch ? refMatch[1].trim() : undefined,
+    monto: montoMatch ? montoMatch[1].trim() : undefined,
+    fecha: fechaMatch ? fechaMatch[1].trim() : undefined,
+    banco: bancoMatch ? bancoMatch[1].trim() : undefined,
+    ci: ciMatch ? ciMatch[1].trim() : undefined,
+    raw: rawMatch ? rawMatch[1].trim() : undefined
+  };
+}
+
+// ----------------------------------------------------------------------------
 // Helper: Print Ticket (Comanda duplicada)
 // ----------------------------------------------------------------------------
 export function printOrder(order: OrderWithItems) {
@@ -161,12 +183,15 @@ export function printOrder(order: OrderWithItems) {
   const orderDate = new Date(order.created_at).toLocaleString();
   const rawNotes = order.notes || '';
   
-  // Clean notes from delivery metadata
+  const validation = getValidationDetails(order.notes);
+  
+  // Clean notes from delivery metadata and validation
   const cleanNotes = rawNotes
     .replace(/\[Origen:\s*[^\]]+\]/g, '')
     .replace(/\|\s*Dirección:\s*[^|]+/g, '')
     .replace(/\|\s*Teléfono:\s*[^|]+/g, '')
     .replace(/\|\s*Referencia:\s*[^|]+/g, '')
+    .replace(validation?.raw || '', '')
     .replace(/^[\s|]+|[\s|]+$/g, '')
     .trim();
 
@@ -185,6 +210,15 @@ export function printOrder(order: OrderWithItems) {
     </div>
   ` : '';
 
+  const validationHtml = validation ? `
+    <div style="margin-top: 6px; border-top: 1px dashed #000; padding-top: 6px; font-size: 10px; text-align: left; color: #000 !important; background: #fff !important;">
+      <div style="font-weight: bold; font-size: 11px; margin-bottom: 2px;">PAGO A VALIDAR:</div>
+      <div><strong>REF:</strong> ${validation.ref || 'N/A'}</div>
+      <div><strong>MONTO:</strong> ${validation.monto || 'N/A'}</div>
+      <div><strong>BANCO:</strong> ${validation.banco || 'N/A'}</div>
+    </div>
+  ` : '';
+
   // Copy 1: Cocina
   const cocinaCopy = `
     <div class="print-page" style="font-family: monospace; font-size: 12px; width: 280px; margin: 0 auto; padding: 10px; border: 1px solid #000; color: #000 !important; background: #fff !important;">
@@ -195,6 +229,7 @@ export function printOrder(order: OrderWithItems) {
       ${customerLabel ? `<div><strong>Cliente:</strong> ${order.customer?.name}</div>` : ''}
       <div><strong>Fecha:</strong> ${orderDate}</div>
       ${deliveryHtml}
+      ${validationHtml}
       <div style="border-top: 1px dashed #000; margin-top: 8px; padding-top: 4px;"></div>
       <table style="width: 100%; border-collapse: collapse;">
         <thead>
@@ -327,15 +362,17 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
 
   const origin = getOrderOrigin(order);
   const delivery = getDeliveryDetails(order.notes);
-  const cleanNotes = order.notes
-    ? order.notes
-        .replace(/\[Origen:\s*[^\]]+\]/g, '')
-        .replace(/\|\s*Dirección:\s*[^|]+/g, '')
-        .replace(/\|\s*Teléfono:\s*[^|]+/g, '')
-        .replace(/\|\s*Referencia:\s*[^|]+/g, '')
-        .replace(/^[\s|]+|[\s|]+$/g, '')
-        .trim()
-    : null;
+  const validation = getValidationDetails(order.notes);
+  
+  const rawNotes = order.notes || '';
+  const cleanNotes = rawNotes
+    .replace(/\[Origen:\s*[^\]]+\]/g, '')
+    .replace(/\|\s*Dirección:\s*[^|]+/g, '')
+    .replace(/\|\s*Teléfono:\s*[^|]+/g, '')
+    .replace(/\|\s*Referencia:\s*[^|]+/g, '')
+    .replace(validation?.raw || '', '')
+    .replace(/^[\s|]+|[\s|]+$/g, '')
+    .trim() || null;
 
   return (
     <div
@@ -469,6 +506,34 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ── Validation Details ───────────────────────────────────────── */}
+      {validation && (
+        <div className="mx-4 mb-3 border border-purple-500/20 bg-purple-500/[0.03] rounded-xl p-3.5 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-bold text-purple-600 uppercase tracking-wider">
+              <CreditCard className="h-4 w-4" /> Pago por Validar
+            </div>
+            <span className="text-xs font-black text-purple-700 bg-purple-100 px-2 py-0.5 rounded-md">
+              {validation.monto}
+            </span>
+          </div>
+          <div className="space-y-1.5 pt-1 text-xs">
+            <div className="flex items-center gap-2 text-gray-800">
+              <span className="text-gray-400 font-medium">Ref:</span>
+              <span className="font-semibold text-gray-900">{validation.ref}</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-800">
+              <span className="text-gray-400 font-medium">Banco:</span>
+              <span className="font-semibold text-gray-900">{validation.banco}</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-800">
+              <span className="text-gray-400 font-medium">CI/RIF:</span>
+              <span className="font-semibold text-gray-900">{validation.ci}</span>
+            </div>
           </div>
         </div>
       )}

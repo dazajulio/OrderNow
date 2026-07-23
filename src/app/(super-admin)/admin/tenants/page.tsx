@@ -150,7 +150,7 @@ export default function TenantsPage() {
             placeholder="Buscar por nombre, slug o licencia..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-orange-500 text-sm"
+            className="w-full bg-slate-50/60 border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-slate-800 placeholder:text-gray-500 focus:outline-none focus:border-orange-500 text-sm"
           />
         </div>
       </div>
@@ -206,7 +206,7 @@ export default function TenantsPage() {
                         </td>
                         <td className="px-6 py-4 font-mono font-bold text-gray-500">
                           {tenant.license_code ? (
-                            <span className="bg-slate-50/60 border border-gray-200 px-2.5 py-1 rounded text-xs text-white">
+                            <span className="bg-slate-100 border border-gray-200 px-2.5 py-1 rounded text-xs text-slate-800">
                               {tenant.license_code}
                             </span>
                           ) : (
@@ -228,7 +228,7 @@ export default function TenantsPage() {
                         </td>
                         <td className="px-6 py-4 text-right">
                           <button 
-                            className="text-xs bg-slate-100 hover:bg-zinc-700 text-white font-bold px-3 py-1.5 rounded-lg transition-all"
+                            className="text-xs bg-slate-800 hover:bg-slate-900 text-white font-bold px-3 py-1.5 rounded-lg transition-all"
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedTenant(tenant);
@@ -384,8 +384,8 @@ export default function TenantsPage() {
                 {(selectedTenant.instagram || selectedTenant.facebook) && (
                   <div className="flex items-center gap-3 border-t border-gray-200 pt-3">
                     {selectedTenant.instagram && (
-                      <a href={selectedTenant.instagram} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-slate-50/60 rounded-lg hover:text-white transition-colors flex items-center justify-center">
-                        <svg className="w-4 h-4 text-orange-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <a href={selectedTenant.instagram} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-slate-100 rounded-lg hover:bg-slate-200 text-slate-600 transition-colors flex items-center justify-center">
+                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                           <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                           <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
@@ -393,8 +393,8 @@ export default function TenantsPage() {
                       </a>
                     )}
                     {selectedTenant.facebook && (
-                      <a href={selectedTenant.facebook} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-slate-50/60 rounded-lg hover:text-white transition-colors flex items-center justify-center">
-                        <svg className="w-4 h-4 text-orange-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <a href={selectedTenant.facebook} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-slate-100 rounded-lg hover:bg-slate-200 text-slate-600 transition-colors flex items-center justify-center">
+                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                         </svg>
                       </a>

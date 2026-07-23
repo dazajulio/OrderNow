@@ -108,7 +108,8 @@ export default function BillingPage() {
             <thead className="bg-slate-50 text-gray-400 uppercase text-[9px] tracking-wider font-bold">
               <tr>
                 <th className="px-6 py-4">ID Factura</th>
-                <th className="px-6 py-4">Detalle</th>
+                <th className="px-6 py-4">Detalle de Suscripción</th>
+                <th className="px-6 py-4">Método de Pago</th>
                 <th className="px-6 py-4 text-center">Fecha</th>
                 <th className="px-6 py-4 text-right">Monto</th>
                 <th className="px-6 py-4 text-center">Estatus</th>
@@ -118,6 +119,18 @@ export default function BillingPage() {
               {restaurants.length > 0 ? (
                 restaurants.map((rest) => {
                   const invId = `INV-${new Date(rest.created_at).getFullYear()}-${rest.slug.substring(0, 3).toUpperCase()}`;
+                  
+                  // Extract manual payment if exists
+                  let isManualPagoMovil = false;
+                  let pmReference = '';
+                  if (rest.payment_methods && Array.isArray(rest.payment_methods)) {
+                    const pm = rest.payment_methods.find((p: any) => p.id === 'manual-pm-registro');
+                    if (pm) {
+                      isManualPagoMovil = true;
+                      pmReference = pm.reference;
+                    }
+                  }
+
                   return (
                     <tr key={rest.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="px-6 py-4 font-mono font-bold text-orange-500 text-xs">
@@ -125,6 +138,22 @@ export default function BillingPage() {
                       </td>
                       <td className="px-6 py-4 font-semibold text-gray-900">
                         Licencia SaaS Mtriq - {rest.name}
+                      </td>
+                      <td className="px-6 py-4">
+                        {isManualPagoMovil ? (
+                          <div className="flex flex-col gap-1">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/10 text-purple-600 border border-purple-500/20 w-fit">
+                              Pago Móvil (Manual)
+                            </span>
+                            <span className="text-[10px] text-gray-500 max-w-[200px] truncate block" title={pmReference}>
+                              {pmReference}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200 w-fit">
+                            Lemon Squeezy (Card)
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-center text-gray-500 font-mono text-xs">
                         {new Date(rest.created_at).toLocaleDateString()}
