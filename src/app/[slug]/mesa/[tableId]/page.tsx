@@ -104,7 +104,7 @@ export default function KioskPage({ params }: KioskPageProps) {
         setIsWaiter(true);
         setWaiterName(searchParams.get('waiterName') || 'Mesero');
       }
-      if (searchParams.get('type') === 'delivery') {
+      if (searchParams.get('type') === 'delivery' || tableId === 'delivery') {
         setIsDelivery(true);
       }
       if (searchParams.get('glubbi') === 'true') {
