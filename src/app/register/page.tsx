@@ -43,11 +43,19 @@ const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
 export default function RegisterPage() {
   const router = useRouter();
   
-  // Registration Flow Step: 'details' | 'redirecting'
-  const [step, setStep] = useState<'details' | 'redirecting'>('details');
+  // Registration Flow Step
+  const [step, setStep] = useState<'details' | 'payment_selection' | 'pago_movil' | 'redirecting' | 'success'>('details');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [checkoutUrl, setCheckoutUrl] = useState('');
+  const [bcvRate, setBcvRate] = useState<number>(0);
+
+  // Pago Movil Form State
+  const [pmReference, setPmReference] = useState('');
+  const [pmAmount, setPmAmount] = useState('');
+  const [pmDate, setPmDate] = useState('');
+  const [pmBank, setPmBank] = useState('');
+  const [pmCedula, setPmCedula] = useState('');
 
   // Form State
   const [formData, setFormData] = useState({
@@ -99,38 +107,79 @@ export default function RegisterPage() {
     }
 
     setIsLoading(true);
-    setStep('redirecting');
+    setIsLoading(false);
+    setStep('payment_selection');
+  };
 
+  const handleSelectLemonSqueezy = async () => {
+    setIsLoading(true);
+    setErrorMsg('');
+    setStep('redirecting');
     try {
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, manualPayment: false }),
       });
 
       const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error || 'Hubo un error al registrar el restaurante.');
-      }
+      if (!result.success) throw new Error(result.error || 'Error al registrar.');
 
       setRegisteredSlug(result.slug);
-      setCheckoutUrl(result.checkoutUrl);
-
-      // Guardamos el slug en localStorage. 
-      // A veces el modal de Lemon Squeezy corta los parámetros de la URL, 
-      // esto asegura que la página de éxito sepa a dónde redirigir.
       localStorage.setItem('mtriq_pending_slug', result.slug);
-
-      // Redirigir automáticamente a Lemon Squeezy para pagar
       window.location.href = result.checkoutUrl;
-
     } catch (err: any) {
-      console.error(err);
-      setErrorMsg(err.message || 'Ocurrió un error inesperado. Inténtalo de nuevo.');
-      setStep('details');
+      setErrorMsg(err.message || 'Error inesperado.');
+      setStep('payment_selection');
       setIsLoading(false);
     }
+  };
+
+  const handleSelectPagoMovil = async () => {
+    setStep('pago_movil');
+    setIsLoading(true);
+    try {
+      const res = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+      const data = await res.json();
+      if (data.promedio) {
+        setBcvRate(data.promedio);
+      }
+    } catch (err) {
+      console.error('Error fetching BCV rate', err);
+    }
+    setIsLoading(false);
+  };
+
+  const handleSubmitPagoMovil = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg('');
+    
+    if (!pmReference || !pmAmount || !pmDate || !pmBank || !pmCedula) {
+      setErrorMsg('Debes completar todos los campos del pago para continuar.');
+      return;
+    }
+
+    setIsLoading(true);
+    setStep('redirecting');
+
+    try {
+      const paymentReference = `PagoMovil | Ref: ${pmReference} | Monto: Bs.${pmAmount} | Fecha: ${pmDate} | Banco: ${pmBank} | CI: ${pmCedula}`;
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, manualPayment: true, paymentReference }),
+      });
+
+      const result = await response.json();
+      if (!result.success) throw new Error(result.error || 'Error al registrar.');
+
+      setRegisteredSlug(result.slug);
+      setStep('success');
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Error inesperado.');
+      setStep('pago_movil');
+    }
+    setIsLoading(false);
   };
 
   const benefits = [
@@ -465,6 +514,164 @@ export default function RegisterPage() {
               </form>
             )}
 
+            {/* STEP 1.5: Payment Selection */}
+            {step === 'payment_selection' && (
+              <div className="space-y-6 animate-fade-in">
+                <div className="space-y-2 mb-6">
+                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Elige cómo pagar</h1>
+                  <p className="text-slate-400 text-sm">Selecciona tu método de pago preferido para activar tu suscripción de $29/mes.</p>
+                </div>
+
+                {errorMsg && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-red-600 text-xs font-semibold">
+                    {errorMsg}
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  <button
+                    onClick={handleSelectLemonSqueezy}
+                    disabled={isLoading}
+                    className="w-full bg-white border-2 border-slate-200 hover:border-orange-500 rounded-2xl p-6 text-left transition-all active:scale-[0.99] group relative overflow-hidden flex items-center justify-between"
+                  >
+                    <div>
+                      <h3 className="font-black text-slate-800 text-lg group-hover:text-orange-600 transition-colors">Tarjeta Internacional (Lemon Squeezy)</h3>
+                      <p className="text-slate-500 text-sm mt-1">La forma inteligente de pagar. Tan simple como un clic.</p>
+                    </div>
+                    <ChevronRight className="w-6 h-6 text-slate-300 group-hover:text-orange-500 transition-colors" />
+                  </button>
+
+                  <button
+                    onClick={handleSelectPagoMovil}
+                    disabled={isLoading}
+                    className="w-full bg-white border-2 border-slate-200 hover:border-orange-500 rounded-2xl p-6 text-left transition-all active:scale-[0.99] group relative overflow-hidden flex items-center justify-between"
+                  >
+                    <div>
+                      <h3 className="font-black text-slate-800 text-lg group-hover:text-orange-600 transition-colors">Pago Móvil (Bolívares)</h3>
+                      <p className="text-slate-500 text-sm mt-1">Pagos para VENEZUELA (Tasa BCV).</p>
+                    </div>
+                    <ChevronRight className="w-6 h-6 text-slate-300 group-hover:text-orange-500 transition-colors" />
+                  </button>
+                </div>
+
+                <button 
+                  onClick={() => setStep('details')}
+                  disabled={isLoading}
+                  className="w-full text-center text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors mt-4"
+                >
+                  Volver atrás
+                </button>
+              </div>
+            )}
+
+            {/* STEP 1.7: Pago Movil Form */}
+            {step === 'pago_movil' && (
+              <form onSubmit={handleSubmitPagoMovil} className="space-y-6 animate-fade-in">
+                <div className="space-y-2 mb-2">
+                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Pago Móvil</h1>
+                  <p className="text-slate-400 text-sm">Realiza el pago y registra los datos abajo para activar tu cuenta.</p>
+                </div>
+
+                <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5 space-y-3">
+                  <div className="flex justify-between items-center border-b border-orange-200/50 pb-3">
+                    <span className="text-slate-600 text-sm font-bold">Monto a pagar ($29 USD):</span>
+                    <span className="text-xl font-black text-orange-600">
+                      Bs. {bcvRate ? (bcvRate * 29).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'Calculando...'}
+                    </span>
+                  </div>
+                  <div className="text-sm text-slate-700 space-y-1 pt-1">
+                    <p><strong>Banco:</strong> Banco de Venezuela</p>
+                    <p><strong>Identificación:</strong> J-12517086 (MTRIQ)</p>
+                    <p><strong>Teléfono:</strong> 0414-8817137</p>
+                  </div>
+                  <div className="text-xs text-orange-600/80 font-semibold pt-2 text-center">
+                    Tasa oficial BCV referencial: Bs. {bcvRate ? bcvRate.toLocaleString('es-VE', { minimumFractionDigits: 4 }) : '...'} / USD
+                  </div>
+                </div>
+
+                {errorMsg && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-red-600 text-xs font-semibold">
+                    {errorMsg}
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-slate-700">Número de Referencia (Últimos 6 dígitos) *</label>
+                    <input 
+                      value={pmReference}
+                      onChange={e => setPmReference(e.target.value)}
+                      required 
+                      placeholder="Ej: 849201" 
+                      className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700">Monto Exacto (Bs) *</label>
+                      <input 
+                        value={pmAmount}
+                        onChange={e => setPmAmount(e.target.value)}
+                        required 
+                        placeholder="Ej: 1058.50" 
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700">Fecha del Pago *</label>
+                      <input 
+                        type="date"
+                        value={pmDate}
+                        onChange={e => setPmDate(e.target.value)}
+                        required 
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700">Banco Emisor *</label>
+                      <input 
+                        value={pmBank}
+                        onChange={e => setPmBank(e.target.value)}
+                        required 
+                        placeholder="Ej: Banesco" 
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-700">Cédula / RIF Origen *</label>
+                      <input 
+                        value={pmCedula}
+                        onChange={e => setPmCedula(e.target.value)}
+                        required 
+                        placeholder="Ej: V-12345678" 
+                        className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2 flex flex-col gap-3">
+                  <button 
+                    type="submit"
+                    disabled={isLoading || !pmReference || !pmAmount || !pmDate || !pmBank || !pmCedula}
+                    className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+                  >
+                    {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Verificando...</> : 'YA REALICÉ EL PAGO'}
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setStep('payment_selection')}
+                    disabled={isLoading}
+                    className="w-full text-center text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    Volver atrás
+                  </button>
+                </div>
+              </form>
+            )}
+
             {/* STEP 2: Redirecting to Lemon Squeezy */}
             {step === 'redirecting' && (
               <div className="text-center space-y-8 py-8 animate-fade-in">
@@ -497,7 +704,26 @@ export default function RegisterPage() {
               </div>
             )}
 
-            {/* STEP 3: Handled by /success page after payment */}
+            {/* STEP 3: Manual Success (Pago Movil) */}
+            {step === 'success' && (
+              <div className="text-center space-y-6 py-8 animate-fade-in">
+                <div className="w-20 h-20 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-10 h-10 text-green-500" />
+                </div>
+                <div className="space-y-2">
+                  <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">¡Pago confirmado!</h1>
+                  <p className="text-slate-500 text-sm max-w-xs mx-auto">
+                    Tu cuenta ha sido activada exitosamente con el Pago Móvil registrado.
+                  </p>
+                </div>
+                <Link
+                  href={`/${registeredSlug}/gerente`}
+                  className="inline-flex w-full mt-4 items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl h-14 text-base transition-all shadow-lg active:scale-[0.99]"
+                >
+                  Ir al Panel de Control <ChevronRight className="w-5 h-5" />
+                </Link>
+              </div>
+            )}
 
           </div>
 

@@ -30,6 +30,8 @@ export async function POST(request: Request) {
       tiktok,
       glubbi_type,
       glubbi_category,
+      manualPayment,
+      paymentReference,
     } = body;
 
     // Validation
@@ -132,9 +134,11 @@ export async function POST(request: Request) {
           tiktok: tiktok || null,
           brand_color_primary: '#FF6B00',
           brand_color_secondary: '#1A1A2E',
-          is_active: false, // Se activa tras confirmar pago via webhook de Lemon Squeezy
+          is_active: manualPayment ? true : false,
           glubbi_type: glubbi_type || 'Restaurantes',
           glubbi_category: glubbi_category || 'Comida',
+          // Optionally you can store paymentReference in a notes field if it exists,
+          // but for now we just activate the account directly.
         } as any)
         .select()
         .single() as any;
@@ -170,7 +174,7 @@ export async function POST(request: Request) {
           tax_id: null, // Avoid injecting fallback contact details object here
           brand_color_primary: '#FF6B00',
           brand_color_secondary: '#1A1A2E',
-          is_active: false, // Se activa tras confirmar pago via webhook de Lemon Squeezy
+          is_active: manualPayment ? true : false,
         } as any)
         .select()
         .single() as any;
@@ -210,13 +214,17 @@ export async function POST(request: Request) {
 
     // 5. Construir URL de checkout de Lemon Squeezy con datos del restaurante
     // El email de bienvenida se envía desde el webhook DESPUÉS de que el pago se confirme.
-    const checkoutUrl = buildCheckoutUrl({
-      email,
-      restaurantId: newRestaurantId,
-      slug,
-    });
+    let checkoutUrl = null;
+    
+    if (!manualPayment) {
+      checkoutUrl = buildCheckoutUrl({
+        email,
+        restaurantId: newRestaurantId,
+        slug,
+      });
+    }
 
-    // Success! Devolver la URL de checkout para redirigir al usuario a pagar
+    // Success! Devolver la URL de checkout para redirigir al usuario a pagar (o null si fue manual)
     return NextResponse.json({
       success: true,
       restaurantId: newRestaurantId,
