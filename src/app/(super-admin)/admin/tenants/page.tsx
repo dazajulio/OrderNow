@@ -255,7 +255,7 @@ export default function TenantsPage() {
 
         {/* SIDEBAR DETAILED DRAWER (Only shows when tenant is selected) */}
         {selectedTenant && (
-          <div className="w-full lg:w-96 bg-slate-500 border border-orange-500/15 rounded-3xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden shrink-0 animate-fade-in-right">
+          <div className="w-full lg:w-96 bg-white border border-gray-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden shrink-0 animate-fade-in-right">
             
             {/* Header of Drawer */}
             <div className="flex justify-between items-start">
@@ -264,13 +264,13 @@ export default function TenantsPage() {
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-black text-white text-lg tracking-tight">{selectedTenant.name}</h3>
-                  <span className="text-[10px] text-gray-400 font-mono">ID: {selectedTenant.id.substring(0, 8)}...</span>
+                  <h3 className="font-black text-slate-900 text-lg tracking-tight">{selectedTenant.name}</h3>
+                  <span className="text-[10px] text-gray-500 font-mono">ID: {selectedTenant.id.substring(0, 8)}...</span>
                 </div>
               </div>
               <button 
                 onClick={() => setSelectedTenant(null)}
-                className="p-1.5 hover:bg-slate-50 rounded-full text-gray-500 hover:text-white transition-colors"
+                className="p-1.5 hover:bg-slate-100 rounded-full text-gray-400 hover:text-slate-800 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -280,7 +280,7 @@ export default function TenantsPage() {
             <div className="border-t border-b border-gray-200 py-4 space-y-4">
               
               {/* Active status switcher */}
-              <div className="flex justify-between items-center bg-slate-50/40 p-4 rounded-2xl border border-gray-200">
+              <div className="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-gray-200">
                 <div>
                   <span className="block text-xs font-bold text-gray-900 uppercase tracking-wider">Estatus Afiliación</span>
                   <span className="text-[10px] text-gray-400">Activa o suspende el restaurante</span>
@@ -299,7 +299,7 @@ export default function TenantsPage() {
               </div>
 
               {/* License management */}
-              <div className="bg-slate-50/40 p-4 rounded-2xl border border-gray-200 space-y-3">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-gray-200 space-y-3">
                 <div>
                   <span className="block text-xs font-bold text-gray-900 uppercase tracking-wider">Licencia de Ecosistema</span>
                   <span className="text-[10px] text-gray-400">Código único de control</span>
@@ -340,13 +340,13 @@ export default function TenantsPage() {
               <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider block">Rendimiento Operativo</span>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-slate-50/20 border border-gray-200 p-3 rounded-2xl">
+                <div className="bg-slate-50 border border-gray-200 p-3 rounded-2xl">
                   <span className="text-gray-400 text-[9px] font-bold uppercase block">Ventas (GMV)</span>
-                  <span className="text-sm font-black text-orange-400 font-mono">
+                  <span className="text-sm font-black text-orange-500 font-mono">
                     ${getTenantStats(selectedTenant.id).totalGmv.toLocaleString()}
                   </span>
                 </div>
-                <div className="bg-slate-50/20 border border-gray-200 p-3 rounded-2xl">
+                <div className="bg-slate-50 border border-gray-200 p-3 rounded-2xl">
                   <span className="text-gray-400 text-[9px] font-bold uppercase block">Órdenes Hoy</span>
                   <span className="text-sm font-black text-gray-900 font-mono">
                     {getTenantStats(selectedTenant.id).ordersToday}
@@ -407,7 +407,7 @@ export default function TenantsPage() {
 
             {/* Overlay Loader during actions */}
             {isUpdating && (
-              <div className="absolute inset-0 bg-slate-50/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-20">
+              <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-20">
                 <div className="w-8 h-8 border-3 border-gray-200 border-t-purple-500 rounded-full animate-spin" />
                 <span className="text-gray-500 text-xs font-bold uppercase tracking-wider">{actionMessage}</span>
               </div>
