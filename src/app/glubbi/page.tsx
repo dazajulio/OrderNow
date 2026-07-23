@@ -85,9 +85,8 @@ export default function GlubbiMarketplace() {
             </div>
             <p className="text-xs text-slate-500 ml-5">Toca para actualizar</p>
           </div>
-          <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center relative">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute top-2 right-2.5 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center relative bg-white shadow-sm border border-gray-100 overflow-hidden shrink-0">
+            <img src="/logo-glubbi.png" alt="Glubbi" className="w-full h-full object-cover scale-110" />
           </div>
         </div>
 
