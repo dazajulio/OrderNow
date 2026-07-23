@@ -50,7 +50,8 @@ export default function KioskPage({ params }: KioskPageProps) {
   const [step, setStep] = useState<FlowStep>('browse');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'cash' | 'terminal' | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<any | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
   const [customerId, setCustomerId] = useState<string | null>(null);
   const [customizingProduct, setCustomizingProduct] = useState<ProductWithModifiers | null>(null);
   const [editingCartItemId, setEditingCartItemId] = useState<string | null>(null);
@@ -131,6 +132,12 @@ export default function KioskPage({ params }: KioskPageProps) {
       setContext(restaurant.id, tableId);
       setRestaurantName(restaurant.name || 'Burger Palace');
       setRestaurantLogo(restaurant.logo_url);
+      
+      if (restaurant.payment_methods) {
+        try {
+          setPaymentMethods(restaurant.payment_methods as any[]);
+        } catch (e) {}
+      }
       
       // Load categories
       const { data: catsData } = await supabase
@@ -363,7 +370,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     changeStep('checkout');
   };
 
-  const handleProcessPayment = async (method: 'stripe' | 'cash' | 'terminal') => {
+  const handleProcessPayment = async (method: any) => {
     setIsProcessing(true);
     setPaymentMethod(method);
     const supabase = createClient();
@@ -394,7 +401,7 @@ export default function KioskPage({ params }: KioskPageProps) {
         customer_id: customerId || null,
         status: 'pending',
         total_amount: getTotal(),
-        payment_method: method,
+        payment_method: method.title, // Store the title of the custom method
         payment_status: 'pending',
         notes: notesPrefix || null
       } as any)
@@ -422,9 +429,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     // Wait slightly so the UI shows success and realtime fires
     await new Promise(r => setTimeout(r, 1000));
     
-    if (method === 'cash' || method === 'terminal') {
-      clearCart();
-    }
+    clearCart();
     setIsProcessing(false);
     changeStep('success');
   };
@@ -534,13 +539,11 @@ export default function KioskPage({ params }: KioskPageProps) {
         </button>
         <CheckoutForm 
           total={getTotal()} 
-          currency={currency} 
-          onPayWithCard={() => handleProcessPayment('stripe')}
-          onPayAtCounter={() => handleProcessPayment('cash')}
-          onPayWithTerminal={() => handleProcessPayment('terminal')}
+          currency={currency}
+          onSelectPayment={handleProcessPayment}
           isProcessing={isProcessing}
           paymentMethod={paymentMethod}
-          hideCashOptions={isDelivery}
+          paymentMethods={paymentMethods}
           isWaiter={isWaiter}
           tables={allTables}
           selectedTableId={selectedTableId}

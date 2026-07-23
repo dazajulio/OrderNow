@@ -8,6 +8,13 @@ import { BarChart3, Building2, Save, Lock, TrendingUp, Users, Package, DollarSig
 import { formatPrice } from '@/lib/utils';
 import type { Product, OrderWithItems, Customer } from '@/types/database';
 
+interface PaymentMethodItem {
+  id: string;
+  title: string;
+  details: string;
+  logoUrl: string;
+}
+
 export default function SettingsAdminPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -31,6 +38,7 @@ export default function SettingsAdminPage() {
   const [address, setAddress] = useState('');
   const [glubbiType, setGlubbiType] = useState('Restaurantes');
   const [glubbiCategory, setGlubbiCategory] = useState('');
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodItem[]>([]);
 
   // --- Admin Password State ---
   const [newAdminPassword, setNewAdminPassword] = useState('');
@@ -73,6 +81,14 @@ export default function SettingsAdminPage() {
         setAddress(restData.address || '');
         setGlubbiType(restData.glubbi_type || 'Restaurantes');
         setGlubbiCategory(restData.glubbi_category || '');
+        if (restData.payment_methods) {
+          try {
+            // Supabase JSON returns as any, we cast or parse it
+            setPaymentMethods(restData.payment_methods as any || []);
+          } catch (e) {
+            console.error('Error parsing payment methods', e);
+          }
+        }
       }
       
       // Products for upsell selection
@@ -120,12 +136,31 @@ export default function SettingsAdminPage() {
         phone,
         address,
         glubbi_type: glubbiType,
-        glubbi_category: glubbiCategory
+        glubbi_category: glubbiCategory,
+        payment_methods: paymentMethods
       } as any)
       .eq('id', restaurantId);
       
     setIsSaving(false);
     alert('Configuración guardada correctamente.');
+  };
+
+  const addPaymentMethod = () => {
+    const newMethod: PaymentMethodItem = {
+      id: crypto.randomUUID(),
+      title: 'Nuevo Método',
+      details: '',
+      logoUrl: ''
+    };
+    setPaymentMethods([...paymentMethods, newMethod]);
+  };
+
+  const updatePaymentMethod = (id: string, field: keyof PaymentMethodItem, value: string) => {
+    setPaymentMethods(paymentMethods.map(pm => pm.id === id ? { ...pm, [field]: value } : pm));
+  };
+
+  const removePaymentMethod = (id: string) => {
+    setPaymentMethods(paymentMethods.filter(pm => pm.id !== id));
   };
 
   const changeAdminPassword = async () => {
@@ -665,6 +700,106 @@ export default function SettingsAdminPage() {
               >
                 <Save className="w-5 h-5" />
                 {isSaving ? 'Guardando...' : 'Guardar Datos'}
+              </button>
+            </div>
+          </div>
+          
+          {/* Métodos de Pago Dinámicos */}
+          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 shadow-xl relative overflow-hidden group h-fit col-span-1 lg:col-span-2">
+            <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+              <DollarSign className="w-5 h-5 text-orange-500" /> Métodos de Pago
+            </h2>
+            <p className="text-gray-500 text-sm mb-6">
+              Registra los instrumentos de pago que aceptas. Estos se mostrarán en el kiosco al finalizar la compra.
+            </p>
+            
+            <div className="space-y-4">
+              {paymentMethods.map((pm, index) => (
+                <div key={pm.id} className="border border-gray-200 p-4 rounded-xl bg-slate-50 relative">
+                  <button 
+                    onClick={() => removePaymentMethod(pm.id)}
+                    className="absolute top-4 right-4 text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors text-xs font-bold"
+                  >
+                    Eliminar
+                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Título (Ej. Pago Móvil)</label>
+                      <input 
+                        type="text"
+                        value={pm.title}
+                        onChange={(e) => updatePaymentMethod(pm.id, 'title', e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Detalles / Instrucciones</label>
+                      <textarea 
+                        value={pm.details}
+                        onChange={(e) => updatePaymentMethod(pm.id, 'details', e.target.value)}
+                        placeholder="Ej. Banco: Banesco, CI: 1234567, Tel: 0414-1234567"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 h-20"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Logo del Método (URL o Subir)</label>
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <div className="w-12 h-12 bg-white border border-gray-200 rounded-xl overflow-hidden flex items-center justify-center shrink-0">
+                          {pm.logoUrl ? (
+                            <img src={pm.logoUrl} alt="Logo" className="w-full h-full object-contain p-1" />
+                          ) : (
+                            <DollarSign className="w-5 h-5 text-gray-300" />
+                          )}
+                        </div>
+                        <div className="flex-1 w-full space-y-2">
+                          <input 
+                            type="text"
+                            value={pm.logoUrl.startsWith('data:') ? 'Imagen subida (Base64)' : pm.logoUrl}
+                            onChange={(e) => updatePaymentMethod(pm.id, 'logoUrl', e.target.value)}
+                            placeholder="https://ejemplo.com/logo-zelle.png"
+                            disabled={pm.logoUrl.startsWith('data:')}
+                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50"
+                          />
+                          <input 
+                            type="file" 
+                            accept="image/png, image/jpeg, image/webp, image/svg+xml" 
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              if (file.size > 2 * 1024 * 1024) {
+                                alert("La imagen es demasiado grande. El límite es 2MB.");
+                                return;
+                              }
+                              const reader = new FileReader();
+                              reader.onloadend = () => updatePaymentMethod(pm.id, 'logoUrl', reader.result as string);
+                              reader.readAsDataURL(file);
+                            }} 
+                            className="w-full text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-orange-100 file:text-orange-700 hover:file:bg-orange-200 cursor-pointer" 
+                          />
+                          {pm.logoUrl.startsWith('data:') && (
+                            <button onClick={() => updatePaymentMethod(pm.id, 'logoUrl', '')} className="text-xs text-red-500 font-medium">Borrar imagen subida</button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              <button 
+                onClick={addPaymentMethod}
+                className="w-full border-2 border-dashed border-gray-300 text-gray-500 font-bold py-3 rounded-xl hover:border-orange-500 hover:text-orange-500 transition-colors"
+              >
+                + Añadir Nuevo Método de Pago
+              </button>
+
+              <button 
+                onClick={saveSettings}
+                disabled={isSaving}
+                className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <Save className="w-5 h-5" />
+                {isSaving ? 'Guardando...' : 'Guardar Métodos'}
               </button>
             </div>
           </div>

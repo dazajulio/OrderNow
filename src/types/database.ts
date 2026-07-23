@@ -49,6 +49,7 @@ export interface Database {
           glubbi_category: string | null;
           rating: number;
           estimated_time: string;
+          payment_methods: Json | null;
           created_at: string;
           updated_at: string;
         };
@@ -252,7 +253,7 @@ export interface Database {
 // ============================================================================
 
 export type OrderStatus = 'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
-export type PaymentMethod = 'stripe' | 'cash' | 'terminal';
+export type PaymentMethod = string;
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
 export type MemberRole = 'owner' | 'manager' | 'kitchen' | 'cashier' | 'staff';
 

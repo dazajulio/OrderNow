@@ -500,9 +500,9 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
               }
             }}
             className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 font-bold text-center py-2.5 rounded-lg text-sm border border-amber-500/20 flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            title="Registrar Pago"
+            title="Confirmar Pago"
           >
-            ⚠️ PEDIDO POR PAGAR
+            ⚠️ ESPERA DE CONFIRMACIÓN DE PAGO
           </button>
         )}
 
@@ -522,12 +522,12 @@ export function OrderCard({ order, onStatusChange, onPaymentValidate, onCancel }
             type="button"
             onClick={() => {
               if (action.status === 'delivered' && order.payment_status === 'pending') {
-                const ref = window.prompt('El pedido está por pagar. Ingrese la referencia de pago (Ej. Efectivo o Tarjeta) para poder entregarlo:');
+                const ref = window.prompt('El pedido está en espera de confirmación de pago. Ingrese la referencia (Ej. Zelle 1234 o Efectivo) para poder entregarlo:');
                 if (ref) {
                   if (onPaymentValidate) onPaymentValidate(order.id, ref);
                   onStatusChange(order.id, action.status);
                 } else {
-                  alert('Debes registrar el pago para poder cerrar este pedido como entregado.');
+                  alert('Debes confirmar el pago ingresando una referencia para poder cerrar este pedido.');
                 }
               } else {
                 onStatusChange(order.id, action.status);
