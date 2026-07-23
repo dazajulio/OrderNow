@@ -14,7 +14,7 @@ interface PaymentMethodItem {
 interface CheckoutFormProps {
   total: number;
   currency: string;
-  onSelectPayment: (method: PaymentMethodItem | { id: string; title: string; details: string; logoUrl: string }) => void;
+  onSelectPayment: (method: PaymentMethodItem | { id: string; title: string; details: string; logoUrl: string }, verificationNotes?: string) => void;
   isProcessing: boolean;
   paymentMethod: any | null; // Selected method object
   paymentMethods: PaymentMethodItem[];
@@ -24,7 +24,7 @@ interface CheckoutFormProps {
   onTableChange?: (tableId: string) => void;
 }
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function CheckoutForm({
   total,
@@ -38,12 +38,47 @@ export function CheckoutForm({
   selectedTableId = '',
   onTableChange
 }: CheckoutFormProps) {
+  const [verificationMethod, setVerificationMethod] = useState<any | null>(null);
+  const [bcvRate, setBcvRate] = useState<number>(0);
+  const [isFetchingRate, setIsFetchingRate] = useState(false);
+  const [pmReference, setPmReference] = useState('');
+  const [pmAmount, setPmAmount] = useState('');
+  const [pmDate, setPmDate] = useState('');
+  const [pmBank, setPmBank] = useState('');
+  const [pmCedula, setPmCedula] = useState('');
   
   useEffect(() => {
     if (paymentMethod) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [paymentMethod]);
+
+  const handleMethodClick = async (method: any) => {
+    if (method.id === 'default') {
+      onSelectPayment(method);
+      return;
+    }
+    setVerificationMethod(method);
+    setIsFetchingRate(true);
+    try {
+      const res = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+      const data = await res.json();
+      if (data.promedio) {
+        setBcvRate(data.promedio);
+      }
+    } catch (err) {
+      console.error('Error fetching BCV rate', err);
+    }
+    setIsFetchingRate(false);
+  };
+
+  const handleVerificationSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pmReference || !pmAmount || !pmDate || !pmBank || !pmCedula) return;
+    
+    const verificationNotes = `Validación: Ref: ${pmReference} | Monto: Bs.${pmAmount} | Fecha: ${pmDate} | Banco: ${pmBank} | CI/RIF: ${pmCedula}`;
+    onSelectPayment(verificationMethod, verificationNotes);
+  };
 
   if (paymentMethod) {
     return (
@@ -74,6 +109,113 @@ export function CheckoutForm({
           </p>
         </div>
       </div>
+    );
+  }
+
+  if (verificationMethod) {
+    return (
+      <form onSubmit={handleVerificationSubmit} className="w-full max-w-md mx-auto space-y-6 animate-fade-in text-left">
+        <div className="space-y-2 mb-2">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Validar Pago</h1>
+          <p className="text-slate-500 text-sm">Realiza tu pago en <strong>{verificationMethod.title}</strong> y registra los datos abajo para procesar tu orden.</p>
+        </div>
+
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-5 space-y-3">
+          <div className="flex justify-between items-center border-b border-orange-200/50 pb-3">
+            <span className="text-slate-600 text-sm font-bold">Monto a pagar ({formatPrice(total, currency)}):</span>
+            <span className="text-xl font-black text-orange-600 flex items-center gap-2">
+              {isFetchingRate && <Loader2 className="w-4 h-4 animate-spin" />}
+              Bs. {bcvRate ? (bcvRate * total).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'Calculando...'}
+            </span>
+          </div>
+          
+          <div className="text-sm text-slate-700 pt-1">
+            <p className="font-bold mb-1">Datos para realizar el pago:</p>
+            <div className="bg-white/60 p-3 rounded-lg border border-orange-200/50 whitespace-pre-wrap">
+              {verificationMethod.details || 'No hay detalles registrados.'}
+            </div>
+          </div>
+          
+          <div className="text-xs text-orange-600/80 font-semibold pt-2 text-center">
+            Tasa oficial BCV referencial: Bs. {bcvRate ? bcvRate.toLocaleString('es-VE', { minimumFractionDigits: 4 }) : '...'} / USD
+          </div>
+        </div>
+
+        <div className="space-y-4 bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-slate-700">Número de Referencia (Últimos 6 dígitos) *</label>
+            <input 
+              value={pmReference}
+              onChange={e => setPmReference(e.target.value)}
+              required 
+              placeholder="Ej: 849201" 
+              className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-sm"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Monto Exacto (Bs) *</label>
+              <input 
+                value={pmAmount}
+                onChange={e => setPmAmount(e.target.value)}
+                required 
+                placeholder="Ej: 1058.50" 
+                className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-sm"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Fecha del Pago *</label>
+              <input 
+                type="date"
+                value={pmDate}
+                onChange={e => setPmDate(e.target.value)}
+                required 
+                className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-sm"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Banco Emisor *</label>
+              <input 
+                value={pmBank}
+                onChange={e => setPmBank(e.target.value)}
+                required 
+                placeholder="Ej: Banesco" 
+                className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-sm"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Cédula / RIF Origen *</label>
+              <input 
+                value={pmCedula}
+                onChange={e => setPmCedula(e.target.value)}
+                required 
+                placeholder="Ej: V-12345678" 
+                className="w-full bg-slate-50/60 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors text-sm"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-2 flex flex-col gap-3">
+          <button 
+            type="submit"
+            disabled={isProcessing || !pmReference || !pmAmount || !pmDate || !pmBank || !pmCedula}
+            className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl h-14 text-base transition-all shadow-[0_4px_20px_rgba(249,115,22,0.2)] active:scale-[0.99] disabled:opacity-60 disabled:pointer-events-none"
+          >
+            {isProcessing ? <><Loader2 className="w-5 h-5 animate-spin" /> Procesando...</> : 'YA REALICÉ EL PAGO'}
+          </button>
+          <button 
+            type="button"
+            onClick={() => setVerificationMethod(null)}
+            disabled={isProcessing}
+            className="w-full text-center text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            Elegir otro método
+          </button>
+        </div>
+      </form>
     );
   }
 
@@ -125,7 +267,7 @@ export function CheckoutForm({
           paymentMethods.map(pm => (
             <button
               key={pm.id}
-              onClick={() => onSelectPayment(pm)}
+              onClick={() => handleMethodClick(pm)}
               disabled={isProcessing}
               className="w-full bg-white shadow-sm hover:bg-slate-100 text-gray-900 font-bold text-lg py-5 px-6 rounded-2xl border border-gray-200 active:scale-[0.98] transition-all flex items-center justify-between group text-left"
             >

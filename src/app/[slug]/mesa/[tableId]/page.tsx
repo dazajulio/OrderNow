@@ -370,7 +370,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     changeStep('checkout');
   };
 
-  const handleProcessPayment = async (method: any) => {
+  const handleProcessPayment = async (method: any, verificationNotes?: string) => {
     setIsProcessing(true);
     setPaymentMethod(method);
     const supabase = createClient();
@@ -391,6 +391,10 @@ export default function KioskPage({ params }: KioskPageProps) {
       notesPrefix = `[Origen: Delivery] | Dirección: ${deliveryAddress} | Teléfono: ${deliveryPhone} | Referencia: ${deliveryReference}`;
     } else if (isWaiter) {
       notesPrefix = `[Origen: Mesero: ${waiterName}]`;
+    }
+
+    if (verificationNotes) {
+      notesPrefix = notesPrefix ? `${notesPrefix} | ${verificationNotes}` : verificationNotes;
     }
 
     const { data: order, error: orderError } = await supabase
