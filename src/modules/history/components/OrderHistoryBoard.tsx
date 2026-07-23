@@ -57,7 +57,7 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
           placeholder="Buscar por número de orden, cliente o mesa..." 
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-white shadow-sm border border-gray-200 rounded-2xl py-4 pl-14 pr-6 text-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full bg-white shadow-sm border border-gray-200 rounded-2xl py-4 pl-14 pr-6 text-lg text-slate-800 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
         />
       </div>
 
@@ -76,7 +76,7 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
                 <div className="flex items-start gap-4">
                   <div className="bg-slate-100 rounded-xl p-3 flex flex-col items-center justify-center min-w-[4rem]">
                     <span className="text-xs text-gray-500">#</span>
-                    <span className="text-xl font-bold text-white">{order.order_number}</span>
+                    <span className="text-xl font-bold text-slate-800">{order.order_number}</span>
                   </div>
                   
                   <div className="space-y-1">
@@ -108,10 +108,20 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
                     </div>
 
                     {order.notes && order.notes.includes('[Origen: Delivery]') && (
-                      <div className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-lg p-2.5 mt-2 space-y-0.5 max-w-md">
-                        <div><strong className="text-blue-300">Dirección:</strong> {order.notes.match(/Dirección:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
-                        <div><strong className="text-blue-300">Teléfono:</strong> {order.notes.match(/Teléfono:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
-                        <div><strong className="text-blue-300">Referencia:</strong> {order.notes.match(/Referencia:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                      <div className="text-xs bg-blue-500/10 border border-blue-500/20 text-blue-500 rounded-lg p-2.5 mt-2 space-y-0.5 max-w-md">
+                        <div><strong className="text-blue-600">Dirección:</strong> {order.notes.match(/Dirección:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div><strong className="text-blue-600">Teléfono:</strong> {order.notes.match(/Teléfono:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div><strong className="text-blue-600">Referencia:</strong> {order.notes.match(/Referencia:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                      </div>
+                    )}
+                    {order.notes && order.notes.includes('Validación:') && (
+                      <div className="text-xs bg-purple-500/10 border border-purple-500/20 text-purple-600 rounded-lg p-2.5 mt-2 space-y-0.5 max-w-md">
+                        <div><strong className="text-purple-700">Pago Móvil (Validado):</strong></div>
+                        <div>Ref: {order.notes.match(/Ref:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div>Monto: {order.notes.match(/Monto:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div>Banco: {order.notes.match(/Banco:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div>Fecha: {order.notes.match(/Fecha:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
+                        <div>CI/RIF: {order.notes.match(/CI\/RIF:\s*([^|]+)/)?.[1]?.trim() || 'N/A'}</div>
                       </div>
                     )}
                   </div>
@@ -119,15 +129,19 @@ export function OrderHistoryBoard({ restaurantId }: OrderHistoryBoardProps) {
 
                 {/* Items Summary & Total */}
                 <div className="flex flex-col sm:items-end gap-2 sm:max-w-xs">
-                  <span className="text-xl font-bold text-white">{formatPrice(order.total_amount, 'USD')}</span>
+                  <span className="text-xl font-bold text-slate-800">{formatPrice(order.total_amount, 'USD')}</span>
                   <p className="text-sm text-gray-500 line-clamp-2 text-left sm:text-right">
                     {order.order_items.map(item => `${item.quantity}x ${item.product_name}`).join(', ')}
                   </p>
-                  {order.payment_method && (
-                    <span className="text-xs px-2 py-1 bg-slate-100 text-gray-800 rounded-md">
-                      Pago: {order.payment_method === 'stripe' ? 'Tarjeta' : (order.payment_method as any) === 'terminal' ? 'Terminal' : 'Efectivo'}
+                  {order.payment_method ? (
+                    <span className="text-xs px-2 py-1 bg-slate-100 text-gray-800 rounded-md font-medium">
+                      Pago: {order.payment_method === 'stripe' ? 'Tarjeta' : (order.payment_method as any) === 'terminal' ? 'Terminal' : (order.payment_method as any) === 'pago_movil' ? 'Pago Móvil' : 'Efectivo'}
                     </span>
-                  )}
+                  ) : order.notes && order.notes.includes('Validación:') ? (
+                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-800 rounded-md font-bold border border-purple-200">
+                      Pago Móvil Validado
+                    </span>
+                  ) : null}
                 </div>
 
               </div>
