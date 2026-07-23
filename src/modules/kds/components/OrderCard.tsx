@@ -138,11 +138,13 @@ export function getOrderOrigin(order: OrderWithItems): { type: 'Mesa' | 'Mesero'
 }
 
 export function getDeliveryDetails(notes: string | null): { address?: string; phone?: string; reference?: string } | null {
-  if (!notes || !notes.includes('[Origen: Delivery]')) return null;
+  if (!notes) return null;
+  const safeNotes = notes.substring(0, 1500); // Mitigation against ReDoS
+  if (!safeNotes.includes('[Origen: Delivery]')) return null;
   
-  const addressMatch = notes.match(/Dirección:\s*([^|]+)/);
-  const phoneMatch = notes.match(/Teléfono:\s*([^|]+)/);
-  const referenceMatch = notes.match(/Referencia:\s*([^|]+)/);
+  const addressMatch = safeNotes.match(/Dirección:\s*([^|]{1,200})/);
+  const phoneMatch = safeNotes.match(/Teléfono:\s*([^|]{1,50})/);
+  const referenceMatch = safeNotes.match(/Referencia:\s*([^|]{1,200})/);
   
   return {
     address: addressMatch ? addressMatch[1].trim() : undefined,
@@ -152,14 +154,16 @@ export function getDeliveryDetails(notes: string | null): { address?: string; ph
 }
 
 export function getValidationDetails(notes: string | null): { ref?: string; monto?: string; fecha?: string; banco?: string; ci?: string; raw?: string } | null {
-  if (!notes || !notes.includes('Validación:')) return null;
+  if (!notes) return null;
+  const safeNotes = notes.substring(0, 1500); // Mitigation against ReDoS
+  if (!safeNotes.includes('Validación:')) return null;
   
-  const refMatch = notes.match(/Ref:\s*([^|]+)/);
-  const montoMatch = notes.match(/Monto:\s*([^|]+)/);
-  const fechaMatch = notes.match(/Fecha:\s*([^|]+)/);
-  const bancoMatch = notes.match(/Banco:\s*([^|]+)/);
-  const ciMatch = notes.match(/CI\/RIF:\s*([^|]+)/);
-  const rawMatch = notes.match(/(Validación:.*?)(?:\n|$)/);
+  const refMatch = safeNotes.match(/Ref:\s*([^|]{1,50})/);
+  const montoMatch = safeNotes.match(/Monto:\s*([^|]{1,50})/);
+  const fechaMatch = safeNotes.match(/Fecha:\s*([^|]{1,50})/);
+  const bancoMatch = safeNotes.match(/Banco:\s*([^|]{1,50})/);
+  const ciMatch = safeNotes.match(/CI\/RIF:\s*([^|]{1,50})/);
+  const rawMatch = safeNotes.match(/(Validación:.*?)(?:\n|$)/);
 
   return {
     ref: refMatch ? refMatch[1].trim() : undefined,

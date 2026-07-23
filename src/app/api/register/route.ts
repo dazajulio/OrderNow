@@ -2,6 +2,23 @@ import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { buildCheckoutUrl } from '@/lib/lemonsqueezy';
 import { resend } from '@/lib/resend';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
+// Only initialize if env vars are present (fails open to prevent operational disruption)
+const redis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+  ? new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    })
+  : null;
+
+const ratelimit = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(3, '1 m'), // 3 requests per minute per IP
+    })
+  : null;
 
 function slugify(text: string): string {
   return text
@@ -18,6 +35,18 @@ function slugify(text: string): string {
 
 export async function POST(request: Request) {
   try {
+    // 0. Rate Limiting (Mitigation A)
+    if (ratelimit) {
+      const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1';
+      const { success } = await ratelimit.limit(ip);
+      if (!success) {
+        return NextResponse.json(
+          { success: false, error: 'Demasiados intentos de registro. Por favor, intenta de nuevo en un minuto.' },
+          { status: 429 }
+        );
+      }
+    }
+
     const body = await request.json();
     const {
       restaurantName,
