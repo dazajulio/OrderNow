@@ -237,7 +237,7 @@ export default function RegisterPage() {
       {/* Header / Logo */}
       <header className="relative z-20 max-w-7xl mx-auto px-6 w-full py-6 flex items-center justify-between border-b border-slate-200/60">
         <Link href="/" className="flex items-center gap-2 bg-white border border-slate-200 rounded-full pl-3 pr-4 py-1.5 shadow-sm hover:shadow-md hover:bg-slate-50 transition-all select-none">
-          <img src="/logo-Glubbi.png" alt="Glubbi Logo" className="w-5 h-5 object-contain" />
+          <img src="/logo-glubbi.png" alt="Glubbi Logo" className="w-5 h-5 object-contain" />
           <span className="text-sm font-black tracking-tight text-slate-900">
             Glubbi<span className="text-orange-500">.app</span>
           </span>

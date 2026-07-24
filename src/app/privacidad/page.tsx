@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       {/* Header */}
       <header className="relative z-20 max-w-5xl mx-auto px-6 w-full py-6 flex items-center justify-between border-b border-white/5">
         <Link href="/" className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full pl-3 pr-4 py-1.5 shadow-sm hover:shadow-md hover:bg-white/10 transition-all select-none">
-          <img src="/logo-Glubbi.png" alt="Glubbi Logo" className="w-5 h-5 object-contain" />
+          <img src="/logo-glubbi.png" alt="Glubbi Logo" className="w-5 h-5 object-contain" />
           <span className="text-sm font-black tracking-tight text-white">
             Glubbi<span className="text-orange-500">.app</span>
           </span>
