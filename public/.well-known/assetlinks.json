@@ -2,7 +2,7 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "app.mtriq.www.twa",
-    "sha256_cert_fingerprints": ["A1:43:9E:28:0B:57:97:CD:AF:07:26:74:23:43:F6:81:0A:56:9E:26:5C:8D:B8:D0:E7:1C:E5:B4:39:A1:42:50"]
+    "package_name": "app.glubbi.www.twa",
+    "sha256_cert_fingerprints": ["77:67:04:18:7B:18:5C:4D:50:7D:F8:7A:37:8A:30:E1:06:09:BE:17:D0:01:61:7C:BE:D0:A6:3E:66:90:D7:B9"]
   }
 }]
