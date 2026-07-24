@@ -87,19 +87,19 @@ export function Hero() {
         {/* LADO DERECHO: Mockups "emitiendo luz" que rompen la ola */}
         {/* El translate-y-16 empuja los mockups hacia abajo para que crucen la línea del SVG */}
         <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center lg:translate-y-16 animate-fade-in-up" style={{animationDelay: '150ms'}}>
-          <div className="relative w-full max-w-[590px] z-30 pt-8 sm:pt-12">
+          <div className="relative w-full max-w-[590px] z-30 pt-16 sm:pt-20">
             
-            {/* GLUBBI BADGE (Parallax flotante independiente centrado arriba) */}
-            <div className="absolute -top-4 sm:-top-6 left-1/2 -translate-x-1/2 z-50 animate-float-badge">
-              <div className="flex items-center gap-4 bg-slate-900/80 backdrop-blur-xl border border-blue-500/50 p-3 pr-6 rounded-full shadow-[0_0_50px_-5px_rgba(59,130,246,0.5)]">
+            {/* GLUBBI BADGE (Estático, más alto, más grande) */}
+            <div className="absolute -top-12 sm:-top-16 left-1/2 -translate-x-1/2 z-50">
+              <div className="flex items-center gap-4 bg-slate-900/80 backdrop-blur-xl border border-blue-500/50 p-3.5 pr-8 rounded-full shadow-[0_0_50px_-5px_rgba(59,130,246,0.5)]">
                 {/* Logo Glubbi Real */}
-                <div className="w-14 h-14 rounded-full bg-slate-950 flex items-center justify-center shadow-inner overflow-hidden border border-blue-400/50 shrink-0">
-                  <Image src="/logo-glubbi.png" alt="Glubbi Logo" width={56} height={56} className="object-cover w-full h-full" />
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-950 flex items-center justify-center shadow-inner overflow-hidden border border-blue-400/50 shrink-0">
+                  <Image src="/logo-glubbi.png" alt="Glubbi Logo" width={80} height={80} className="object-cover w-full h-full" />
                 </div>
                 {/* Text */}
                 <div className="flex flex-col justify-center">
-                  <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.25em] leading-none mb-1">Acceso Exclusivo</span>
-                  <span className="text-sm font-bold text-slate-100 leading-none">Miembros Mtriq</span>
+                  <span className="text-[11px] sm:text-xs font-black text-blue-400 uppercase tracking-[0.25em] leading-none mb-1">Acceso Exclusivo</span>
+                  <span className="text-base sm:text-lg font-bold text-slate-100 leading-none">APP Delivery</span>
                 </div>
               </div>
             </div>
