@@ -132,7 +132,7 @@ export default async function WelcomePage({ params }: WelcomePageProps) {
         <div className="text-center pt-10">
           <p className="text-sm text-slate-500 font-light">
             Guarda este portal maestro en tus favoritos: <br/>
-            <span className="font-mono text-slate-300 font-medium mt-2 inline-block">mtriq.app/{slug}/welcome</span>
+            <span className="font-mono text-slate-300 font-medium mt-2 inline-block">glubbi.app/{slug}/welcome</span>
           </p>
         </div>
 

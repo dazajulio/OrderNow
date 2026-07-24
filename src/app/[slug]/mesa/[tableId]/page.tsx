@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, use } from 'react';
-import { createClient, MTRIQ_ID } from '@/lib/supabase/client';
+import { createClient, GLUBBI_ID } from '@/lib/supabase/client';
 import type { Category, ProductWithModifiers, Product } from '@/types/database';
 import { CategoryNav } from '@/modules/kiosk/components/CategoryNav';
 import { ProductCard } from '@/modules/kiosk/components/ProductCard';
@@ -302,7 +302,7 @@ export default function KioskPage({ params }: KioskPageProps) {
           </div>
         )}
         <h1 className="text-xl font-bold text-slate-900 tracking-tight">{restaurantName}</h1>
-        <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5 font-medium">POWERED BY MTRIQ.APP</p>
+        <p className="text-[10px] text-gray-400 tracking-widest uppercase mt-0.5 font-medium">POWERED BY GLUBBI.APP</p>
       </div>
     </div>
   );
@@ -341,7 +341,7 @@ export default function KioskPage({ params }: KioskPageProps) {
       const { data: newCust, error } = await supabase
         .from('customers')
         .insert({
-          restaurant_id: restaurantId || MTRIQ_ID,
+          restaurant_id: restaurantId || GLUBBI_ID,
           name: data.name,
           email: data.email,
           phone: data.phone || null
@@ -400,7 +400,7 @@ export default function KioskPage({ params }: KioskPageProps) {
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({
-        restaurant_id: restaurantId || MTRIQ_ID,
+        restaurant_id: restaurantId || GLUBBI_ID,
         table_id: (targetTableId && targetTableId !== 'takeaway' && isValidUUID(targetTableId)) ? targetTableId : null,
         customer_id: customerId || null,
         status: 'pending',

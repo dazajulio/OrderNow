@@ -7,7 +7,7 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 
-export const Glubbi_ID = 'a12bc706-ffc2-4959-ba03-58ebecada86a'; // UUID exacto de Glubbi
+export const GLUBBI_ID = 'a12bc706-ffc2-4959-ba03-58ebecada86a'; // UUID exacto de Glubbi
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key';
@@ -15,7 +15,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env
 export const supabase = createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey, {
   global: {
     headers: {
-      'x-restaurant-id': Glubbi_ID
+      'x-restaurant-id': GLUBBI_ID
     },
   },
 });
