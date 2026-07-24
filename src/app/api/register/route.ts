@@ -277,8 +277,16 @@ export async function POST(request: Request) {
           subject: `🚀 Nuevo Registro SaaS (Lemon) - ${restaurantName}`,
           html: `<p><strong>Local:</strong> ${restaurantName}</p><p><strong>Cliente:</strong> ${contactName}</p><p><strong>Email:</strong> ${email}</p><p><strong>Teléfono:</strong> ${phone}</p><p><strong>Método de Pago:</strong> Tarjeta (Lemon Squeezy)</p>`
         });
+
+        // Send Welcome Email to Customer
+        await resend.emails.send({
+          from: 'Glubbi Soporte <soporte@glubbi.app>',
+          to: email,
+          subject: `Bienvenido a Glubbi, ${restaurantName}`,
+          html: `¡Hola ${contactName}!<br><br>Bienvenido al ecosistema Glubbi. Tu restaurante <strong>${restaurantName}</strong> ha sido registrado exitosamente en nuestra plataforma.<br><br>Puedes acceder a tu panel administrativo desde el siguiente enlace oficial:<br><br><a href="https://www.glubbi.app/${slug}/gerente" style="color: #ff6b00; font-weight: bold; font-size: 16px;">Acceder al Panel de Glubbi</a><br><br>¡Muchos éxitos en tus ventas!<br>El equipo de Glubbi`
+        });
       } catch (emailErr) {
-        console.error('Error sending internal notification email:', emailErr);
+        console.error('Error sending emails:', emailErr);
       }
 
       return NextResponse.json({
@@ -297,8 +305,16 @@ export async function POST(request: Request) {
         subject: `💰 Nuevo Registro SaaS (Pago Móvil) - ${restaurantName}`,
         html: `<p><strong>Local:</strong> ${restaurantName}</p><p><strong>Cliente:</strong> ${contactName}</p><p><strong>Email:</strong> ${email}</p><p><strong>Teléfono:</strong> ${phone}</p><p><strong>Método de Pago:</strong> Pago Móvil (Validar manual)</p><p><strong>Detalles Pago:</strong> ${paymentReference}</p>`
       });
+
+      // Send Welcome Email to Customer
+      await resend.emails.send({
+        from: 'Glubbi Soporte <soporte@glubbi.app>',
+        to: email,
+        subject: `Bienvenido a Glubbi, ${restaurantName}`,
+        html: `¡Hola ${contactName}!<br><br>Bienvenido al ecosistema Glubbi. Tu restaurante <strong>${restaurantName}</strong> ha sido registrado exitosamente en nuestra plataforma.<br><br>Puedes acceder a tu panel administrativo desde el siguiente enlace oficial:<br><br><a href="https://www.glubbi.app/${slug}/gerente" style="color: #ff6b00; font-weight: bold; font-size: 16px;">Acceder al Panel de Glubbi</a><br><br>Recuerda que como seleccionaste Pago Móvil, es posible que algunas funciones tarden en habilitarse mientras verificamos el pago.<br><br>¡Muchos éxitos en tus ventas!<br>El equipo de Glubbi`
+      });
     } catch (emailErr) {
-      console.error('Error sending internal notification email:', emailErr);
+      console.error('Error sending emails:', emailErr);
     }
 
     // Manual payment => return success immediately without checkout URL
