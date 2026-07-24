@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, QrCode, Timer, TrendingUp, ShoppingBag, Plus, Clock, CheckCircle2, Activity, Search, X } from 'lucide-react';
 
 export function Hero() {
@@ -86,19 +87,19 @@ export function Hero() {
         {/* LADO DERECHO: Mockups "emitiendo luz" que rompen la ola */}
         {/* El translate-y-16 empuja los mockups hacia abajo para que crucen la línea del SVG */}
         <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center lg:translate-y-16 animate-fade-in-up" style={{animationDelay: '150ms'}}>
-          <div className="relative w-full max-w-[590px] z-30">
+          <div className="relative w-full max-w-[590px] z-30 pt-8 sm:pt-12">
             
-            {/* GLUBBI BADGE (Parallax flotante independiente) */}
-            <div className="absolute -top-12 -left-4 sm:-left-8 lg:-left-16 z-50 animate-float-badge">
-              <div className="flex items-center gap-3 bg-slate-900/70 backdrop-blur-xl border border-blue-500/40 p-2.5 pr-5 rounded-full shadow-[0_0_40px_-5px_rgba(59,130,246,0.4)]">
-                {/* Logo Placeholder */}
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-inner overflow-hidden border border-blue-400/50 shrink-0">
-                  <span className="text-white font-black text-[10px] italic tracking-tighter">GLUBBI</span>
+            {/* GLUBBI BADGE (Parallax flotante independiente centrado arriba) */}
+            <div className="absolute -top-4 sm:-top-6 left-1/2 -translate-x-1/2 z-50 animate-float-badge">
+              <div className="flex items-center gap-4 bg-slate-900/80 backdrop-blur-xl border border-blue-500/50 p-3 pr-6 rounded-full shadow-[0_0_50px_-5px_rgba(59,130,246,0.5)]">
+                {/* Logo Glubbi Real */}
+                <div className="w-14 h-14 rounded-full bg-slate-950 flex items-center justify-center shadow-inner overflow-hidden border border-blue-400/50 shrink-0">
+                  <Image src="/logo-glubbi.png" alt="Glubbi Logo" width={56} height={56} className="object-cover w-full h-full" />
                 </div>
                 {/* Text */}
                 <div className="flex flex-col justify-center">
-                  <span className="text-[9px] font-black text-blue-400 uppercase tracking-[0.2em] leading-none mb-1">Acceso Exclusivo</span>
-                  <span className="text-xs font-bold text-slate-100 leading-none">Miembros Premium</span>
+                  <span className="text-[10px] font-black text-blue-400 uppercase tracking-[0.25em] leading-none mb-1">Acceso Exclusivo</span>
+                  <span className="text-sm font-bold text-slate-100 leading-none">Miembros Mtriq</span>
                 </div>
               </div>
             </div>
