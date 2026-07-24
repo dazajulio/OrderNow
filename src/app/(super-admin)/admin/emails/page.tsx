@@ -146,7 +146,7 @@ export default function EmailsPage() {
                     placeholder="ejemplo@correo.com"
                     value={toEmail}
                     onChange={(e) => setToEmail(e.target.value)}
-                    className="flex-1 bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500"
+                    className="flex-1 bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500"
                   />
                   {members.length > 0 && (
                     <select
@@ -180,7 +180,7 @@ export default function EmailsPage() {
                   placeholder="Escribe el asunto del correo..."
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500"
                 />
               </div>
 
@@ -193,7 +193,7 @@ export default function EmailsPage() {
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   rows={8}
-                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-white placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500 resize-none font-sans"
+                  className="w-full bg-slate-50/60 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-zinc-700 text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-purple-500 resize-none font-sans"
                 />
               </div>
 
