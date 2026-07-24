@@ -28,11 +28,18 @@ export function Hero() {
           0%, 100% { transform: translateY(0px) rotate(0.5deg); }
           50% { transform: translateY(-8px) rotate(-0.5deg); }
         }
+        @keyframes floatBadge {
+          0%, 100% { transform: translateY(0px) rotate(-3deg); }
+          50% { transform: translateY(-15px) rotate(3deg); }
+        }
         .animate-float-phone {
           animation: floatPhone 6s ease-in-out infinite;
         }
         .animate-float-laptop {
           animation: floatLaptop 8s ease-in-out infinite;
+        }
+        .animate-float-badge {
+          animation: floatBadge 7s ease-in-out infinite reverse;
         }
       `}} />
 
@@ -81,6 +88,21 @@ export function Hero() {
         <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center lg:translate-y-16 animate-fade-in-up" style={{animationDelay: '150ms'}}>
           <div className="relative w-full max-w-[590px] z-30">
             
+            {/* GLUBBI BADGE (Parallax flotante independiente) */}
+            <div className="absolute -top-12 -left-4 sm:-left-8 lg:-left-16 z-50 animate-float-badge">
+              <div className="flex items-center gap-3 bg-slate-900/70 backdrop-blur-xl border border-blue-500/40 p-2.5 pr-5 rounded-full shadow-[0_0_40px_-5px_rgba(59,130,246,0.4)]">
+                {/* Logo Placeholder */}
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-inner overflow-hidden border border-blue-400/50 shrink-0">
+                  <span className="text-white font-black text-[10px] italic tracking-tighter">GLUBBI</span>
+                </div>
+                {/* Text */}
+                <div className="flex flex-col justify-center">
+                  <span className="text-[9px] font-black text-blue-400 uppercase tracking-[0.2em] leading-none mb-1">Acceso Exclusivo</span>
+                  <span className="text-xs font-bold text-slate-100 leading-none">Miembros Premium</span>
+                </div>
+              </div>
+            </div>
+
             {/* KDS LAPTOP (Pega tu código de estructura KDS actual aquí dentro) */}
             {/* Nota el shadow personalizado simulando luz que emana de la pantalla */}
             <div className="relative w-full h-[370px] rounded-2xl border border-slate-700 bg-slate-950 shadow-[0_0_60px_-15px_rgba(249,115,22,0.3)] z-20 animate-float-laptop overflow-hidden">
