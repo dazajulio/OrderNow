@@ -126,7 +126,7 @@ export default function RegisterPage() {
       if (!result.success) throw new Error(result.error || 'Error al registrar.');
 
       setRegisteredSlug(result.slug);
-      localStorage.setItem('mtriq_pending_slug', result.slug);
+      localStorage.setItem('Glubbi_pending_slug', result.slug);
       window.location.href = result.checkoutUrl;
     } catch (err: any) {
       setErrorMsg(err.message || 'Error inesperado.');
@@ -237,9 +237,9 @@ export default function RegisterPage() {
       {/* Header / Logo */}
       <header className="relative z-20 max-w-7xl mx-auto px-6 w-full py-6 flex items-center justify-between border-b border-slate-200/60">
         <Link href="/" className="flex items-center gap-2 bg-white border border-slate-200 rounded-full pl-3 pr-4 py-1.5 shadow-sm hover:shadow-md hover:bg-slate-50 transition-all select-none">
-          <img src="/logo-mtriq.png" alt="Mtriq Logo" className="w-5 h-5 object-contain" />
+          <img src="/logo-Glubbi.png" alt="Glubbi Logo" className="w-5 h-5 object-contain" />
           <span className="text-sm font-black tracking-tight text-slate-900">
-            mtriq<span className="text-orange-500">.app</span>
+            Glubbi<span className="text-orange-500">.app</span>
           </span>
         </Link>
         <span className="text-xs text-slate-400 font-medium">SaaS Multi-tenant v1.1</span>
@@ -581,7 +581,7 @@ export default function RegisterPage() {
                   </div>
                   <div className="text-sm text-slate-700 space-y-1 pt-1">
                     <p><strong>Banco:</strong> Banco de Venezuela</p>
-                    <p><strong>Identificación:</strong> J-12517086 (MTRIQ)</p>
+                    <p><strong>Identificación:</strong> J-12517086 (Glubbi)</p>
                     <p><strong>Teléfono:</strong> 0414-8817137</p>
                   </div>
                   <div className="text-xs text-orange-600/80 font-semibold pt-2 text-center">
@@ -690,7 +690,7 @@ export default function RegisterPage() {
                   <div className="flex items-center gap-2 font-semibold text-slate-800">
                     <ShieldCheck className="w-4 h-4 text-orange-500" /> Pago 100% seguro
                   </div>
-                  <p>Procesado por <strong>Lemon Squeezy</strong>. Mtriq nunca almacena datos de tu tarjeta.</p>
+                  <p>Procesado por <strong>Lemon Squeezy</strong>. Glubbi nunca almacena datos de tu tarjeta.</p>
                 </div>
 
                 {checkoutUrl && (
@@ -728,7 +728,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="mt-8 pt-4 border-t border-slate-200/60 flex justify-between items-center text-xs text-slate-400 select-none">
-            <span>Mtriq Secure Checkout</span>
+            <span>Glubbi Secure Checkout</span>
             <span>Garantía de Cancelación 24/7</span>
           </div>
 
@@ -781,7 +781,7 @@ export default function RegisterPage() {
 
       {/* Footer */}
       <footer className="relative z-20 py-6 border-t border-slate-200/60 text-center text-xs text-slate-400 w-full select-none">
-        &copy; {new Date().getFullYear()} Mtriq.app. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} glubbi.app. Todos los derechos reservados.
       </footer>
     </div>
   );

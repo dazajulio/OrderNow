@@ -83,7 +83,7 @@ export async function POST(request: Request) {
         );
         if (emailTaken) {
           return NextResponse.json(
-            { success: false, error: 'Este correo electrónico ya está registrado. Si eres el propietario, intenta iniciar sesión o contacta a soporte@mtriq.app.' },
+            { success: false, error: 'Este correo electrónico ya está registrado. Si eres el propietario, intenta iniciar sesión o contacta a soporte@glubbi.app.' },
             { status: 400 }
           );
         }
@@ -268,8 +268,8 @@ export async function POST(request: Request) {
       // 6. Send Internal Admin Email (Lemon Squeezy)
       try {
         await resend.emails.send({
-          from: 'MTRIQ <onboarding@mtriq.app>',
-          to: 'soporte@mtriq.app',
+          from: 'Glubbi <onboarding@glubbi.app>',
+          to: 'soporte@glubbi.app',
           subject: `🚀 Nuevo Registro SaaS (Lemon) - ${restaurantName}`,
           html: `<p><strong>Local:</strong> ${restaurantName}</p><p><strong>Cliente:</strong> ${contactName}</p><p><strong>Email:</strong> ${email}</p><p><strong>Teléfono:</strong> ${phone}</p><p><strong>Método de Pago:</strong> Tarjeta (Lemon Squeezy)</p>`
         });
@@ -288,8 +288,8 @@ export async function POST(request: Request) {
     // 6. Send Internal Admin Email (Pago Movil)
     try {
       await resend.emails.send({
-        from: 'MTRIQ <onboarding@mtriq.app>',
-        to: 'soporte@mtriq.app',
+        from: 'Glubbi <onboarding@glubbi.app>',
+        to: 'soporte@glubbi.app',
         subject: `💰 Nuevo Registro SaaS (Pago Móvil) - ${restaurantName}`,
         html: `<p><strong>Local:</strong> ${restaurantName}</p><p><strong>Cliente:</strong> ${contactName}</p><p><strong>Email:</strong> ${email}</p><p><strong>Teléfono:</strong> ${phone}</p><p><strong>Método de Pago:</strong> Pago Móvil (Validar manual)</p><p><strong>Detalles Pago:</strong> ${paymentReference}</p>`
       });

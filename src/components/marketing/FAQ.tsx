@@ -6,7 +6,7 @@ import { useState } from 'react';
 const FAQS = [
   {
     q: '¿Necesito comprar hardware especial?',
-    a: 'No. Mtriq.app funciona con lo que ya tienes: cualquier celular o tablet para el KDS, y códigos QR imprimibles para las mesas. No hay terminales propietarias que comprar.',
+    a: 'No. glubbi.app funciona con lo que ya tienes: cualquier celular o tablet para el KDS, y códigos QR imprimibles para las mesas. No hay terminales propietarias que comprar.',
   },
   {
     q: '¿Cuánto tarda la puesta en marcha?',

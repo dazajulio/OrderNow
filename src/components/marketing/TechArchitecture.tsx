@@ -22,7 +22,7 @@ export function TechArchitecture() {
             </span>
           </h2>
           <p className="text-lg text-zinc-400 mt-6 leading-relaxed">
-            Mtriq está construido sobre tecnologías de vanguardia para asegurar tiempos de respuesta en milisegundos, aislamiento completo de datos y escalabilidad ilimitada.
+            Glubbi está construido sobre tecnologías de vanguardia para asegurar tiempos de respuesta en milisegundos, aislamiento completo de datos y escalabilidad ilimitada.
           </p>
         </div>
 

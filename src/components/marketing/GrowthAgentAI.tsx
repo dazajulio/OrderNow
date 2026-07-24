@@ -86,7 +86,7 @@ export function GrowthAgentAI() {
             <div className="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
-                <span className="text-[10px] font-black text-zinc-400 tracking-wider">Mtriq AI Engine v1.2</span>
+                <span className="text-[10px] font-black text-zinc-400 tracking-wider">Glubbi AI Engine v1.2</span>
               </div>
               <span className="text-[9px] text-orange-400 font-bold bg-orange-500/10 px-2 py-0.5 rounded-md border border-orange-500/20">ESTRATEGA ACTIVO</span>
             </div>
@@ -113,7 +113,7 @@ export function GrowthAgentAI() {
               <div>
                 <span className="text-zinc-500">[02:14:11]</span> <span className="text-orange-400">ACCION:</span> Generando cupón dinámico automatizado...
                 <div className="mt-1.5 ml-4 bg-zinc-950 border border-zinc-800/80 p-2 rounded text-zinc-400 leading-snug">
-                  &quot;¡Hola Juan! Te extrañamos en Burger Grill. Tu plato favorito <strong>Burger Master</strong> te espera con un <strong>10% OFF</strong>. Canjea con un clic: mtriq.app/c/183j&quot;
+                  &quot;¡Hola Juan! Te extrañamos en Burger Grill. Tu plato favorito <strong>Burger Master</strong> te espera con un <strong>10% OFF</strong>. Canjea con un clic: glubbi.app/c/183j&quot;
                 </div>
               </div>
 

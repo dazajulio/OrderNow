@@ -1,5 +1,5 @@
 /**
- * Servicio de Envío de Correos - Mtriq.app
+ * Servicio de Envío de Correos - glubbi.app
  * Utiliza la API HTTP directa de Resend para evitar dependencias pesadas.
  */
 
@@ -24,16 +24,16 @@ export async function sendWelcomeEmail({
   }
 
   // URL del kiosco/menú
-  const welcomeUrl = `https://mtriq.app/${slug}/welcome`;
+  const welcomeUrl = `https://glubbi.app/${slug}/welcome`;
 
-  // HTML Plantilla Premium (Diseño corporativo Mtriq - Naranja / Oscuro)
+  // HTML Plantilla Premium (Diseño corporativo Glubbi - Naranja / Oscuro)
   const emailHtml = `
     <!DOCTYPE html>
     <html lang="es">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>¡Bienvenido a Mtriq!</title>
+      <title>¡Bienvenido a Glubbi!</title>
       <style>
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -160,11 +160,11 @@ export async function sendWelcomeEmail({
     <body>
       <div class="container">
         <div class="header">
-          <div class="logo-text">mtriq<span class="orange-text">.app</span></div>
+          <div class="logo-text">Glubbi<span class="orange-text">.app</span></div>
         </div>
         <div class="content">
           <h1>¡Hola, ${contactName}!</h1>
-          <p>¡Bienvenido al ecosistema <strong>MTRIQ</strong>!</p>
+          <p>¡Bienvenido al ecosistema <strong>Glubbi</strong>!</p>
           <p>Tu cuenta para <strong>${restaurantName}</strong> ha sido desplegada con éxito. Tu nuevo Kiosko inteligente y tu monitor de cocina (KDS) ya están sincronizados y listos para llevar la digitalización de tu restaurante al siguiente nivel.</p>
 
           <div class="card">
@@ -175,7 +175,7 @@ export async function sendWelcomeEmail({
             </div>
             <div class="detail-row" style="margin-top: 12px;">
               <p style="font-size: 14px; margin-bottom: 8px;">Accede a tu Launchpad donde encontrarás los links directos a tu <strong>Panel de Gerente</strong>, <strong>Monitor de Cocina</strong> y <strong>Kiosko Digital</strong>:</p>
-              <span class="detail-value"><a href="${welcomeUrl}" style="color: #ff6b00; text-decoration: none;">mtriq.app/${slug}/welcome</a></span>
+              <span class="detail-value"><a href="${welcomeUrl}" style="color: #ff6b00; text-decoration: none;">glubbi.app/${slug}/welcome</a></span>
             </div>
           </div>
 
@@ -200,8 +200,8 @@ export async function sendWelcomeEmail({
           </div>
         </div>
         <div class="footer">
-          &copy; ${new Date().getFullYear()} Mtriq.app. Todos los derechos reservados.<br>
-          Soporte: soporte@mtriq.app | Cancela cuando quieras.
+          &copy; ${new Date().getFullYear()} glubbi.app. Todos los derechos reservados.<br>
+          Soporte: soporte@glubbi.app | Cancela cuando quieras.
         </div>
       </div>
     </body>
@@ -216,9 +216,9 @@ export async function sendWelcomeEmail({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Mtriq Soporte <soporte@mtriq.app>',
+        from: 'Glubbi Soporte <soporte@glubbi.app>',
         to: [toEmail],
-        subject: `¡Bienvenido a Mtriq! Activa tu local: ${restaurantName}`,
+        subject: `¡Bienvenido a Glubbi! Activa tu local: ${restaurantName}`,
         html: emailHtml,
       }),
     });

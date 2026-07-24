@@ -12,7 +12,7 @@ export function MtriqRewards() {
         <div className="flex flex-col justify-center">
           <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-600 px-4 py-1.5 rounded-full text-xs font-bold w-fit mb-6 border border-orange-100 uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
-            Mtriq Rewards & Lealtad
+            Glubbi Rewards & Lealtad
           </div>
           
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-6 leading-tight">
@@ -24,7 +24,7 @@ export function MtriqRewards() {
           </h2>
           
           <p className="text-lg text-slate-600 mb-8 leading-relaxed max-w-xl">
-            No eres un restaurante aislado; eres parte de un ecosistema. Al integrar Mtriq, tus clientes acceden a nuestra App nativa donde pueden:
+            No eres un restaurante aislado; eres parte de un ecosistema. Al integrar Glubbi, tus clientes acceden a nuestra App nativa donde pueden:
           </p>
 
           <div className="space-y-6 max-w-xl">
@@ -87,7 +87,7 @@ export function MtriqRewards() {
               <div className="flex items-center justify-between border-b border-zinc-800 pb-3 mt-2">
                 <div>
                   <p className="text-[10px] text-zinc-400">Club de Lealtad</p>
-                  <h4 className="text-sm font-black text-white">Mtriq Rewards</h4>
+                  <h4 className="text-sm font-black text-white">Glubbi Rewards</h4>
                 </div>
                 <div className="w-8 h-8 rounded-full bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 text-xs font-bold">
                   JS

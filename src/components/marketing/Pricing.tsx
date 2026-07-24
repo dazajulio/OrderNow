@@ -3,7 +3,7 @@ import { ShieldCheck, Sparkles } from 'lucide-react';
 const PLAN = {
   name: 'Plan Pro Único',
   price: '29',
-  tagline: 'Todo el poder operativo de mtriq en un solo plan ilimitado.',
+  tagline: 'Todo el poder operativo de Glubbi en un solo plan ilimitado.',
   features: [
     'Menú Digital + Códigos QR/NFC ilimitados',
     'Kitchen Display System (KDS) en tiempo real',

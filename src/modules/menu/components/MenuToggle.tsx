@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient, MTRIQ_ID } from '@/lib/supabase/client';
+import { createClient, Glubbi_ID } from '@/lib/supabase/client';
 import type { Product, Category } from '@/types/database';
 import { formatPrice } from '@/lib/utils';
 import { Search, UtensilsCrossed, Plus, FolderPlus, Edit2, Trash2, GripVertical } from 'lucide-react';

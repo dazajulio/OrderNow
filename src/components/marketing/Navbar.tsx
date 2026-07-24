@@ -26,9 +26,9 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/#home" className="flex items-center gap-2 bg-white border border-slate-200/80 rounded-full pl-3 pr-4 py-1.5 shadow-sm hover:shadow-md transition-all active:scale-95 duration-200 select-none">
-          <img src="/logo-mtriq.png" alt="Mtriq Logo" className="w-6 h-6 object-contain" />
+          <img src="/icon.png" alt="Glubbi Logo" className="w-6 h-6 object-contain" />
           <span className="text-base font-black tracking-tight text-slate-900">
-            mtriq<span className="text-orange-500">.app</span>
+            glubbi<span className="text-orange-500">.app</span>
           </span>
         </Link>
 

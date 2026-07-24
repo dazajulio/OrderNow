@@ -14,7 +14,7 @@ import {
 
 export default function GlobalSettingsPage() {
   const [saasPrice, setSaasPrice] = useState('29.00');
-  const [supportEmail, setSupportEmail] = useState('soporte@mtriq.app');
+  const [supportEmail, setSupportEmail] = useState('soporte@glubbi.app');
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -30,7 +30,7 @@ export default function GlobalSettingsPage() {
       {/* Header */}
       <div className="bg-white shadow-md p-6 border border-gray-200 rounded-3xl backdrop-blur-xl space-y-1">
         <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-          Configuración Global de Mtriq.app
+          Configuración Global de glubbi.app
         </h2>
         <p className="text-xs text-gray-400">Ajusta los parámetros operativos generales y variables del ecosistema</p>
       </div>

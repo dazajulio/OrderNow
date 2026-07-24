@@ -7,7 +7,7 @@ export function UseCases() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight mb-6">Un sistema, dos velocidades</h2>
           <p className="text-slate-600 text-lg">
-            Mtriq.app se adapta al ritmo real de tu operación — sin importar si vendes en 90 segundos o en 90 minutos.
+            glubbi.app se adapta al ritmo real de tu operación — sin importar si vendes en 90 segundos o en 90 minutos.
           </p>
         </div>
 

@@ -1,5 +1,5 @@
 -- ============================================================================
--- MTRIQ.APP — SCRIPT DE CONFIGURACIÓN Y OPTIMIZACIÓN DEL PANEL SUPER-ADMIN
+-- glubbi.app — SCRIPT DE CONFIGURACIÓN Y OPTIMIZACIÓN DEL PANEL SUPER-ADMIN
 -- ============================================================================
 -- Ejecuta este script completo en el SQL Editor de tu Dashboard de Supabase.
 -- ============================================================================
@@ -42,7 +42,7 @@ BEGIN
     LOOP
       -- Genera 6 caracteres alfanuméricos aleatorios en mayúsculas
       random_chars := upper(substring(md5(random()::text) from 1 for 6));
-      unique_code := 'MTQ-' || random_chars;
+      unique_code := 'GLB-' || random_chars;
       
       -- Verificar duplicidad
       SELECT EXISTS(SELECT 1 FROM public.restaurants WHERE license_code = unique_code) INTO is_duplicate;
@@ -128,7 +128,7 @@ BEGIN
   FOR r IN SELECT id FROM public.restaurants WHERE license_code IS NULL LOOP
     LOOP
       random_chars := upper(substring(md5(random()::text) from 1 for 6));
-      unique_code := 'MTQ-' || random_chars;
+      unique_code := 'GLB-' || random_chars;
       IF NOT EXISTS(SELECT 1 FROM public.restaurants WHERE license_code = unique_code) THEN
         EXIT;
       END IF;

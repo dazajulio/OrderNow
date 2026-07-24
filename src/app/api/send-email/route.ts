@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Official Mtriq Premium HTML template wrapper
+    // Official Glubbi Premium HTML template wrapper
     const emailHtml = `
       <!DOCTYPE html>
       <html lang="es">
@@ -87,14 +87,14 @@ export async function POST(request: Request) {
       <body>
         <div class="container">
           <div class="header">
-            <div class="logo-text">mtriq<span class="orange-text">.app</span></div>
+            <div class="logo-text">Glubbi<span class="orange-text">.app</span></div>
           </div>
           <div class="content">
             ${body.replace(/\n/g, '<br />')}
           </div>
           <div class="footer">
-            Este es un correo oficial enviado por el Super Administrador de Mtriq.app.<br>
-            Soporte: <a href="mailto:soporte@mtriq.app" class="footer-link">soporte@mtriq.app</a> | Calle 140A - Cedritos, Bogotá, Colombia.
+            Este es un correo oficial enviado por el Super Administrador de glubbi.app.<br>
+            Soporte: <a href="mailto:soporte@glubbi.app" class="footer-link">soporte@glubbi.app</a> | Calle 140A - Cedritos, Bogotá, Colombia.
           </div>
         </div>
       </body>
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Mtriq Soporte <soporte@mtriq.app>',
+        from: 'Glubbi Soporte <soporte@glubbi.app>',
         to: [to],
         subject: subject,
         html: emailHtml,

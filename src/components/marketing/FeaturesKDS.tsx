@@ -19,7 +19,7 @@ export function FeaturesKDS() {
             </span>
           </h2>
           <p className="text-lg text-slate-600 mt-6 leading-relaxed">
-            Elimina las fallas humanas en tu restaurante. Mtriq conecta todos los puntos clave de tu local en tiempo real con una interfaz fluida e intuitiva.
+            Elimina las fallas humanas en tu restaurante. Glubbi conecta todos los puntos clave de tu local en tiempo real con una interfaz fluida e intuitiva.
           </p>
         </div>
 

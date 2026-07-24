@@ -8,9 +8,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'FoodTech SaaS — Pedidos Móviles para Restaurantes',
+  title: 'Glubbi Partners — Ecosistema para Negocios sin Comisiones',
   description:
-    'Plataforma multi-tenant de pedidos QR para restaurantes Fast Food y Fast Casual. Kiosko móvil, Kitchen Display System, y gestión de menú en tiempo real.',
+    'Únete a Glubbi. Gestiona tu negocio con nuestro ecosistema integral (KDS, Kiosko, Analíticas) por una tarifa plana y vende sin comisiones.',
   manifest: '/manifest.json',
   icons: {
     icon: [

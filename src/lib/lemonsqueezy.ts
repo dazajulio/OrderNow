@@ -6,7 +6,7 @@ import crypto from 'crypto';
 
 const CHECKOUT_BASE_URL = process.env.NEXT_PUBLIC_LEMONSQUEEZY_CHECKOUT_URL ?? '';
 const WEBHOOK_SECRET = process.env.LEMONSQUEEZY_WEBHOOK_SECRET ?? '';
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://mtriq.app';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://glubbi.app';
 
 // ----------------------------------------------------------------------------
 // buildCheckoutUrl

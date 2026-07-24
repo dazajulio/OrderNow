@@ -102,7 +102,7 @@ export default function EmailsPage() {
         <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
           Redacción de Correos Corporativos
         </h2>
-        <p className="text-xs text-gray-400">Envía notificaciones o comunicados a tus clientes envueltos en la plantilla premium de Mtriq</p>
+        <p className="text-xs text-gray-400">Envía notificaciones o comunicados a tus clientes envueltos en la plantilla premium de Glubbi</p>
       </div>
 
       <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-stretch">
@@ -237,14 +237,14 @@ export default function EmailsPage() {
               </div>
               <div className="border border-gray-200 rounded-2xl overflow-hidden p-6 bg-slate-50 font-sans min-h-[250px]">
                 <div className="text-center pb-4 border-b border-gray-200">
-                  <div className="text-lg font-black text-gray-900 select-none">mtriq<span className="text-orange-500">.app</span></div>
+                  <div className="text-lg font-black text-gray-900 select-none">Glubbi<span className="text-orange-500">.app</span></div>
                 </div>
                 <div className="py-6 text-gray-800 text-sm leading-relaxed whitespace-pre-line min-h-[120px]">
                   {body || 'El cuerpo del correo se previsualizará aquí...'}
                 </div>
                 <div className="text-center pt-4 border-t border-gray-200 text-[10px] text-gray-600">
-                  Este es un correo oficial enviado por el Super Administrador de Mtriq.app.<br />
-                  Soporte: soporte@mtriq.app | Calle 140A - Cedritos, Bogotá, Colombia.
+                  Este es un correo oficial enviado por el Super Administrador de glubbi.app.<br />
+                  Soporte: soporte@glubbi.app | Calle 140A - Cedritos, Bogotá, Colombia.
                 </div>
               </div>
             </div>
@@ -259,11 +259,11 @@ export default function EmailsPage() {
               <Mail className="w-5 h-5 text-orange-500" /> Directrices de Envío
             </h3>
             <p className="text-xs text-gray-400 leading-relaxed">
-              El correo se despacha utilizando tu infraestructura activa en **Resend** asociada a la dirección verificada `soporte@mtriq.app`.
+              El correo se despacha utilizando tu infraestructura activa en **Resend** asociada a la dirección verificada `soporte@glubbi.app`.
             </p>
             <ul className="list-disc pl-5 space-y-2 text-[11px] text-gray-500">
               <li>El destinatario recibirá un correo oficial sin rastros de tu dirección de Gmail personal.</li>
-              <li>El membrete, logo oficial y pie de página de Mtriq se inyectan automáticamente en el servidor durante la entrega.</li>
+              <li>El membrete, logo oficial y pie de página de Glubbi se inyectan automáticamente en el servidor durante la entrega.</li>
               <li>Las respuestas de los clientes llegarán al redireccionador de Cloudflare que configuramos, derivándolas directamente a tu Gmail.</li>
             </ul>
           </div>

@@ -137,7 +137,7 @@ export default function BillingPage() {
                         {invId}
                       </td>
                       <td className="px-6 py-4 font-semibold text-gray-900">
-                        Licencia SaaS Mtriq - {rest.name}
+                        Licencia SaaS Glubbi - {rest.name}
                       </td>
                       <td className="px-6 py-4">
                         {isManualPagoMovil ? (

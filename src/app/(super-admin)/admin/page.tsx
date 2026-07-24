@@ -44,7 +44,7 @@ export default function SuperAdminDashboard() {
 
   // --- Session persistence ---
   useEffect(() => {
-    const isLogged = sessionStorage.getItem('mtriq_super_admin_logged');
+    const isLogged = sessionStorage.getItem('Glubbi_super_admin_logged');
     if (isLogged === 'true') {
       setIsAuthenticated(true);
     }
@@ -128,14 +128,14 @@ export default function SuperAdminDashboard() {
         : 'admin1234';
 
       if (password === correctPassword) {
-        sessionStorage.setItem('mtriq_super_admin_logged', 'true');
+        sessionStorage.setItem('Glubbi_super_admin_logged', 'true');
         setIsAuthenticated(true);
       } else {
         setErrorMsg('Usuario o contraseña incorrectos.');
       }
     } catch (err) {
       if (password === 'admin1234') {
-        sessionStorage.setItem('mtriq_super_admin_logged', 'true');
+        sessionStorage.setItem('Glubbi_super_admin_logged', 'true');
         setIsAuthenticated(true);
       } else {
         setErrorMsg('Usuario o contraseña incorrectos.');
@@ -350,11 +350,11 @@ export default function SuperAdminDashboard() {
           <h2 className="text-3xl font-black text-gray-900 tracking-tight flex items-center gap-2">
             Visión Global <span className="text-xs bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Dashboard</span>
           </h2>
-          <p className="text-gray-400 text-sm">Métricas de salud financiera y volumen operativo de mtriq.app</p>
+          <p className="text-gray-400 text-sm">Métricas de salud financiera y volumen operativo de glubbi.app</p>
         </div>
         <button
           onClick={() => {
-            sessionStorage.removeItem('mtriq_super_admin_logged');
+            sessionStorage.removeItem('Glubbi_super_admin_logged');
             setIsAuthenticated(false);
           }}
           className="px-4 py-2 border border-gray-200 bg-slate-50/40 hover:bg-white shadow-sm text-gray-500 hover:text-gray-900 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"

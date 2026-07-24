@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { Category } from '@/types/database';
 import { X, Plus, Trash2 } from 'lucide-react';
-import { createClient, MTRIQ_ID } from '@/lib/supabase/client';
+import { createClient, Glubbi_ID } from '@/lib/supabase/client';
 
 interface ProductFormModalProps {
   isOpen: boolean;

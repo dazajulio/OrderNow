@@ -30,7 +30,7 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
       <aside className="w-full md:w-64 border-r border-gray-200 bg-white p-6 flex flex-col shrink-0">
         <div className="flex items-center gap-2 mb-12">
           <Cpu className="w-6 h-6 text-orange-500" />
-          <span className="text-xl font-bold tracking-tight text-gray-900">mtriq<span className="text-orange-500">.app</span></span>
+          <span className="text-xl font-bold tracking-tight text-gray-900">Glubbi<span className="text-orange-500">.app</span></span>
           <span className="text-[10px] bg-orange-500/10 text-orange-600 px-2 py-0.5 rounded-full ml-auto uppercase tracking-wider font-bold">Admin</span>
         </div>
 

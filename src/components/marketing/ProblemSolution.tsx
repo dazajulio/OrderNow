@@ -48,7 +48,7 @@ export function ProblemSolution() {
           <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/5 to-cyan-500/5 blur-3xl rounded-full" />
           <div className="relative bg-white border border-slate-100 p-8 rounded-3xl shadow-xl shadow-slate-200/50">
             <h3 className="text-2xl font-bold text-slate-900 mb-6">
-              La solución mtriq<span className="text-orange-500">.app</span>
+              La solución Glubbi<span className="text-orange-500">.app</span>
             </h3>
             <ul className="space-y-4">
               {SOLUTIONS.map((item) => (

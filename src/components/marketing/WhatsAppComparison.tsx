@@ -84,11 +84,11 @@ export function WhatsAppComparison() {
             </div>
           </div>
 
-          {/* LADO DE MTRIQ (LA SOLUCION) */}
+          {/* LADO DE Glubbi (LA SOLUCION) */}
           <div className="bg-orange-50/40 border border-orange-100 rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group hover:border-orange-200 transition-colors">
             <div>
               <div className="flex items-center justify-between mb-8">
-                <span className="text-2xl font-black text-orange-600">Automatización Mtriq</span>
+                <span className="text-2xl font-black text-orange-600">Automatización Glubbi</span>
                 <span className="text-3xl">✅</span>
               </div>
 
@@ -124,7 +124,7 @@ export function WhatsAppComparison() {
               </div>
             </div>
 
-            {/* Mtriq Active Order Graphic */}
+            {/* Glubbi Active Order Graphic */}
             <div className="mt-8 bg-white border border-orange-100 rounded-2xl p-4 flex justify-between items-center shadow-sm">
               <div className="flex gap-3 items-center">
                 <div className="w-9 h-9 rounded-xl bg-orange-500 text-white flex items-center justify-center font-bold text-sm">

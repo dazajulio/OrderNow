@@ -63,7 +63,7 @@ export function Hero() {
             </span>
           </h1>
           <p className="max-w-xl mx-auto lg:mx-0 text-lg md:text-xl text-slate-300 mb-8 leading-relaxed animate-fade-in-up" style={{animationDelay: '100ms'}}>
-            Mtriq.app une Menú Digital, Pedidos QR/NFC, Kitchen Display System, CRM y Analítica con IA en un solo ecosistema. De la mesa a la cocina en segundos.
+            glubbi.app une Menú Digital, Pedidos QR/NFC, Kitchen Display System, CRM y Analítica con IA en un solo ecosistema. De la mesa a la cocina en segundos.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-fade-in-up" style={{animationDelay: '200ms'}}>
@@ -116,7 +116,7 @@ export function Hero() {
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                 </div>
                 <div className="w-56 h-4.5 rounded bg-slate-950/60 mx-auto text-[9px] text-slate-400 flex items-center justify-center tracking-wide font-mono border border-slate-800/40">
-                  mtriq.app/admin/dashboard
+                  glubbi.app/admin/dashboard
                 </div>
               </div>
 
@@ -126,7 +126,7 @@ export function Hero() {
                 <div className="w-24 bg-slate-900/40 border-r border-slate-900 p-2 flex flex-col gap-1.5 shrink-0 select-none">
                   <div className="text-[10px] font-black text-orange-500 mb-3 flex items-center gap-1">
                     <span className="w-2 h-2 rounded bg-orange-500" />
-                    Mtriq
+                    Glubbi
                   </div>
                   <div className="space-y-1">
                     <div className="bg-slate-800/80 text-orange-400 text-[8px] font-bold rounded px-2 py-1 flex items-center gap-1">

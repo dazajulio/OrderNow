@@ -16,13 +16,13 @@ function SuccessContent() {
     const urlSlug = searchParams.get('slug');
     if (urlSlug) {
       setSlug(urlSlug);
-      localStorage.removeItem('mtriq_pending_slug');
+      localStorage.removeItem('Glubbi_pending_slug');
     } else {
       // Fallback: buscar en localStorage
-      const localSlug = localStorage.getItem('mtriq_pending_slug');
+      const localSlug = localStorage.getItem('Glubbi_pending_slug');
       if (localSlug) {
         setSlug(localSlug);
-        localStorage.removeItem('mtriq_pending_slug');
+        localStorage.removeItem('Glubbi_pending_slug');
       }
     }
   }, [searchParams]);
@@ -92,7 +92,7 @@ function SuccessContent() {
         {/* Logo */}
         <div className="text-center mb-10">
           <span className="text-2xl font-black tracking-tight text-white">
-            mtriq<span className="text-orange-500">.app</span>
+            Glubbi<span className="text-orange-500">.app</span>
           </span>
         </div>
 
@@ -168,8 +168,8 @@ function SuccessContent() {
         {/* Footer */}
         <p className="text-center text-xs text-slate-600 mt-6">
           ¿Algo salió mal?{' '}
-          <a href="mailto:soporte@mtriq.app" className="text-slate-400 hover:text-orange-500 transition-colors">
-            soporte@mtriq.app
+          <a href="mailto:soporte@glubbi.app" className="text-slate-400 hover:text-orange-500 transition-colors">
+            soporte@glubbi.app
           </a>
         </p>
       </div>

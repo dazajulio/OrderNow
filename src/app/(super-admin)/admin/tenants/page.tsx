@@ -105,7 +105,7 @@ export default function TenantsPage() {
 
     // Generate random 6 characters
     const randomChars = Math.random().toString(36).substring(2, 8).toUpperCase();
-    const licenseCode = `MTQ-${randomChars}`;
+    const licenseCode = `GLB-${randomChars}`;
     const validityDate = new Date();
     validityDate.setFullYear(validityDate.getFullYear() + 1); // 1 year validity
 
@@ -377,7 +377,7 @@ export default function TenantsPage() {
 
                 <div className="flex items-center gap-3 text-gray-500">
                   <Globe className="w-4 h-4 text-orange-500 shrink-0" />
-                  <span className="font-mono">mtriq.app/{selectedTenant.slug}</span>
+                  <span className="font-mono">glubbi.app/{selectedTenant.slug}</span>
                 </div>
 
                 {/* Social media if available */}
