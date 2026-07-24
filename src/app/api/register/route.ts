@@ -252,17 +252,21 @@ export async function POST(request: Request) {
 
     // 5. Construir URL de checkout de Lemon Squeezy con datos del restaurante
     if (!manualPayment) {
-      // Create Lemon Squeezy checkout URL for $29/mo plan
-      const variantId = process.env.LEMON_SQUEEZY_VARIANT_ID;
       let checkoutUrl = '';
 
-      if (variantId) {
-        checkoutUrl = await buildCheckoutUrl(variantId, {
-          userId,
-          restaurantId: newRestaurantId,
+      if (process.env.NEXT_PUBLIC_LEMONSQUEEZY_CHECKOUT_URL) {
+        checkoutUrl = buildCheckoutUrl({
           email,
-          name: contactName,
+          restaurantId: newRestaurantId,
+          slug,
         });
+      } else {
+        // If env var is missing, return error before sending email
+        // We don't delete the user here, but we should inform them to use Pago Movil or contact support
+        return NextResponse.json({
+          success: false,
+          error: 'El pago con tarjeta no está disponible en este momento por falta de configuración. Por favor, selecciona Pago Móvil o contacta a soporte.'
+        }, { status: 400 });
       }
 
       // 6. Send Internal Admin Email (Lemon Squeezy)
